@@ -1,0 +1,9 @@
+[submodule "rapidjson"]
+	path = rapidjson
+	url = https://github.com/Tencent/rapidjson.git
+[submodule "googletest"]
+	path = googletest
+	url = https://github.com/google/googletest.git
+[submodule "rtmidi"]
+	path = rtmidi
+	url = https://github.com/thestk/rtmidi.git
