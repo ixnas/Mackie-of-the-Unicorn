@@ -9,6 +9,9 @@ find_package(CURL REQUIRED)
 
 set(CMAKE_POLICY_DEFAULT_CMP0077 NEW)
 set(RAPIDJSON_BUILD_TESTS off)
+set(RAPIDJSON_BUILD_EXAMPLES off)
+set(RAPIDJSON_BUILD_DOC off)
+set(RTMIDI_BUILD_TESTING off)
 set(RTMIDI_BUILD_STATIC_LIBS on)
 set(RAPIDJSON_ENABLE_INSTRUMENTATION_OPT off)
 add_subdirectory(rapidjson)
@@ -16,7 +19,7 @@ add_subdirectory(rapidjson)
 set(RTMIDI_API_CORE ON)
 add_subdirectory(rtmidi)
 
-add_executable(Mackie_of_the_Unicorn main.cpp)
+add_executable(Mackie_of_the_Unicorn main.cpp di.h)
 
 add_dependencies(Mackie_of_the_Unicorn rtmidi)
 

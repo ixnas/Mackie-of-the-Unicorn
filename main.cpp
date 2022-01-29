@@ -1,10 +1,11 @@
-#include "rapidjson/document.h"
 #include "RtMidi.h"
+#include "di.h"
+#include "rapidjson/document.h"
+#include <curl/curl.h>
 #include <iostream>
 #include <string>
-#include <curl/curl.h>
 
-static size_t WriteCallback(void *contents, size_t size, size_t nmemb, void *userp)
+static size_t WriteCallback(void* contents, size_t size, size_t nmemb, void* userp)
 {
 	((std::string*)userp)->append((char*)contents, size * nmemb);
 	return size * nmemb;
@@ -17,7 +18,7 @@ int main()
 	doc.Parse(jsonString.c_str());
 	rapidjson::Value& val = doc["value"];
 	std::string output = val.GetString();
-	CURL *curl;
+	CURL* curl;
 	CURLcode res;
 	std::string readBuffer;
 	curl = curl_easy_init();
