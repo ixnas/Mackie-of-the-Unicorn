@@ -8,6 +8,7 @@
 #define MACKIE_OF_THE_UNICORN_APPLICATION_H
 
 #include <memory>
+#include <map>
 
 class MackieService;
 
@@ -17,6 +18,8 @@ class Application
   public:
 	explicit Application(::MackieService& mackieService);
 	std::string GetAvailableDevices() const;
+	static std::string GetNoAvailableDevices();
+	static std::string GetAvailableDevicesList(const std::map<int, std::string>& devices);
 };
 
 #endif // MACKIE_OF_THE_UNICORN_APPLICATION_H
