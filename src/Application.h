@@ -14,7 +14,7 @@ class Application
 	MackieService* MackieService;
   public:
 	explicit Application(::MackieService& mackieService);
-	void Start();
+	std::string GetAvailableDevices();
 };
 
 #endif // MACKIE_OF_THE_UNICORN_APPLICATION_H

@@ -19,10 +19,24 @@ add_subdirectory(rapidjson)
 set(RTMIDI_API_CORE ON)
 add_subdirectory(rtmidi)
 
-add_executable(Mackie_of_the_Unicorn src/main.cpp src/di.h src/Application.cpp src/Application.h src/MIDIDevice.h src/MIDIService.h src/MackieDevice.h src/MackieComposite.h src/MackieService.h src/MackieCompositeFactory.h src/MackieDeviceFactory.h src/MackieServiceImpl.cpp src/MackieServiceImpl.h)
+add_subdirectory(googletest)
+
+file(GLOB_RECURSE sources src/*.cpp src/*.h)
+file(GLOB_RECURSE test_sources src/*.cpp src/*.h)
+list(FILTER test_sources EXCLUDE REGEX ".*main\\.cpp$")
+file(GLOB_RECURSE tests test/*.cpp)
+
+add_executable(Mackie_of_the_Unicorn ${sources})
 
 add_dependencies(Mackie_of_the_Unicorn rtmidi)
 
 target_include_directories(Mackie_of_the_Unicorn PUBLIC rapidjson/include rtmidi ${CURL_INCLUDE_DIR})
 
 target_link_libraries(Mackie_of_the_Unicorn ${CMAKE_BINARY_DIR}/rtmidi/librtmidi.a ${CURL_LIBRARIES} "-framework CoreFoundation -framework CoreMIDI -framework CoreAudio")
+
+enable_testing()
+add_executable(Mackie_of_the_Unicorn_Tests ${test_sources} ${tests})
+target_link_libraries(Mackie_of_the_Unicorn_Tests gtest_main gmock)
+
+include(GoogleTest)
+gtest_discover_tests(Mackie_of_the_Unicorn_Tests)
