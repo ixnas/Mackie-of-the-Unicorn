@@ -19,7 +19,7 @@ add_subdirectory(rapidjson)
 set(RTMIDI_API_CORE ON)
 add_subdirectory(rtmidi)
 
-add_executable(Mackie_of_the_Unicorn main.cpp di.h)
+add_executable(Mackie_of_the_Unicorn src/main.cpp src/di.h src/Application.cpp src/Application.h src/MIDIDevice.h src/MIDIService.h src/MackieDevice.h src/MackieComposite.h src/MackieService.h src/MackieCompositeFactory.h src/MackieDeviceFactory.h src/MackieServiceImpl.cpp src/MackieServiceImpl.h)
 
 add_dependencies(Mackie_of_the_Unicorn rtmidi)
 
