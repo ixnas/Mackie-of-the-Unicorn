@@ -19,10 +19,21 @@ class MockMackieService : public MackieService
 	MOCK_METHOD(GetMackieCompositeRet, GetMackieComposite, (GetMackieCompositeArg), (override));
 };
 
-TEST(ApplicationTest, GetAvailableDevicesReturnsProperList) {
+class ApplicationTest : public ::testing::Test
+{
+  protected:
+	void SetUp() override
+	{
+		mockMackieService = std::make_unique<MockMackieService>();
+		instance = std::make_unique<Application>(*mockMackieService);
+	}
+
+	std::unique_ptr<MockMackieService> mockMackieService;
+	std::unique_ptr<Application> instance;
+};
+
+TEST_F(ApplicationTest, GetAvailableDevicesReturnsProperList) {
 	using ::testing::Return;
-	MockMackieService mockMackieService;
-	Application app(mockMackieService);
 	GetDevicesRet input = {
 	    {
 	        0,
@@ -33,11 +44,27 @@ TEST(ApplicationTest, GetAvailableDevicesReturnsProperList) {
 	        "test2"
 	    }
 	};
-	EXPECT_CALL(mockMackieService, GetDevices())
+	auto expected = "Available devices:\n0: test1\n1: test2\n";
+
+	EXPECT_CALL(*mockMackieService, GetDevices())
 	    .Times(1)
 	    .WillOnce(Return(input));
-	auto expected = "Available devices:\n0: test1\n1: test2\n";
-	auto actual = app.GetAvailableDevices();
-	// Expect two strings not to be equal.
+
+	auto actual = instance->GetAvailableDevices();
+
+	EXPECT_STREQ(expected, actual.c_str());
+}
+
+TEST_F(ApplicationTest, GetAvailableDevicesReturnsEmpty) {
+	using ::testing::Return;
+	GetDevicesRet input = {};
+	auto expected = "No available devices.\n";
+
+	EXPECT_CALL(*mockMackieService, GetDevices())
+		.Times(1)
+		.WillOnce(Return(input));
+
+	auto actual = instance->GetAvailableDevices();
+
 	EXPECT_STREQ(expected, actual.c_str());
 }

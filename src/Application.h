@@ -1,3 +1,5 @@
+#pragma clang diagnostic push
+#pragma ide diagnostic ignored "modernize-use-nodiscard"
 //
 // Created by Sjoerd Scheffer on 01/02/2022.
 //
@@ -14,7 +16,7 @@ class Application
 	MackieService* MackieService;
   public:
 	explicit Application(::MackieService& mackieService);
-	std::string GetAvailableDevices();
+	std::string GetAvailableDevices() const;
 };
 
 #endif // MACKIE_OF_THE_UNICORN_APPLICATION_H

@@ -11,10 +11,17 @@ Application::Application(::MackieService& mackieService) : MackieService(&mackie
 {
 }
 
-std::string Application::GetAvailableDevices()
+std::string Application::GetAvailableDevices() const
 {
-	auto devices = MackieService->GetDevices();
+	const auto devices = MackieService->GetDevices();
 	std::ostringstream output;
+
+	if (devices.empty())
+	{
+		output << "No available devices." << std::endl;
+		return output.str();
+	}
+
 	output << "Available devices:" << std::endl;
 	for (const auto& device : devices)
 	{
