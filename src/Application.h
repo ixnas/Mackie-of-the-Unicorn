@@ -15,11 +15,11 @@ class MackieService;
 class Application
 {
 	MackieService* MackieService;
+	static std::string GetNoAvailableDevices();
+	static std::string GetAvailableDevicesList(const std::map<int, std::string>& devices);
   public:
 	explicit Application(::MackieService& mackieService);
 	std::string GetAvailableDevices() const;
-	static std::string GetNoAvailableDevices();
-	static std::string GetAvailableDevicesList(const std::map<int, std::string>& devices);
 };
 
 #endif // MACKIE_OF_THE_UNICORN_APPLICATION_H
