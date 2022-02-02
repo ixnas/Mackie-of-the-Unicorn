@@ -28,28 +28,42 @@ class MIDIServiceMock : public MIDIService
 class MackieDeviceFactoryMock : public MackieDeviceFactory
 {
   public:
-	MOCK_METHOD(std::unique_ptr<MackieDevice>, Create, (std::unique_ptr<MIDIDevice>), ());
+	std::unique_ptr<MackieDevice> Create(std::unique_ptr<MIDIDevice> midiDevice) override
+	{
+		return CreateProxy(midiDevice.get());
+	}
+	MOCK_METHOD(std::unique_ptr<MackieDevice>, CreateProxy, (MIDIDevice*), ());
 };
 
 class MackieCompositeFactoryMock : public MackieCompositeFactory
 {
+	std::unique_ptr<MackieComposite> Create(std::vector<std::unique_ptr<MackieDevice>> mackieDevices) override
+	{
+		std::vector<MackieDevice*> mackieDevicePtrs;
+		std::transform(mackieDevices.begin(), mackieDevices.end(), std::back_inserter(mackieDevicePtrs),
+		               [](std::unique_ptr<MackieDevice>& p) { return p.get(); });
+		return std::unique_ptr<MackieComposite>(CreateProxy(mackieDevicePtrs));
+	}
   public:
-	MOCK_METHOD(std::unique_ptr<MackieComposite>, Create, (std::vector<std::unique_ptr<MackieDevice>>), ());
+	MOCK_METHOD(std::unique_ptr<MackieComposite>, CreateProxy, (std::vector<MackieDevice*>), ());
 };
 
 class MackieDeviceMock : public MackieDevice
 {
+  public:
 	MOCK_METHOD(void, SetText, (int, std::string), (override));
 };
 
 class MIDIDeviceMock : public MIDIDevice
 {
+  public:
 	MOCK_METHOD(void, RegisterCallback, (std::function<void(std::vector<unsigned char>)>), (override));
 	MOCK_METHOD(void, SendMessage, (std::vector<unsigned char>), (override));
 };
 
 class MackieCompositeMock : public MackieComposite
 {
+  public:
 	MOCK_METHOD(void, AddMackieDevice, (std::unique_ptr<MackieDevice>), (override));
 	MOCK_METHOD(void, SetText, (int, std::string), (override));
 };
@@ -121,17 +135,22 @@ TEST_F(MackieServiceImplTest, CreatesCompositeCorrectly)
 	std::vector<int> input = {5};
 
 	std::unique_ptr<MIDIDevice> midiDevice = std::make_unique<MIDIDeviceMock>();
+	MIDIDevice* midiDeviceRef = midiDevice.get();
 
-	std::unique_ptr<MackieDevice> mackieDeviceRef = std::make_unique<MackieDeviceMock>();
-	std::vector<std::unique_ptr<MackieDevice>> mackieDevicePtrs = {};
-	mackieDevicePtrs.push_back(std::move(mackieDeviceRef));
+	std::unique_ptr<MackieDevice> mackieDevice = std::make_unique<MackieDeviceMock>();
+
+	std::vector<MackieDevice*> mackieDevicePtrs;
+	mackieDevicePtrs.push_back(mackieDevice.get());
+
+	std::vector<std::unique_ptr<MackieDevice>> mackieDevices = {};
+	mackieDevices.push_back(std::move(mackieDevice));
 
 	std::unique_ptr<MackieComposite> mackieComposite = std::make_unique<MackieCompositeMock>();
 	MackieComposite* mackieCompositeRef = mackieComposite.get();
 
 	EXPECT_CALL(*midiService, GetMIDIDevice(input[0])).Times(1).WillOnce(Return(ByMove(std::move(midiDevice))));
-	EXPECT_CALL(*mackieDeviceFactory, Create(_)).Times(1).WillOnce(Return(ByMove(std::move(mackieDevicePtrs[0]))));
-	EXPECT_CALL(*mackieCompositeFactory, Create(_)).Times(1).WillOnce(Return(ByMove(std::move(mackieComposite))));
+	EXPECT_CALL(*mackieDeviceFactory, CreateProxy(midiDeviceRef)).Times(1).WillOnce(Return(ByMove(std::move(mackieDevices[0]))));
+	EXPECT_CALL(*mackieCompositeFactory, CreateProxy(mackieDevicePtrs)).Times(1).WillOnce(Return(ByMove(std::move(mackieComposite))));
 
 	auto actual = instance->GetMackieComposite(input);
 
