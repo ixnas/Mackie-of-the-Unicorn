@@ -13,7 +13,7 @@ class MackieCompositeFactory
 {
   public:
 	virtual ~MackieCompositeFactory() = default;
-	virtual std::unique_ptr<MackieComposite> Create() = 0;
+	virtual std::unique_ptr<MackieComposite> Create(std::vector<std::unique_ptr<MackieDevice>>) = 0;
 };
 
 #endif // MACKIE_OF_THE_UNICORN_MACKIECOMPOSITEFACTORY_H

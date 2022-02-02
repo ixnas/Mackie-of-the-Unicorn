@@ -9,6 +9,7 @@
 
 class MackieDevice
 {
+  public:
 	virtual ~MackieDevice() = default;
 	virtual void SetText(int position, std::string text) = 0;
 };

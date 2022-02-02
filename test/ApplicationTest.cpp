@@ -2,17 +2,17 @@
 // Created by Sjoerd Scheffer on 01/02/2022.
 //
 
-#include "gtest/gtest.h"
-#include "gmock/gmock.h"
 #include "../src/Application.h"
-#include "../src/MackieService.h"
 #include "../src/MackieComposite.h"
+#include "../src/MackieService.h"
+#include "gmock/gmock.h"
+#include "gtest/gtest.h"
 
 typedef std::map<int, std::string> GetDevicesRet;
 typedef std::vector<int> GetMackieCompositeArg;
 typedef std::unique_ptr<MackieComposite> GetMackieCompositeRet;
 
-class MockMackieService : public MackieService
+class MackieServiceMock : public MackieService
 {
   public:
 	MOCK_METHOD(GetDevicesRet, GetDevices, (), (override));
@@ -24,47 +24,22 @@ class ApplicationTest : public ::testing::Test
   protected:
 	void SetUp() override
 	{
-		mockMackieService = std::make_unique<MockMackieService>();
-		instance = std::make_unique<Application>(*mockMackieService);
+		mackieServiceMock = std::make_unique<MackieServiceMock>();
+		instance = std::make_unique<Application>(*mackieServiceMock);
 	}
 
-	std::unique_ptr<MockMackieService> mockMackieService;
+	std::unique_ptr<MackieServiceMock> mackieServiceMock;
 	std::unique_ptr<Application> instance;
 };
 
-TEST_F(ApplicationTest, GetAvailableDevicesReturnsProperList) {
+TEST_F(ApplicationTest, GetAvailableDevicesReturnsProperList)
+{
 	using ::testing::Return;
-	GetDevicesRet input = {
-	    {
-	        0,
-	        "test1"
-	    },
-	    {
-	        1,
-	        "test2"
-	    }
-	};
-	auto expected = "Available devices:\n0: test1\n1: test2\n";
+	GetDevicesRet expected = {{0, "test1"}, {1, "test2"}};
 
-	EXPECT_CALL(*mockMackieService, GetDevices())
-	    .Times(1)
-	    .WillOnce(Return(input));
+	EXPECT_CALL(*mackieServiceMock, GetDevices()).Times(1).WillOnce(Return(expected));
 
 	auto actual = instance->GetAvailableDevices();
 
-	EXPECT_STREQ(expected, actual.c_str());
-}
-
-TEST_F(ApplicationTest, GetAvailableDevicesReturnsEmpty) {
-	using ::testing::Return;
-	GetDevicesRet input = {};
-	auto expected = "No available devices.\n";
-
-	EXPECT_CALL(*mockMackieService, GetDevices())
-		.Times(1)
-		.WillOnce(Return(input));
-
-	auto actual = instance->GetAvailableDevices();
-
-	EXPECT_STREQ(expected, actual.c_str());
+	EXPECT_EQ(expected, actual);
 }
