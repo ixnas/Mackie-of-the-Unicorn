@@ -19,8 +19,9 @@ class MackieServiceImpl : public MackieService
   public:
 	MackieServiceImpl(::MackieCompositeFactory& mackieCompositeFactory, ::MackieDeviceFactory& mackieDeviceFactory,
 	                  ::MIDIService& midiService);
-	std::map<int, std::string> GetDevices();
-	std::unique_ptr<MackieComposite> GetMackieComposite(std::vector<int> deviceIds);
+	std::map<int, std::string> GetInputDevices();
+	std::map<int, std::string> GetOutputDevices();
+	std::unique_ptr<MackieComposite> GetMackieComposite(const std::vector<std::pair<int, int>>& inAndOutputIds);
 };
 
 #endif // MACKIE_OF_THE_UNICORN_MACKIESERVICEIMPL_H

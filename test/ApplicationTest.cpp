@@ -11,8 +11,9 @@
 class MackieServiceMock : public MackieService
 {
   public:
-	MOCK_METHOD((std::map<int, std::string>), GetDevices, (), (override));
-	MOCK_METHOD(std::unique_ptr<MackieComposite>, GetMackieComposite, (std::vector<int>), (override));
+	MOCK_METHOD((std::map<int, std::string>), GetInputDevices, (), (override));
+	MOCK_METHOD((std::map<int, std::string>), GetOutputDevices, (), (override));
+	MOCK_METHOD(std::unique_ptr<MackieComposite>, GetMackieComposite, ((const std::vector<std::pair<int, int>>&)), (override));
 };
 
 class ApplicationTest : public ::testing::Test
@@ -28,14 +29,26 @@ class ApplicationTest : public ::testing::Test
 	std::unique_ptr<Application> instance;
 };
 
-TEST_F(ApplicationTest, GetAvailableDevicesReturnsProperList)
+TEST_F(ApplicationTest, GetAvailableInputDevicesReturnsProperList)
 {
 	using ::testing::Return;
 	std::map<int, std::string> expected = {{0, "test1"}, {1, "test2"}};
 
-	EXPECT_CALL(*mackieServiceMock, GetDevices()).Times(1).WillOnce(Return(expected));
+	EXPECT_CALL(*mackieServiceMock, GetInputDevices()).Times(1).WillOnce(Return(expected));
 
-	auto actual = instance->GetAvailableDevices();
+	auto actual = instance->GetAvailableInputDevices();
+
+	EXPECT_EQ(expected, actual);
+}
+
+TEST_F(ApplicationTest, GetAvailableOutputDevicesReturnsProperList)
+{
+	using ::testing::Return;
+	std::map<int, std::string> expected = {{0, "test1"}, {1, "test2"}};
+
+	EXPECT_CALL(*mackieServiceMock, GetOutputDevices()).Times(1).WillOnce(Return(expected));
+
+	auto actual = instance->GetAvailableOutputDevices();
 
 	EXPECT_EQ(expected, actual);
 }

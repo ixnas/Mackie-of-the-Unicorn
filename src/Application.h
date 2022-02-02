@@ -15,7 +15,8 @@ class Application
 	MackieService* MackieService;
   public:
 	explicit Application(::MackieService& mackieService);
-	std::map<int, std::string> GetAvailableDevices() const;
+	std::map<int, std::string> GetAvailableInputDevices() const;
+	std::map<int, std::string> GetAvailableOutputDevices() const;
 };
 
 #endif // MACKIE_OF_THE_UNICORN_APPLICATION_H

@@ -18,17 +18,22 @@ MackieServiceImpl::MackieServiceImpl(::MackieCompositeFactory& mackieCompositeFa
 {
 }
 
-std::map<int, std::string> MackieServiceImpl::GetDevices()
+std::map<int, std::string> MackieServiceImpl::GetInputDevices()
 {
-	return MIDIService->GetDevices();
+	return MIDIService->GetInputDevices();
 }
 
-std::unique_ptr<MackieComposite> MackieServiceImpl::GetMackieComposite(std::vector<int> deviceIds)
+std::map<int, std::string> MackieServiceImpl::GetOutputDevices()
+{
+	return MIDIService->GetOutputDevices();
+}
+
+std::unique_ptr<MackieComposite> MackieServiceImpl::GetMackieComposite(const std::vector<std::pair<int, int>>& inAndOutputIds)
 {
 	auto mackieDevices = std::vector<std::unique_ptr<MackieDevice>>();
-	for (const auto& deviceId : deviceIds)
+	for (const auto& deviceId : inAndOutputIds)
 	{
-		auto midiDevice = MIDIService->GetMIDIDevice(deviceId);
+		auto midiDevice = MIDIService->GetMIDIDevice(deviceId.first, deviceId.second);
 		auto mackieDevice = MackieDeviceFactory->Create(std::move(midiDevice));
 		mackieDevices.push_back(std::move(mackieDevice));
 	}

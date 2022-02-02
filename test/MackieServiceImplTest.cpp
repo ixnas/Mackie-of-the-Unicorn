@@ -15,8 +15,9 @@
 class MIDIServiceMock : public MIDIService
 {
   public:
-	MOCK_METHOD((std::map<int, std::string>), GetDevices, (), (override));
-	MOCK_METHOD(std::unique_ptr<MIDIDevice>, GetMIDIDevice, (int), ());
+	MOCK_METHOD((std::map<int, std::string>), GetInputDevices, (), (override));
+	MOCK_METHOD((std::map<int, std::string>), GetOutputDevices, (), (override));
+	MOCK_METHOD(std::unique_ptr<MIDIDevice>, GetMIDIDevice, (int, int), ());
 };
 
 class MackieDeviceFactoryMock : public MackieDeviceFactory
@@ -83,13 +84,17 @@ class MackieServiceImplTest : public ::testing::Test
 TEST_F(MackieServiceImplTest, GetsDevicesListFromMIDIService)
 {
 	using ::testing::Return;
-	std::map<int, std::string> expected = {{0, "test1"}, {1, "test2"}};
+	std::map<int, std::string> expectedInput = {{0, "test1"}, {1, "test2"}};
+	std::map<int, std::string> expectedOutput = {{0, "test3"}, {1, "test4"}};
 
-	EXPECT_CALL(*midiService, GetDevices()).Times(1).WillOnce(Return(expected));
+	EXPECT_CALL(*midiService, GetInputDevices()).Times(1).WillOnce(Return(expectedInput));
+	EXPECT_CALL(*midiService, GetOutputDevices()).Times(1).WillOnce(Return(expectedOutput));
 
-	auto actual = instance->GetDevices();
+	auto actualInput = instance->GetInputDevices();
+	auto actualOutput = instance->GetOutputDevices();
 
-	EXPECT_EQ(expected, actual);
+	EXPECT_EQ(expectedInput, actualInput);
+	EXPECT_EQ(expectedOutput, actualOutput);
 }
 
 TEST_F(MackieServiceImplTest, GetsMIDIDevicesFromMIDIService)
@@ -97,11 +102,11 @@ TEST_F(MackieServiceImplTest, GetsMIDIDevicesFromMIDIService)
 	using ::testing::_;
 	using ::testing::ByMove;
 	using ::testing::Return;
-	std::vector<int> input = {5};
+	std::vector<std::pair<int, int>> input = { {5, 6} };
 
 	std::unique_ptr<MIDIDevice> midiDevice = std::make_unique<MIDIDeviceMock>();
 
-	EXPECT_CALL(*midiService, GetMIDIDevice(input[0])).Times(1).WillOnce(Return(ByMove(std::move(midiDevice))));
+	EXPECT_CALL(*midiService, GetMIDIDevice(input[0].first, input[0].second)).Times(1).WillOnce(Return(ByMove(std::move(midiDevice))));
 
 	instance->GetMackieComposite(input);
 }
@@ -111,13 +116,13 @@ TEST_F(MackieServiceImplTest, GetsMultipleMIDIDevicesFromMIDIService)
 	using ::testing::_;
 	using ::testing::ByMove;
 	using ::testing::Return;
-	std::vector<int> input = {5, 6};
+	std::vector<std::pair<int, int>> input = { {5, 6}, {8, 9}};
 
 	auto midiDevice1 = std::make_unique<MIDIDeviceMock>();
 	auto midiDevice2 = std::make_unique<MIDIDeviceMock>();
 
-	EXPECT_CALL(*midiService, GetMIDIDevice(input[1])).Times(1).WillOnce(Return(ByMove(std::move(midiDevice1))));
-	EXPECT_CALL(*midiService, GetMIDIDevice(input[0])).Times(1).WillOnce(Return(ByMove(std::move(midiDevice2))));
+	EXPECT_CALL(*midiService, GetMIDIDevice(input[0].first, input[0].second)).Times(1).WillOnce(Return(ByMove(std::move(midiDevice1))));
+	EXPECT_CALL(*midiService, GetMIDIDevice(input[1].first, input[1].second)).Times(1).WillOnce(Return(ByMove(std::move(midiDevice2))));
 
 	instance->GetMackieComposite(input);
 }
@@ -127,7 +132,7 @@ TEST_F(MackieServiceImplTest, CreatesCompositeCorrectly)
 	using ::testing::_;
 	using ::testing::ByMove;
 	using ::testing::Return;
-	std::vector<int> input = {5, 6};
+	std::vector<std::pair<int, int>> input = { {5, 6}, {8, 9} };
 
 	auto midiDevice1 = std::make_unique<MIDIDeviceMock>();
 	MIDIDevice* midiDevice1Ref = midiDevice1.get();
@@ -149,8 +154,8 @@ TEST_F(MackieServiceImplTest, CreatesCompositeCorrectly)
 	auto mackieComposite = std::make_unique<MackieCompositeMock>();
 	MackieComposite* mackieCompositeRef = mackieComposite.get();
 
-	EXPECT_CALL(*midiService, GetMIDIDevice(input[0])).Times(1).WillOnce(Return(ByMove(std::move(midiDevice1))));
-	EXPECT_CALL(*midiService, GetMIDIDevice(input[1])).Times(1).WillOnce(Return(ByMove(std::move(midiDevice2))));
+	EXPECT_CALL(*midiService, GetMIDIDevice(input[0].first, input[0].second)).Times(1).WillOnce(Return(ByMove(std::move(midiDevice1))));
+	EXPECT_CALL(*midiService, GetMIDIDevice(input[1].first, input[1].second)).Times(1).WillOnce(Return(ByMove(std::move(midiDevice2))));
 	EXPECT_CALL(*mackieDeviceFactory, CreateProxy(midiDevice1Ref))
 	    .Times(1)
 	    .WillOnce(Return(ByMove(std::move(mackieDevices[0]))));

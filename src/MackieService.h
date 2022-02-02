@@ -14,8 +14,9 @@ class MackieService
 {
   public:
 	virtual ~MackieService() = default;
-	virtual std::map<int, std::string> GetDevices() = 0;
-	virtual std::unique_ptr<MackieComposite> GetMackieComposite(std::vector<int> deviceIds) = 0;
+	virtual std::map<int, std::string> GetInputDevices() = 0;
+	virtual std::map<int, std::string> GetOutputDevices() = 0;
+	virtual std::unique_ptr<MackieComposite> GetMackieComposite(const std::vector<std::pair<int, int>>& inAndOutIds) = 0;
 };
 
 #endif // MACKIE_OF_THE_UNICORN_MACKIESERVICE_H

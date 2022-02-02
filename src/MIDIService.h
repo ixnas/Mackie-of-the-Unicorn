@@ -14,8 +14,9 @@ class MIDIService
 {
   public:
 	virtual ~MIDIService() = default;
-	virtual std::map<int, std::string> GetDevices() = 0;
-	virtual std::unique_ptr<MIDIDevice> GetMIDIDevice(int id) = 0;
+	virtual std::map<int, std::string> GetInputDevices() = 0;
+	virtual std::map<int, std::string> GetOutputDevices() = 0;
+	virtual std::unique_ptr<MIDIDevice> GetMIDIDevice(int inputId, int outputId) = 0;
 };
 
 #endif // MACKIE_OF_THE_UNICORN_MIDISERVICE_H

@@ -9,7 +9,12 @@ Application::Application(::MackieService& mackieService) : MackieService(&mackie
 {
 }
 
-std::map<int, std::string> Application::GetAvailableDevices() const
+std::map<int, std::string> Application::GetAvailableInputDevices() const
 {
-	return MackieService->GetDevices();
+	return MackieService->GetInputDevices();
+}
+
+std::map<int, std::string> Application::GetAvailableOutputDevices() const
+{
+	return MackieService->GetOutputDevices();
 }
