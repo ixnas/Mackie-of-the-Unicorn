@@ -4,8 +4,6 @@
 
 #include "Application.h"
 #include "MackieService.h"
-#include <iostream>
-#include <sstream>
 
 Application::Application(::MackieService& mackieService) : MackieService(&mackieService)
 {
