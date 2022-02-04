@@ -24,7 +24,7 @@ add_subdirectory(googletest)
 file(GLOB_RECURSE sources src/*.cpp src/*.h)
 file(GLOB_RECURSE test_sources src/*.cpp src/*.h)
 list(FILTER test_sources EXCLUDE REGEX ".*main\\.cpp$")
-file(GLOB_RECURSE tests test/*.cpp)
+file(GLOB_RECURSE tests test/*.cpp test/*.h)
 
 add_executable(Mackie_of_the_Unicorn ${sources})
 

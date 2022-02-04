@@ -9,11 +9,21 @@ RtMidiOut midiOut;
 void mycallback(double deltatime, std::vector<unsigned char>* message, void* userData)
 {
 	unsigned int nBytes = message->size();
+	std::vector<unsigned char> outMessage = {};
 	for (unsigned int i = 0; i < nBytes; i++)
 		std::cout << "Byte " << i << " = " << (int)message->at(i) << ", ";
 	if (nBytes > 0)
 	{
 		std::cout << "stamp = " << deltatime << std::endl;
+		if ((*message)[0] == 144)
+		{
+			outMessage = {144, (*message)[1] };
+			auto lastByte = (*message)[2] == 127 ? 0 : 127;
+			outMessage.push_back(lastByte);
+			midiOut.sendMessage(&outMessage);
+			outMessage = {0xD0, 0x0B};
+			midiOut.sendMessage(&outMessage);
+		}
 	}
 }
 
@@ -88,13 +98,22 @@ int main()
 	midiOut.sendMessage(&message);
 
 	// Set faders to -inf
-	for(int i = 224; i < 233; i++)
+	for(unsigned char i = 224; i < 233; i++)
 	{
-		message.push_back(i);
-		message.push_back(0);
-		message.push_back(0);
+		message = { i, 0, 0 };
 		midiOut.sendMessage(&message);
 	}
+
+	for(unsigned char i = 0; i < 113; i++)
+	{
+		message = {144, i, 127};
+		midiOut.sendMessage(&message);
+	}
+
+	message = {0xF0, 0x00, 0x00, 0x66, 0x14, 0x20, 0x01, 0b00000100, 0xF7};
+	midiOut.sendMessage(&message);
+	message = {0xF0, 0x00, 0x00, 0x66, 0x14, 0x21, 0x01, 0xF7};
+	midiOut.sendMessage(&message);
 
 	getchar();
 }
