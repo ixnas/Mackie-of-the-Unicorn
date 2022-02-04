@@ -7,11 +7,14 @@
 
 #include <string>
 
-class MackieDevice
+namespace MackieOfTheUnicorn::Mackie
 {
-  public:
-	virtual ~MackieDevice() = default;
-	virtual void SetText(int position, std::string text) = 0;
-};
+	class MackieDevice
+	{
+	  public:
+		virtual ~MackieDevice() = default;
+		virtual void SetText(int position, std::string text) = 0;
+	};
+}
 
 #endif // MACKIE_OF_THE_UNICORN_MACKIEDEVICE_H

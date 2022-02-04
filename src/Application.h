@@ -5,18 +5,25 @@
 #ifndef MACKIE_OF_THE_UNICORN_APPLICATION_H
 #define MACKIE_OF_THE_UNICORN_APPLICATION_H
 
-#include <memory>
 #include <map>
+#include <memory>
 
-class MackieService;
-
-class Application
+namespace MackieOfTheUnicorn::Mackie
 {
-	MackieService* MackieService;
-  public:
-	explicit Application(::MackieService& mackieService);
-	std::map<int, std::string> GetAvailableInputDevices() const;
-	std::map<int, std::string> GetAvailableOutputDevices() const;
-};
+	class MackieService;
+}
+
+namespace MackieOfTheUnicorn
+{
+	class Application
+	{
+		Mackie::MackieService* MackieService;
+
+	  public:
+		explicit Application(Mackie::MackieService& mackieService);
+		std::__1::map<int, std::string> GetAvailableInputDevices() const;
+		std::__1::map<int, std::string> GetAvailableOutputDevices() const;
+	};
+} // namespace MackieOfTheUnicorn
 
 #endif // MACKIE_OF_THE_UNICORN_APPLICATION_H

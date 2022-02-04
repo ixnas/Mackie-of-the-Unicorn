@@ -3,18 +3,21 @@
 //
 
 #include "Application.h"
-#include "MackieService.h"
+#include "Mackie/MackieService.h"
 
-Application::Application(::MackieService& mackieService) : MackieService(&mackieService)
+namespace MackieOfTheUnicorn
 {
-}
+	Application::Application(Mackie::MackieService& mackieService) : MackieService(&mackieService)
+	{
+	}
 
-std::map<int, std::string> Application::GetAvailableInputDevices() const
-{
-	return MackieService->GetInputDevices();
-}
+	std::map<int, std::string> Application::GetAvailableInputDevices() const
+	{
+		return MackieService->GetInputDevices();
+	}
 
-std::map<int, std::string> Application::GetAvailableOutputDevices() const
-{
-	return MackieService->GetOutputDevices();
+	std::map<int, std::string> Application::GetAvailableOutputDevices() const
+	{
+		return MackieService->GetOutputDevices();
+	}
 }
