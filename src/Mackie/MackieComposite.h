@@ -15,7 +15,6 @@ namespace MackieOfTheUnicorn::Mackie
 	{
 	  public:
 		virtual ~MackieComposite() = default;
-		virtual void AddMackieDevice(std::unique_ptr<MackieDevice> mackieDevice) = 0;
 		virtual void SetText(int position, std::string text) = 0;
 	};
 }

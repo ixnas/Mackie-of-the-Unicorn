@@ -18,11 +18,6 @@ namespace MackieOfTheUnicorn::Mackie
 		int Position = 0;
 		std::string Text;
 
-		void AddMackieDevice(std::unique_ptr<MackieDevice> device) override
-		{
-			Devices.push_back(std::move(device));
-		}
-
 		void SetText(int position, std::string text) override
 		{
 			this->Position = position;

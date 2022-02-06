@@ -13,12 +13,9 @@ namespace MackieOfTheUnicorn::Mackie::Factories
 	class MackieCompositeFactoryFake : public MackieCompositeFactory
 	{
 	  public:
-		std::unique_ptr<MackieComposite> Create(std::vector<std::unique_ptr<MackieDevice>> devices) override
+		std::unique_ptr<MackieComposite> Create(const std::vector<std::pair<int, int>>& devices) override
 		{
-			auto instance = std::make_unique<MackieCompositeFake>();
-			for (auto& device : devices)
-				instance->AddMackieDevice(std::move(device));
-			return instance;
+			return std::make_unique<MackieCompositeFake>();
 		}
 	};
 }

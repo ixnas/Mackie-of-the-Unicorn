@@ -18,7 +18,7 @@ namespace MackieOfTheUnicorn::Mackie::Factories
 	{
 	  public:
 		virtual ~MackieCompositeFactory() = default;
-		virtual std::unique_ptr<MackieComposite> Create(std::vector<std::unique_ptr<MackieDevice>> devices) = 0;
+		virtual std::unique_ptr<MackieComposite> Create(const std::vector<std::pair<int, int>>& inputAndOutputIds) = 0;
 	};
 } // namespace MackieOfTheUnicorn::Mackie::Factories
 
