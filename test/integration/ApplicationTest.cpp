@@ -1,9 +1,10 @@
 //
 // Created by Sjoerd Scheffer on 06/02/2022.
 //
-#include "../../src/Application.h"
-#include "../fakes/Mackie/MackieServiceFake.h"
+
 #include "gtest/gtest.h"
+#include "../fakes/Mackie/MackieServiceFake.h"
+#include "../../src/Application.h"
 
 namespace MackieOfTheUnicorn::Tests::Integration
 {
@@ -20,13 +21,19 @@ namespace MackieOfTheUnicorn::Tests::Integration
 		std::unique_ptr<MackieOfTheUnicorn::Application> instance;
 	};
 
-	TEST_F(ApplicationTest, GetAvailableInputDevicesReturnsList)
+	TEST_F(ApplicationTest, GetAvailableInputDevicesReturnsProperList)
 	{
+		auto expected = mackieService->GetInputDevices();
 		auto actual = instance->GetAvailableInputDevices();
+
+		EXPECT_EQ(expected, actual);
 	}
 
-	TEST_F(ApplicationTest, GetAvailableOutputDevicesReturnsList)
+	TEST_F(ApplicationTest, GetAvailableOutputDevicesReturnsProperList)
 	{
+		auto expected = mackieService->GetOutputDevices();
 		auto actual = instance->GetAvailableOutputDevices();
+
+		EXPECT_EQ(expected, actual);
 	}
-} // namespace MackieOfTheUnicorn::Tests::Integration
+}

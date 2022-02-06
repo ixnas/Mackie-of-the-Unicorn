@@ -24,7 +24,9 @@ add_subdirectory(googletest)
 file(GLOB_RECURSE sources src/*.cpp src/*.h)
 file(GLOB_RECURSE test_sources src/*.cpp src/*.h)
 list(FILTER test_sources EXCLUDE REGEX ".*main\\.cpp$")
-file(GLOB_RECURSE tests test/*.cpp test/*.h)
+
+file(GLOB_RECURSE unit_tests test/unit/*.cpp test/unit/*.h test/fakes/*.h)
+file(GLOB_RECURSE integration_tests test/integration/*.cpp test/integration/*.h test/fakes/*.h)
 
 add_executable(Mackie_of_the_Unicorn ${sources})
 
@@ -35,8 +37,8 @@ target_include_directories(Mackie_of_the_Unicorn PUBLIC rapidjson/include rtmidi
 target_link_libraries(Mackie_of_the_Unicorn ${CMAKE_BINARY_DIR}/rtmidi/librtmidi.a ${CURL_LIBRARIES} "-framework CoreFoundation -framework CoreMIDI -framework CoreAudio")
 
 enable_testing()
-add_executable(Mackie_of_the_Unicorn_Tests ${test_sources} ${tests})
-target_link_libraries(Mackie_of_the_Unicorn_Tests gtest_main gmock)
+add_executable(Unit_Tests ${test_sources} ${unit_tests})
+target_link_libraries(Unit_Tests gtest_main gmock)
 
-include(GoogleTest)
-gtest_discover_tests(Mackie_of_the_Unicorn_Tests)
+add_executable(Integration_Tests ${test_sources} ${integration_tests})
+target_link_libraries(Integration_Tests gtest_main gmock)

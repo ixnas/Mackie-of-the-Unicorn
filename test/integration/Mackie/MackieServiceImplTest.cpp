@@ -1,18 +1,13 @@
 //
-// Created by Sjoerd Scheffer on 02/02/2022.
+// Created by Sjoerd Scheffer on 06/02/2022.
 //
-
 #include "../../../src/Mackie/MackieServiceImpl.h"
-#include "../../../src/MIDI/MIDIDevice.h"
-#include "../../../src/MIDI/MIDIService.h"
-#include "../../../src/Mackie/Factories/MackieCompositeFactory.h"
-#include "../../../src/Mackie/MackieComposite.h"
 #include "../../../src/Mackie/MackieDevice.h"
 #include "../../fakes/MIDI/MIDIServiceFake.h"
 #include "../../fakes/Mackie/Factories/MackieCompositeFactoryFake.h"
 #include "gtest/gtest.h"
 
-namespace MackieOfTheUnicorn::Tests::Unit::Mackie
+namespace MackieOfTheUnicorn::Tests::Integration::Mackie
 {
 	using namespace MackieOfTheUnicorn::Mackie;
 
@@ -31,19 +26,30 @@ namespace MackieOfTheUnicorn::Tests::Unit::Mackie
 		std::unique_ptr<MIDI::MIDIServiceFake> midiService;
 	};
 
-	TEST_F(MackieServiceImplTest, ReturnsDevicesList)
+	TEST_F(MackieServiceImplTest, ReturnsDevicesListFromMIDIService)
 	{
+		midiService->InputDevices = {{0, "in0"}, {1, "in1"}};
+		midiService->OutputDevices = {{0, "out0"}, {1, "out1"}};
+
+		auto expectedInputs = midiService->GetInputDevices();
+		auto expectedOutputs = midiService->GetOutputDevices();
+
 		auto actualInputs = instance->GetInputDevices();
 		auto actualOutputs = instance->GetOutputDevices();
+
+		EXPECT_EQ(expectedInputs, actualInputs);
+		EXPECT_EQ(expectedOutputs, actualOutputs);
 	}
 
-	TEST_F(MackieServiceImplTest, ReturnsComposite)
+	TEST_F(MackieServiceImplTest, ReturnsCompositeFromFactory)
 	{
 		std::vector<std::pair<int, int>> input = {{5, 6}};
 
-		auto actual = instance->GetMackieComposite(input);
-		auto actualPtr = (MackieCompositeFake*)actual.get();
+		auto actualInstance = instance->GetMackieComposite(input);
+		auto actualInstancePtr = (MackieCompositeFake*)actualInstance.get();
+		auto actualDevicesArgument = mackieCompositeFactory->DevicesArgument;
 
-		EXPECT_NE(nullptr, actualPtr);
+		EXPECT_NE(nullptr, actualInstancePtr);
+		EXPECT_EQ(actualDevicesArgument, input);
 	}
-} // namespace MackieOfTheUnicorn::Mackie
+} // namespace MackieOfTheUnicorn::Tests::Integration::Mackie

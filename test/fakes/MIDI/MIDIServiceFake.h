@@ -13,14 +13,17 @@ namespace MackieOfTheUnicorn::MIDI
 	class MIDIServiceFake : public MIDIService
 	{
 	  public:
+		std::map<int, std::string> InputDevices;
+		std::map<int, std::string> OutputDevices;
+
 		std::map<int, std::string> GetInputDevices() override
 		{
-			return {{0, "in1"}, {1, "in2"}};
+			return InputDevices;
 		}
 
 		std::map<int, std::string> GetOutputDevices() override
 		{
-			return {{0, "out1"}, {1, "out2"}};
+			return OutputDevices;
 		}
 
 		std::unique_ptr<MIDIDevice> GetMIDIDevice(int inputId, int outputId) override
