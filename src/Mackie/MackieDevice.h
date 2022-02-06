@@ -15,6 +15,6 @@ namespace MackieOfTheUnicorn::Mackie
 		virtual ~MackieDevice() = default;
 		virtual void SetText(int position, std::string text) = 0;
 	};
-}
+} // namespace MackieOfTheUnicorn::Mackie
 
 #endif // MACKIE_OF_THE_UNICORN_MACKIEDEVICE_H

@@ -31,6 +31,6 @@ namespace MackieOfTheUnicorn::Mackie
 			return {};
 		}
 	};
-}
+} // namespace MackieOfTheUnicorn::Mackie
 
 #endif // MACKIE_OF_THE_UNICORN_MACKIESERVICEFAKE_H

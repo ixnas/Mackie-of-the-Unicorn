@@ -18,6 +18,6 @@ namespace MackieOfTheUnicorn::Mackie::Factories
 			return std::make_unique<MackieDeviceFake>();
 		}
 	};
-}
+} // namespace MackieOfTheUnicorn::Mackie::Factories
 
 #endif // MACKIE_OF_THE_UNICORN_MACKIEDEVICEFACTORYFAKE_H

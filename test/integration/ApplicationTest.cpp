@@ -2,9 +2,9 @@
 // Created by Sjoerd Scheffer on 06/02/2022.
 //
 
-#include "gtest/gtest.h"
-#include "../fakes/Mackie/MackieServiceFake.h"
 #include "../../src/Application.h"
+#include "../fakes/Mackie/MackieServiceFake.h"
+#include "gtest/gtest.h"
 
 namespace MackieOfTheUnicorn::Tests::Integration
 {
@@ -36,4 +36,4 @@ namespace MackieOfTheUnicorn::Tests::Integration
 
 		EXPECT_EQ(expected, actual);
 	}
-}
+} // namespace MackieOfTheUnicorn::Tests::Integration

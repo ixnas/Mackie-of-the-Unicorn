@@ -21,6 +21,6 @@ namespace MackieOfTheUnicorn::Mackie
 			this->Text = text;
 		}
 	};
-}
+} // namespace MackieOfTheUnicorn::Mackie
 
 #endif // MACKIE_OF_THE_UNICORN_MACKIEDEVICEFAKE_H

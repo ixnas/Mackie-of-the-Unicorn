@@ -25,6 +25,6 @@ namespace MackieOfTheUnicorn::Mackie::Factories
 		virtual ~MackieDeviceFactory() = default;
 		virtual std::unique_ptr<MackieDevice> Create(std::unique_ptr<MIDI::MIDIDevice> midiDevice) = 0;
 	};
-}
+} // namespace MackieOfTheUnicorn::Mackie::Factories
 
 #endif // MACKIE_OF_THE_UNICORN_MACKIEDEVICEFACTORY_H

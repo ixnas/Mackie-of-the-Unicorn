@@ -6,8 +6,8 @@
 #define MACKIE_OF_THE_UNICORN_MACKIECOMPOSITEFAKE_H
 
 #include "../../../src/Mackie/MackieComposite.h"
-#include <vector>
 #include <string>
+#include <vector>
 
 namespace MackieOfTheUnicorn::Mackie
 {
@@ -24,6 +24,6 @@ namespace MackieOfTheUnicorn::Mackie
 			this->Text = text;
 		}
 	};
-}
+} // namespace MackieOfTheUnicorn::Mackie
 
 #endif // MACKIE_OF_THE_UNICORN_MACKIECOMPOSITEFAKE_H

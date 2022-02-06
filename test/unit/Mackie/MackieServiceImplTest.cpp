@@ -46,4 +46,4 @@ namespace MackieOfTheUnicorn::Tests::Unit::Mackie
 
 		EXPECT_NE(nullptr, actualPtr);
 	}
-} // namespace MackieOfTheUnicorn::Mackie
+} // namespace MackieOfTheUnicorn::Tests::Unit::Mackie

@@ -31,6 +31,6 @@ namespace MackieOfTheUnicorn::MIDI
 			return std::make_unique<MIDIDeviceFake>();
 		}
 	};
-}
+} // namespace MackieOfTheUnicorn::MIDI
 
 #endif // MACKIE_OF_THE_UNICORN_MIDISERVICEFAKE_H

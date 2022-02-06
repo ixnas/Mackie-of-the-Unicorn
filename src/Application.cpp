@@ -20,4 +20,4 @@ namespace MackieOfTheUnicorn
 	{
 		return MackieService->GetOutputDevices();
 	}
-}
+} // namespace MackieOfTheUnicorn

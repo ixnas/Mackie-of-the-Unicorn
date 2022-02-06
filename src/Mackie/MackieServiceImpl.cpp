@@ -5,18 +5,17 @@
 #include "MackieServiceImpl.h"
 #include "../MIDI/MIDIDevice.h"
 #include "../MIDI/MIDIService.h"
-#include "MackieComposite.h"
 #include "Factories/MackieCompositeFactory.h"
-#include "MackieDevice.h"
 #include "Factories/MackieDeviceFactory.h"
+#include "MackieComposite.h"
+#include "MackieDevice.h"
 #include <vector>
 
 namespace MackieOfTheUnicorn::Mackie
 {
 	MackieServiceImpl::MackieServiceImpl(Factories::MackieCompositeFactory& mackieCompositeFactory,
 	                                     MIDI::MIDIService& midiService)
-	    : MackieCompositeFactory(&mackieCompositeFactory),
-	      MIDIService(&midiService)
+	    : MackieCompositeFactory(&mackieCompositeFactory), MIDIService(&midiService)
 	{
 	}
 
@@ -35,4 +34,4 @@ namespace MackieOfTheUnicorn::Mackie
 	{
 		return MackieCompositeFactory->Create(inputAndOutputIds);
 	}
-}
+} // namespace MackieOfTheUnicorn::Mackie

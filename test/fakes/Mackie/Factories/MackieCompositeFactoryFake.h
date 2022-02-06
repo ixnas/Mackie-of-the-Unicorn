@@ -21,6 +21,6 @@ namespace MackieOfTheUnicorn::Mackie::Factories
 			return std::make_unique<MackieCompositeFake>();
 		}
 	};
-}
+} // namespace MackieOfTheUnicorn::Mackie::Factories
 
 #endif // MACKIE_OF_THE_UNICORN_MACKIECOMPOSITEFACTORYFAKE_H

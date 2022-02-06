@@ -25,12 +25,12 @@ namespace MackieOfTheUnicorn::Mackie
 		MIDI::MIDIService* MIDIService;
 
 	  public:
-		MackieServiceImpl(Factories::MackieCompositeFactory& mackieCompositeFactory,
-		                  MIDI::MIDIService& midiService);
+		MackieServiceImpl(Factories::MackieCompositeFactory& mackieCompositeFactory, MIDI::MIDIService& midiService);
 		std::map<int, std::string> GetInputDevices() override;
 		std::map<int, std::string> GetOutputDevices() override;
-		std::unique_ptr<MackieComposite> GetMackieComposite(const std::vector<std::pair<int, int>>& inputAndOutputIds) override;
+		std::unique_ptr<MackieComposite> GetMackieComposite(
+		    const std::vector<std::pair<int, int>>& inputAndOutputIds) override;
 	};
-}
+} // namespace MackieOfTheUnicorn::Mackie
 
 #endif // MACKIE_OF_THE_UNICORN_MACKIESERVICEIMPL_H

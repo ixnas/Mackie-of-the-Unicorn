@@ -16,6 +16,6 @@ namespace MackieOfTheUnicorn::MIDI
 		virtual void RegisterCallback(std::function<void(std::vector<unsigned char>)> callback) = 0;
 		virtual void SendMessage(std::vector<unsigned char> message) = 0;
 	};
-}
+} // namespace MackieOfTheUnicorn::MIDI
 
 #endif // MACKIE_OF_THE_UNICORN_MIDIDEVICE_H

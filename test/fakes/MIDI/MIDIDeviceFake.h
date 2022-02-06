@@ -20,6 +20,6 @@ namespace MackieOfTheUnicorn::MIDI
 		{
 		}
 	};
-}
+} // namespace MackieOfTheUnicorn::MIDI
 
 #endif // MACKIE_OF_THE_UNICORN_MIDIDEVICEFAKE_H

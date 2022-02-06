@@ -21,6 +21,6 @@ namespace MackieOfTheUnicorn::Mackie
 		virtual std::unique_ptr<MackieComposite> GetMackieComposite(
 		    const std::vector<std::pair<int, int>>& inAndOutIds) = 0;
 	};
-}
+} // namespace MackieOfTheUnicorn::Mackie
 
 #endif // MACKIE_OF_THE_UNICORN_MACKIESERVICE_H

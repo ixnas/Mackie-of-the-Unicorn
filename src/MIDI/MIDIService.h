@@ -20,6 +20,6 @@ namespace MackieOfTheUnicorn::MIDI
 		virtual std::map<int, std::string> GetOutputDevices() = 0;
 		virtual std::unique_ptr<MIDIDevice> GetMIDIDevice(int inputId, int outputId) = 0;
 	};
-}
+} // namespace MackieOfTheUnicorn::MIDI
 
 #endif // MACKIE_OF_THE_UNICORN_MIDISERVICE_H
