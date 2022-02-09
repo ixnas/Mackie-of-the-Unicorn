@@ -1,10 +1,12 @@
 #include "Application.h"
-#include "RtMidi.h"
 #include "di.h"
 #include <curl/curl.h>
-#include <thread>
+#include <sstream>
+#include "LibraryAbstractions/RtMidi/RtMidiInAbstractionImpl.h"
+#include "LibraryAbstractions/RtMidi/RtMidiOutAbstractionImpl.h"
+#include "git_version.h"
 
-RtMidiOut midiOut;
+MackieOfTheUnicorn::LibraryAbstractions::RtMidi::RtMidiOutAbstractionImpl midiOut;
 
 void mycallback(double deltatime, std::vector<unsigned char>* message, void* userData)
 {
@@ -20,9 +22,9 @@ void mycallback(double deltatime, std::vector<unsigned char>* message, void* use
 			outMessage = {144, (*message)[1]};
 			auto lastByte = (*message)[2] == 127 ? 0 : 127;
 			outMessage.push_back(lastByte);
-			midiOut.sendMessage(&outMessage);
+			midiOut.SendMessage(&outMessage);
 			outMessage = {0xD0, 0x0B};
-			midiOut.sendMessage(&outMessage);
+			midiOut.SendMessage(&outMessage);
 		}
 	}
 }
@@ -34,29 +36,29 @@ int main()
 	auto app = injector.create<Application>();
 	app.Start();
 	 */
-	RtMidiIn midiIn;
+	MackieOfTheUnicorn::LibraryAbstractions::RtMidi::RtMidiInAbstractionImpl midiIn;
 
-	auto midiInCount = midiIn.getPortCount();
-	auto midiOutCount = midiOut.getPortCount();
+	auto midiInCount = midiIn.GetPortCount();
+	auto midiOutCount = midiOut.GetPortCount();
 
 	std::cout << "Inputs: " << midiInCount << std::endl << "Outputs: " << midiOutCount << std::endl << std::endl;
 
 	std::cout << "Input labels:" << std::endl;
 	for (auto i = 0; i < midiInCount; i++)
 	{
-		std::cout << i << ": " << midiIn.getPortName(i) << std::endl;
+		std::cout << i << ": " << midiIn.GetPortName(i) << std::endl;
 	}
 
 	std::cout << "Output labels:" << std::endl;
 	for (auto i = 0; i < midiOutCount; i++)
 	{
-		std::cout << i << ": " << midiOut.getPortName(i) << std::endl;
+		std::cout << i << ": " << midiOut.GetPortName(i) << std::endl;
 	}
 
-	midiIn.openPort(0);
-	midiIn.setCallback(&mycallback);
-	midiIn.ignoreTypes(false, false, false);
-	midiOut.openPort(0);
+	midiIn.OpenPort(0);
+	midiIn.SetCallback(&mycallback);
+	midiIn.IgnoreTypes(false, false, false);
+	midiOut.OpenPort(0);
 
 	// Clear LCD row 1
 	std::vector<unsigned char> message = {0xF0, 0x00, 0x00, 0x66, 0x14, 0x12, 0};
@@ -65,7 +67,7 @@ int main()
 		message.push_back(' ');
 	}
 	message.push_back(0xF7);
-	midiOut.sendMessage(&message);
+	midiOut.SendMessage(&message);
 
 	// Clear LCD row 2
 	message = {0xF0, 0x00, 0x00, 0x66, 0x14, 0x12, 0x38};
@@ -74,17 +76,19 @@ int main()
 		message.push_back(' ');
 	}
 	message.push_back(0xF7);
-	midiOut.sendMessage(&message);
+	midiOut.SendMessage(&message);
 
 	// Set LCD message row 1
-	std::string textMessage1 = "Mackie of the Unicorn";
+	std::ostringstream ss;
+	ss << "Mackie of the Unicorn " << GIT_VERSION;
+	std::string textMessage1 = ss.str();
 	message = {0xF0, 0x00, 0x00, 0x66, 0x14, 0x12, 0};
 	for (int i = 0; i < textMessage1.size(); i++)
 	{
 		message.push_back(textMessage1[i]);
 	}
 	message.push_back(0xF7);
-	midiOut.sendMessage(&message);
+	midiOut.SendMessage(&message);
 
 	// Set LCD message row 2
 	std::string textMessage2 = "Copyright 2022 Sjoerd Scheffer";
@@ -94,25 +98,25 @@ int main()
 		message.push_back(textMessage2[i]);
 	}
 	message.push_back(0xF7);
-	midiOut.sendMessage(&message);
+	midiOut.SendMessage(&message);
 
 	// Set faders to -inf
 	for (unsigned char i = 224; i < 233; i++)
 	{
 		message = {i, 0, 0};
-		midiOut.sendMessage(&message);
+		midiOut.SendMessage(&message);
 	}
 
 	for (unsigned char i = 0; i < 113; i++)
 	{
 		message = {144, i, 127};
-		midiOut.sendMessage(&message);
+		midiOut.SendMessage(&message);
 	}
 
 	message = {0xF0, 0x00, 0x00, 0x66, 0x14, 0x20, 0x01, 0b00000100, 0xF7};
-	midiOut.sendMessage(&message);
+	midiOut.SendMessage(&message);
 	message = {0xF0, 0x00, 0x00, 0x66, 0x14, 0x21, 0x01, 0xF7};
-	midiOut.sendMessage(&message);
+	midiOut.SendMessage(&message);
 
 	getchar();
 }

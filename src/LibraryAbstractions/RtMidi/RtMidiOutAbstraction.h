@@ -5,8 +5,8 @@
 #ifndef MACKIE_OF_THE_UNICORN_RTMIDIOUTABSTRACTION_H
 #define MACKIE_OF_THE_UNICORN_RTMIDIOUTABSTRACTION_H
 
-#include <string>
 #include <functional>
+#include <string>
 
 namespace MackieOfTheUnicorn::LibraryAbstractions::RtMidi
 {
@@ -17,17 +17,17 @@ namespace MackieOfTheUnicorn::LibraryAbstractions::RtMidi
 		virtual ~RtMidiOutAbstraction() = default;
 
 		/// Returns the number of available MIDI output ports.
-		virtual int GetPortCount() = 0;
+		virtual unsigned int GetPortCount() = 0;
 
 		/// Returns the name for a given MIDI output port.
-		virtual std::string GetPortName() = 0;
+		virtual std::string GetPortName(unsigned int portNumber) = 0;
 
 		/// Opens a given MIDI input port.
-		virtual void OpenPort(int port) = 0;
+		virtual void OpenPort(unsigned int port) = 0;
 
 		/// Sends a MIDI message to the MIDI device.
-		virtual void SendMessage(std::vector<unsigned char>* message) = 0;
+		virtual void SendMessage(const std::vector<unsigned char>* message) = 0;
 	};
-}
+} // namespace MackieOfTheUnicorn::LibraryAbstractions::RtMidi
 
 #endif // MACKIE_OF_THE_UNICORN_RTMIDIOUTABSTRACTION_H

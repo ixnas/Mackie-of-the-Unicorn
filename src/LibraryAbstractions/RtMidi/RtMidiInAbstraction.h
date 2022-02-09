@@ -5,8 +5,8 @@
 #ifndef MACKIE_OF_THE_UNICORN_RTMIDIINABSTRACTION_H
 #define MACKIE_OF_THE_UNICORN_RTMIDIINABSTRACTION_H
 
-#include <string>
 #include <functional>
+#include <string>
 
 namespace MackieOfTheUnicorn::LibraryAbstractions::RtMidi
 {
@@ -17,20 +17,20 @@ namespace MackieOfTheUnicorn::LibraryAbstractions::RtMidi
 		virtual ~RtMidiInAbstraction() = default;
 
 		/// Returns the number of available MIDI input ports.
-		virtual int GetPortCount() = 0;
+		virtual unsigned int GetPortCount() = 0;
 
 		/// Returns the name for a given MIDI input port.
-		virtual std::string GetPortName(int port) = 0;
+		virtual std::string GetPortName(unsigned int portNumber) = 0;
 
 		/// Opens a given MIDI input port.
-		virtual void OpenPort(int port) = 0;
+		virtual void OpenPort(unsigned int portNumber) = 0;
 
 		/// Ignore certain MIDI messages.
-		virtual void IgnoreTypes(bool sysex, bool timing, bool activeSensing) = 0;
+		virtual void IgnoreTypes(bool midiSysex, bool midiTime, bool midiSense) = 0;
 
 		/// Sets a callback function for whenever the MIDI device sends a message to the application.
-		virtual void SetCallBack(std::function<void(double, std::vector<unsigned char>*, void*)>) = 0;
+		virtual void SetCallback(void (*callback)(double, std::vector<unsigned char>*, void*)) = 0;
 	};
-}
+} // namespace MackieOfTheUnicorn::LibraryAbstractions::RtMidi
 
 #endif // MACKIE_OF_THE_UNICORN_RTMIDIINABSTRACTION_H

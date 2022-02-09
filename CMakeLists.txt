@@ -50,15 +50,16 @@ add_executable(Mackie_of_the_Unicorn ${sources})
 add_dependencies(Mackie_of_the_Unicorn rtmidi)
 
 target_include_directories(Mackie_of_the_Unicorn PUBLIC rapidjson/include rtmidi ${CURL_INCLUDE_DIR})
-
 target_link_libraries(Mackie_of_the_Unicorn ${CMAKE_BINARY_DIR}/rtmidi/librtmidi.a ${CURL_LIBRARIES} "-framework CoreFoundation -framework CoreMIDI -framework CoreAudio")
 
 enable_testing()
 add_executable(Unit_Tests ${test_sources} ${unit_tests})
-target_link_libraries(Unit_Tests gtest_main gmock)
+target_include_directories(Unit_Tests PUBLIC rapidjson/include rtmidi ${CURL_INCLUDE_DIR} )
+target_link_libraries(Unit_Tests gtest_main gmock ${CMAKE_BINARY_DIR}/rtmidi/librtmidi.a ${CURL_LIBRARIES} "-framework CoreFoundation -framework CoreMIDI -framework CoreAudio")
 
 add_executable(Integration_Tests ${test_sources} ${integration_tests})
-target_link_libraries(Integration_Tests gtest_main gmock)
+target_include_directories(Integration_Tests PUBLIC rapidjson/include rtmidi ${CURL_INCLUDE_DIR})
+target_link_libraries(Integration_Tests gtest_main gmock ${CMAKE_BINARY_DIR}/rtmidi/librtmidi.a ${CURL_LIBRARIES} "-framework CoreFoundation -framework CoreMIDI -framework CoreAudio")
 
 configure_file(${CMAKE_SOURCE_DIR}/src/git_version.h.in ${CMAKE_SOURCE_DIR}/src/git_version.h @ONLY)
 
