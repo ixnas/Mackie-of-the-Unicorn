@@ -14,6 +14,8 @@ namespace MackieOfTheUnicorn::Mackie
 	{
 	  public:
 		virtual ~MackieDevice() = default;
+
+		/// Writes text to the screen starting from a given position.
 		virtual void SetText(int position, std::string text) = 0;
 	};
 } // namespace MackieOfTheUnicorn::Mackie

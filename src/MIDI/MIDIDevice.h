@@ -14,7 +14,11 @@ namespace MackieOfTheUnicorn::MIDI
 	{
 	  public:
 		virtual ~MIDIDevice() = default;
+
+		/// Sets a callback function for whenever the MIDI device sends a message to the application.
 		virtual void RegisterCallback(std::function<void(std::vector<unsigned char>)> callback) = 0;
+
+		/// Sends a MIDI message to the MIDI device.
 		virtual void SendMessage(std::vector<unsigned char> message) = 0;
 	};
 } // namespace MackieOfTheUnicorn::MIDI

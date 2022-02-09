@@ -17,8 +17,14 @@ namespace MackieOfTheUnicorn::MIDI
 	{
 	  public:
 		virtual ~MIDIService() = default;
+
+		/// Returns a list of available MIDI input devices.
 		virtual std::map<int, std::string> GetInputDevices() = 0;
+
+		/// Returns a list of available MIDI input devices.
 		virtual std::map<int, std::string> GetOutputDevices() = 0;
+
+		/// Returns a bi-directional MIDI device for the given input and output port IDs.
 		virtual std::unique_ptr<MIDIDevice> GetMIDIDevice(int inputId, int outputId) = 0;
 	};
 } // namespace MackieOfTheUnicorn::MIDI

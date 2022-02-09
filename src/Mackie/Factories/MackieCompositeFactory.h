@@ -19,6 +19,8 @@ namespace MackieOfTheUnicorn::Mackie::Factories
 	{
 	  public:
 		virtual ~MackieCompositeFactory() = default;
+
+		/// Returns a new Mackie composite device using pairs of MIDI input and output port numbers.
 		virtual std::unique_ptr<MackieComposite> Create(const std::vector<std::pair<int, int>>& inputAndOutputIds) = 0;
 	};
 } // namespace MackieOfTheUnicorn::Mackie::Factories

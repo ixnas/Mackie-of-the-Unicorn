@@ -7,6 +7,15 @@ execute_process(
         OUTPUT_STRIP_TRAILING_WHITESPACE
 )
 
+execute_process(
+        COMMAND git branch --show-current
+        WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR}
+        OUTPUT_VARIABLE GIT_BRANCH
+        OUTPUT_STRIP_TRAILING_WHITESPACE
+)
+
+set(GIT_VERSION ${GIT_BRANCH}-${GIT_HASH})
+
 project(Mackie_of_the_Unicorn)
 
 set(CMAKE_CXX_STANDARD 20)
@@ -51,24 +60,28 @@ target_link_libraries(Unit_Tests gtest_main gmock)
 add_executable(Integration_Tests ${test_sources} ${integration_tests})
 target_link_libraries(Integration_Tests gtest_main gmock)
 
+configure_file(${CMAKE_SOURCE_DIR}/src/git_version.h.in ${CMAKE_SOURCE_DIR}/src/git_version.h @ONLY)
+
 option(BUILD_DOC "Build documentation" ON)
 
-find_package(Doxygen)
-if (DOXYGEN_FOUND)
-    # set input and output files
-    set(DOXYGEN_IN ${CMAKE_CURRENT_SOURCE_DIR}/doc/Doxyfile.in)
-    set(DOXYGEN_OUT ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile)
+if (BUILD_DOC)
+    find_package(Doxygen)
+    if (DOXYGEN_FOUND)
+        # set input and output files
+        set(DOXYGEN_IN ${CMAKE_CURRENT_SOURCE_DIR}/doc/Doxyfile.in)
+        set(DOXYGEN_OUT ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile)
 
-    # request to configure the file
-    configure_file(${DOXYGEN_IN} ${DOXYGEN_OUT} @ONLY)
-    message("Doxygen build started")
+        # request to configure the file
+        configure_file(${DOXYGEN_IN} ${DOXYGEN_OUT} @ONLY)
+        message("Doxygen build started")
 
-    # note the option ALL which allows to build the docs together with the application
-    add_custom_target( doc ALL
-            COMMAND ${DOXYGEN_EXECUTABLE} ${DOXYGEN_OUT}
-            WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
-            COMMENT "Generating API documentation with Doxygen"
-            VERBATIM )
-else (DOXYGEN_FOUND)
-    message("Doxygen need to be installed to generate the doxygen documentation")
-endif (DOXYGEN_FOUND)
+        # note the option ALL which allows to build the docs together with the application
+        add_custom_target( doc ALL
+                COMMAND ${DOXYGEN_EXECUTABLE} ${DOXYGEN_OUT}
+                WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+                COMMENT "Generating API documentation with Doxygen"
+                VERBATIM )
+    else (DOXYGEN_FOUND)
+        message("Doxygen need to be installed to generate the doxygen documentation")
+    endif (DOXYGEN_FOUND)
+endif()
