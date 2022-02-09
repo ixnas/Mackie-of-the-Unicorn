@@ -19,6 +19,7 @@ namespace MackieOfTheUnicorn::Mackie
 
 namespace MackieOfTheUnicorn::Mackie::Factories
 {
+	/// Creates Mackie device interfaces using a MIDI device.
 	class MackieDeviceFactory
 	{
 	  public:

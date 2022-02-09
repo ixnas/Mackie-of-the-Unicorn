@@ -9,6 +9,7 @@
 
 namespace MackieOfTheUnicorn::Mackie
 {
+	/// Provides an interface to communicate with a Mackie controller.
 	class MackieDevice
 	{
 	  public:

@@ -14,6 +14,7 @@ namespace MackieOfTheUnicorn::Mackie
 
 namespace MackieOfTheUnicorn::Mackie::Factories
 {
+	/// Creates Mackie composite device interfaces using MIDI port numbers.
 	class MackieCompositeFactory
 	{
 	  public:

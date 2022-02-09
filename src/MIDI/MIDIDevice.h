@@ -9,6 +9,7 @@
 
 namespace MackieOfTheUnicorn::MIDI
 {
+	/// Provides an interface to communicate with a connected MIDI device.
 	class MIDIDevice
 	{
 	  public:

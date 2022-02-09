@@ -12,6 +12,7 @@ namespace MackieOfTheUnicorn::MIDI
 {
 	class MIDIDevice;
 
+	/// Service used to get connected MIDI devices.
 	class MIDIService
 	{
 	  public:

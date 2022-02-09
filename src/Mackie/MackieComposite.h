@@ -11,6 +11,7 @@ namespace MackieOfTheUnicorn::Mackie
 {
 	class MackieDevice;
 
+	/// Provides an interface to communicatie with a group of Mackie controllers.
 	class MackieComposite
 	{
 	  public:

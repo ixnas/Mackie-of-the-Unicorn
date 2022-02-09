@@ -12,6 +12,7 @@ namespace MackieOfTheUnicorn::Mackie
 {
 	class MackieComposite;
 
+	/// Service used to get connected Mackie controllers.
 	class MackieService
 	{
 	  public:

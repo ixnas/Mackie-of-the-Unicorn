@@ -15,14 +15,15 @@ namespace MackieOfTheUnicorn::Mackie
 
 namespace MackieOfTheUnicorn
 {
+	/// The main application controller.
 	class Application
 	{
 		Mackie::MackieService* MackieService;
 
 	  public:
 		explicit Application(Mackie::MackieService& mackieService);
-		std::__1::map<int, std::string> GetAvailableInputDevices() const;
-		std::__1::map<int, std::string> GetAvailableOutputDevices() const;
+		std::map<int, std::string> GetAvailableInputDevices() const;
+		std::map<int, std::string> GetAvailableOutputDevices() const;
 	};
 } // namespace MackieOfTheUnicorn
 
