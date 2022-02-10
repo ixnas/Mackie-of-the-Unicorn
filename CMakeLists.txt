@@ -51,13 +51,13 @@ set(wxBUILD_SHARED OFF)
 
 # Include dependencies
 find_package(CURL REQUIRED)
-add_subdirectory(rapidjson)
-add_subdirectory(rtmidi)
+add_subdirectory(${CMAKE_SOURCE_DIR}/ext/rapidjson)
+add_subdirectory(${CMAKE_SOURCE_DIR}/ext/rtmidi)
 if (BUILD_TESTS)
-    add_subdirectory(googletest)
+    add_subdirectory(${CMAKE_SOURCE_DIR}/ext/googletest)
 endif ()
 if (BUILD_GUI)
-    add_subdirectory(wxWidgets)
+    add_subdirectory(${CMAKE_SOURCE_DIR}/ext/wxWidgets)
     set(WX_LIBRARIES wx::base wx::core)
     set(MAIN_EXECUTABLE ${CMAKE_SOURCE_DIR}/src/GUI/main.cpp)
 else()
@@ -82,7 +82,7 @@ file(GLOB_RECURSE integration_tests test/integration/*.cpp test/integration/*.h 
 add_executable(Mackie_of_the_Unicorn ${sources})
 add_dependencies(Mackie_of_the_Unicorn rtmidi ${WX_LIBRARIES})
 target_include_directories(Mackie_of_the_Unicorn PUBLIC rapidjson/include rtmidi ${CURL_INCLUDE_DIR})
-target_link_libraries(Mackie_of_the_Unicorn ${CMAKE_BINARY_DIR}/rtmidi/librtmidi.a ${CURL_LIBRARIES} ${WX_LIBRARIES} ${FRAMEWORKS})
+target_link_libraries(Mackie_of_the_Unicorn ${CMAKE_BINARY_DIR}/ext/rtmidi/librtmidi.a ${CURL_LIBRARIES} ${WX_LIBRARIES} ${FRAMEWORKS})
 
 # Tests
 if (BUILD_TESTS)
@@ -92,13 +92,13 @@ if (BUILD_TESTS)
     add_executable(Unit_Tests ${test_sources} ${unit_tests})
     add_dependencies(Unit_Tests rtmidi)
     target_include_directories(Unit_Tests PUBLIC rapidjson/include rtmidi ${CURL_INCLUDE_DIR})
-    target_link_libraries(Unit_Tests gtest_main gmock ${CMAKE_BINARY_DIR}/rtmidi/librtmidi.a ${CURL_LIBRARIES} ${FRAMEWORKS})
+    target_link_libraries(Unit_Tests gtest_main gmock ${CMAKE_BINARY_DIR}/ext/rtmidi/librtmidi.a ${CURL_LIBRARIES} ${FRAMEWORKS})
 
     # Integration tests
     add_executable(Integration_Tests ${test_sources} ${integration_tests})
     add_dependencies(Integration_Tests rtmidi)
     target_include_directories(Integration_Tests PUBLIC rapidjson/include rtmidi ${CURL_INCLUDE_DIR})
-    target_link_libraries(Integration_Tests gtest_main gmock ${CMAKE_BINARY_DIR}/rtmidi/librtmidi.a ${CURL_LIBRARIES} ${FRAMEWORKS})
+    target_link_libraries(Integration_Tests gtest_main gmock ${CMAKE_BINARY_DIR}/ext/rtmidi/librtmidi.a ${CURL_LIBRARIES} ${FRAMEWORKS})
 endif ()
 
 # Documentation

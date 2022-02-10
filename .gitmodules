@@ -1,12 +1,12 @@
 [submodule "rapidjson"]
-	path = rapidjson
+	path = ext/rapidjson
 	url = https://github.com/Tencent/rapidjson.git
 [submodule "googletest"]
-	path = googletest
+	path = ext/googletest
 	url = https://github.com/google/googletest.git
 [submodule "rtmidi"]
-	path = rtmidi
+	path = ext/rtmidi
 	url = https://github.com/thestk/rtmidi.git
 [submodule "wxWidgets"]
-	path = wxWidgets
+	path = ext/wxWidgets
 	url = https://github.com/wxWidgets/wxWidgets.git

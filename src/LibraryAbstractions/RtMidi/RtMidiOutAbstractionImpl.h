@@ -5,7 +5,7 @@
 #ifndef MACKIE_OF_THE_UNICORN_RTMIDIOUTABSTRACTIONIMPL_H
 #define MACKIE_OF_THE_UNICORN_RTMIDIOUTABSTRACTIONIMPL_H
 
-#include "../../rtmidi/RtMidi.h"
+#include "../../../ext/rtmidi/RtMidi.h"
 #include "RtMidiOutAbstraction.h"
 
 namespace MackieOfTheUnicorn::LibraryAbstractions::RtMidi
