@@ -48,7 +48,6 @@ file(GLOB_RECURSE unit_tests test/unit/*.cpp test/unit/*.h test/fakes/*.h)
 file(GLOB_RECURSE integration_tests test/integration/*.cpp test/integration/*.h test/fakes/*.h)
 
 add_executable(Mackie_of_the_Unicorn ${sources})
-
 add_dependencies(Mackie_of_the_Unicorn rtmidi)
 
 target_include_directories(Mackie_of_the_Unicorn PUBLIC rapidjson/include rtmidi ${CURL_INCLUDE_DIR})
@@ -56,10 +55,12 @@ target_link_libraries(Mackie_of_the_Unicorn ${CMAKE_BINARY_DIR}/rtmidi/librtmidi
 
 enable_testing()
 add_executable(Unit_Tests ${test_sources} ${unit_tests})
+add_dependencies(Unit_Tests rtmidi)
 target_include_directories(Unit_Tests PUBLIC rapidjson/include rtmidi ${CURL_INCLUDE_DIR} )
 target_link_libraries(Unit_Tests gtest_main gmock ${CMAKE_BINARY_DIR}/rtmidi/librtmidi.a ${CURL_LIBRARIES} "-framework CoreFoundation -framework CoreMIDI -framework CoreAudio")
 
 add_executable(Integration_Tests ${test_sources} ${integration_tests})
+add_dependencies(Integration_Tests rtmidi)
 target_include_directories(Integration_Tests PUBLIC rapidjson/include rtmidi ${CURL_INCLUDE_DIR})
 target_link_libraries(Integration_Tests gtest_main gmock ${CMAKE_BINARY_DIR}/rtmidi/librtmidi.a ${CURL_LIBRARIES} "-framework CoreFoundation -framework CoreMIDI -framework CoreAudio")
 
