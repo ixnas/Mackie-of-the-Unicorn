@@ -1,8 +1,11 @@
 cmake_minimum_required(VERSION 3.21)
 
 # Compile universal binary on macOS
+option(BUILD_UNIVERSAL "Build macOS univeral binary" ON)
 if (APPLE)
-    set(CMAKE_OSX_ARCHITECTURES "arm64;x86_64")
+    if (BUILD_UNIVERSAL)
+        set(CMAKE_OSX_ARCHITECTURES "arm64;x86_64")
+    endif()
 endif ()
 
 # Version labeling

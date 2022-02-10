@@ -5,7 +5,7 @@
 #ifndef MACKIE_OF_THE_UNICORN_DI_H
 #define MACKIE_OF_THE_UNICORN_DI_H
 
-#include "../boost/di.hpp"
+#include "../ext/boost/di.hpp"
 namespace di = boost::di;
 
 #endif // MACKIE_OF_THE_UNICORN_DI_H
