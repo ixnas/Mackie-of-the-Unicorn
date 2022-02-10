@@ -1,6 +1,5 @@
 .DS_Store
-/cmake-build-debug
-/cmake-build-debug-coverage
+/cmake-build-*
 /.idea
 /src/git_version.h
 /build
