@@ -7,3 +7,6 @@
 [submodule "rtmidi"]
 	path = rtmidi
 	url = https://github.com/thestk/rtmidi.git
+[submodule "wxWidgets"]
+	path = wxWidgets
+	url = https://github.com/wxWidgets/wxWidgets.git

@@ -3,3 +3,4 @@
 /cmake-build-debug-coverage
 /.idea
 /src/git_version.h
+/build

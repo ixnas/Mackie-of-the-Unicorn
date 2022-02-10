@@ -1,10 +1,10 @@
-#include "Application.h"
-#include "di.h"
+#include "../Application.h"
+#include "../di.h"
 #include <curl/curl.h>
 #include <sstream>
-#include "LibraryAbstractions/RtMidi/RtMidiInAbstractionImpl.h"
-#include "LibraryAbstractions/RtMidi/RtMidiOutAbstractionImpl.h"
-#include "git_version.h"
+#include "../LibraryAbstractions/RtMidi/RtMidiInAbstractionImpl.h"
+#include "../LibraryAbstractions/RtMidi/RtMidiOutAbstractionImpl.h"
+#include "../git_version.h"
 
 MackieOfTheUnicorn::LibraryAbstractions::RtMidi::RtMidiOutAbstractionImpl midiOut;
 

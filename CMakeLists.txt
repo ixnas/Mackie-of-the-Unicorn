@@ -29,6 +29,7 @@ set(CMAKE_POLICY_DEFAULT_CMP0077 NEW)
 # Options
 option(BUILD_DOC "Build documentation" ON)
 option(BUILD_TESTS "Build tests" ON)
+option(BUILD_GUI "Build graphical user interface" ON)
 
 # Setup dependencies
 if (APPLE)
@@ -45,6 +46,8 @@ set(RAPIDJSON_BUILD_DOC off)
 set(RTMIDI_BUILD_TESTING off)
 set(RTMIDI_BUILD_STATIC_LIBS on)
 set(RAPIDJSON_ENABLE_INSTRUMENTATION_OPT off)
+set(wxBUILD_PRECOMP OFF)
+set(wxBUILD_SHARED OFF)
 
 # Include dependencies
 find_package(CURL REQUIRED)
@@ -53,9 +56,19 @@ add_subdirectory(rtmidi)
 if (BUILD_TESTS)
     add_subdirectory(googletest)
 endif ()
+if (BUILD_GUI)
+    add_subdirectory(wxWidgets)
+    set(WX_LIBRARIES wx::base wx::core)
+    set(MAIN_EXECUTABLE ${CMAKE_SOURCE_DIR}/src/GUI/main.cpp)
+else()
+    set(WX_LIBRARIES "")
+    set(MAIN_EXECUTABLE ${CMAKE_SOURCE_DIR}/src/Console/main.cpp)
+endif()
 
 # Sources
 file(GLOB_RECURSE sources src/*.cpp src/*.h)
+list(FILTER sources EXCLUDE REGEX ".*main\\.cpp$")
+list(APPEND sources ${MAIN_EXECUTABLE})
 
 # Sources except main, for tests
 file(GLOB_RECURSE test_sources src/*.cpp src/*.h)
@@ -67,9 +80,9 @@ file(GLOB_RECURSE integration_tests test/integration/*.cpp test/integration/*.h 
 
 # Main executable
 add_executable(Mackie_of_the_Unicorn ${sources})
-add_dependencies(Mackie_of_the_Unicorn rtmidi)
+add_dependencies(Mackie_of_the_Unicorn rtmidi ${WX_LIBRARIES})
 target_include_directories(Mackie_of_the_Unicorn PUBLIC rapidjson/include rtmidi ${CURL_INCLUDE_DIR})
-target_link_libraries(Mackie_of_the_Unicorn ${CMAKE_BINARY_DIR}/rtmidi/librtmidi.a ${CURL_LIBRARIES} ${FRAMEWORKS})
+target_link_libraries(Mackie_of_the_Unicorn ${CMAKE_BINARY_DIR}/rtmidi/librtmidi.a ${CURL_LIBRARIES} ${WX_LIBRARIES} ${FRAMEWORKS})
 
 # Tests
 if (BUILD_TESTS)
