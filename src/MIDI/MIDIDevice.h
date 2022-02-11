@@ -6,6 +6,7 @@
 #define MACKIE_OF_THE_UNICORN_MIDIDEVICE_H
 
 #include <vector>
+#include <functional>
 
 namespace MackieOfTheUnicorn::MIDI
 {
