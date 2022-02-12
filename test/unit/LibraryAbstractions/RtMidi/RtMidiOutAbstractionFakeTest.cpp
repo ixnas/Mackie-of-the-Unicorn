@@ -2,10 +2,10 @@
 // Created by Sjoerd Scheffer on 12/02/2022.
 //
 
-#include <gtest/gtest.h>
 #include "../../../fakes/LibraryAbstractions/RtMidiOutAbstractionFake.h"
-#include <vector>
+#include <gtest/gtest.h>
 #include <memory>
+#include <vector>
 
 namespace MackieOfTheUnicorn::Tests::Unit::LibraryAbstractions::RtMidi
 {
@@ -46,9 +46,13 @@ namespace MackieOfTheUnicorn::Tests::Unit::LibraryAbstractions::RtMidi
 
 	TEST_F(RtMidiOutAbstractionFakeTest, SetsCalledSendMessageArgument)
 	{
-		std::vector<unsigned char> expectedSendMesageMessage = {0, 2, 1, 5, 2};
-		instance->SendMessage(&expectedSendMesageMessage);
-		auto actualSendMessageMessage = instance->SendMessageMessage;
-		EXPECT_EQ(actualSendMessageMessage, expectedSendMesageMessage);
+		std::vector<std::vector<unsigned char>> expectedSendMesageMessages = {{0, 2, 1, 5, 2}, {0, 2, 3, 3, 2, 1}};
+
+		for(auto i = 0; i < expectedSendMesageMessages.size(); i++)
+		{
+			instance->SendMessage(&expectedSendMesageMessages[i]);
+			auto actualSendMessageMessage = instance->SendMessageMessages[i];
+			EXPECT_EQ(actualSendMessageMessage, expectedSendMesageMessages[i]);
+		}
 	}
-}
+} // namespace MackieOfTheUnicorn::Tests::Unit::LibraryAbstractions::RtMidi

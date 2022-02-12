@@ -1,0 +1,31 @@
+//
+// Created by Sjoerd Scheffer on 12/02/2022.
+//
+
+#include "VirtualMixer.h"
+#include "LinkedMixer.h"
+#include <utility>
+
+namespace MackieOfTheUnicorn::Mixers
+{
+	VirtualMixer::VirtualMixer(std::vector<std::unique_ptr<LinkedMixer>>& linkedMixers) : LinkedMixers(std::move(linkedMixers))
+	{
+		for (const auto& linkedMixer : LinkedMixers)
+		{
+			linkedMixer->SetVirtualMixer(this);
+		}
+	}
+
+	void VirtualMixer::SetInputChannelMute(int originId, int channel, bool on)
+	{
+		for(const auto& linkedMixer : LinkedMixers)
+		{
+			if (linkedMixer->GetId() == originId)
+			{
+				continue;
+			}
+
+			linkedMixer->SetInputChannelMute(originId, channel, on);
+		}
+	}
+}

@@ -18,7 +18,7 @@ namespace MackieOfTheUnicorn::LibraryAbstractions::RtMidi
 		std::string PortName;
 		std::optional<int> GetPortNamePortNumber;
 		std::optional<int> OpenPortPort;
-		std::vector<unsigned char> SendMessageMessage;
+		std::vector<std::vector<unsigned char>> SendMessageMessages;
 
 		unsigned int GetPortCount() override
 		{
@@ -38,8 +38,7 @@ namespace MackieOfTheUnicorn::LibraryAbstractions::RtMidi
 
 		void SendMessage(const std::vector<unsigned char>* message) override
 		{
-			SendMessageMessage.clear();
-			SendMessageMessage = *message;
+			SendMessageMessages.push_back(*message);
 		}
 	};
 }
