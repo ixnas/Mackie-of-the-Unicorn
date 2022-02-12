@@ -26,30 +26,4 @@ namespace MackieOfTheUnicorn::Tests::Integration::Mackie
 		std::unique_ptr<MIDI::MIDIServiceFake> midiService;
 	};
 
-	TEST_F(MackieServiceImplTest, ReturnsDevicesListFromMIDIService)
-	{
-		midiService->InputDevices = {{0, "in0"}, {1, "in1"}};
-		midiService->OutputDevices = {{0, "out0"}, {1, "out1"}};
-
-		auto expectedInputs = midiService->GetInputDevices();
-		auto expectedOutputs = midiService->GetOutputDevices();
-
-		auto actualInputs = instance->GetInputDevices();
-		auto actualOutputs = instance->GetOutputDevices();
-
-		EXPECT_EQ(expectedInputs, actualInputs);
-		EXPECT_EQ(expectedOutputs, actualOutputs);
-	}
-
-	TEST_F(MackieServiceImplTest, ReturnsCompositeFromFactory)
-	{
-		std::vector<std::pair<int, int>> input = {{5, 6}};
-
-		auto actualInstance = instance->GetMackieComposite(input);
-		auto actualInstancePtr = (MackieCompositeFake*)actualInstance.get();
-		auto actualDevicesArgument = mackieCompositeFactory->DevicesArgument;
-
-		EXPECT_NE(nullptr, actualInstancePtr);
-		EXPECT_EQ(actualDevicesArgument, input);
-	}
 } // namespace MackieOfTheUnicorn::Tests::Integration::Mackie

@@ -2,7 +2,7 @@
 // Created by Sjoerd Scheffer on 12/02/2022.
 //
 
-#include "../../../fakes/LibraryAbstractions/RtMidiOutAbstractionFake.h"
+#include "../../../fakes/LibraryAbstractions/RtMidi/RtMidiOutAbstractionFake.h"
 #include <gtest/gtest.h>
 #include <memory>
 #include <vector>

@@ -5,7 +5,7 @@
 #include <memory>
 #include <optional>
 #include "gtest/gtest.h"
-#include "../../../fakes/LibraryAbstractions/RtMidiInAbstractionFake.h"
+#include "../../../fakes/LibraryAbstractions/RtMidi/RtMidiInAbstractionFake.h"
 
 namespace MackieOfTheUnicorn::Tests::Unit::LibraryAbstractions::RtMidi
 {

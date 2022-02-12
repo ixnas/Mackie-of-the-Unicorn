@@ -7,6 +7,7 @@
 
 namespace MackieOfTheUnicorn::Mixers
 {
+	/// Interface for all software and hardware mixers.
 	class Mixer
 	{
 	  public:

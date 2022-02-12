@@ -29,4 +29,20 @@ namespace MackieOfTheUnicorn::Tests::Integration
 	{
 		auto actual = instance->GetAvailableOutputDevices();
 	}
+
+	TEST_F(ApplicationTest, GetAvailableInputDevicesReturnsProperList)
+	{
+		auto expected = mackieService->GetInputDevices();
+		auto actual = instance->GetAvailableInputDevices();
+
+		EXPECT_EQ(expected, actual);
+	}
+
+	TEST_F(ApplicationTest, GetAvailableOutputDevicesReturnsProperList)
+	{
+		auto expected = mackieService->GetOutputDevices();
+		auto actual = instance->GetAvailableOutputDevices();
+
+		EXPECT_EQ(expected, actual);
+	}
 } // namespace MackieOfTheUnicorn::Tests::Integration

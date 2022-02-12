@@ -11,10 +11,13 @@ namespace MackieOfTheUnicorn::Mixers
 {
 	class VirtualMixer;
 
+	/// Represents a hardware mixer that the VirtualMixer can manage.
 	class LinkedMixer : public Mixer
 	{
 	  public:
 		virtual void SetVirtualMixer(VirtualMixer* virtualMixer) = 0;
+
+		/// Returns a unique ID number for this mixer.
 		virtual int GetId() = 0;
 	};
 }

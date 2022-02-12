@@ -13,6 +13,7 @@ namespace MackieOfTheUnicorn::Mixers
 {
 	class LinkedMixer;
 
+	/// Manages the state and communication between all real mixers.
 	class VirtualMixer : public Mixer
 	{
 		std::vector<std::unique_ptr<LinkedMixer>> LinkedMixers;
