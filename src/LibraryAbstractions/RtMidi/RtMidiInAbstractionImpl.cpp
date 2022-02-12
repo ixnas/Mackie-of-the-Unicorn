@@ -26,8 +26,8 @@ namespace MackieOfTheUnicorn::LibraryAbstractions::RtMidi
 		RtMidiIn.ignoreTypes(midiSysex, midiTime, midiSense);
 	}
 
-	void RtMidiInAbstractionImpl::SetCallback(void (*callback)(double, std::vector<unsigned char>*, void*))
+	void RtMidiInAbstractionImpl::SetCallback(void (*callback)(double, std::vector<unsigned char>*, void*), void* userData)
 	{
-		RtMidiIn.setCallback(callback);
+		RtMidiIn.setCallback(callback, userData);
 	}
 } // namespace MackieOfTheUnicorn::LibraryAbstractions::RtMidi

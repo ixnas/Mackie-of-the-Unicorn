@@ -19,7 +19,7 @@ namespace MackieOfTheUnicorn::LibraryAbstractions::RtMidi
 		std::string GetPortName(unsigned int portNumber) override;
 		void OpenPort(unsigned int portNumber) override;
 		void IgnoreTypes(bool midiSysex, bool midiTime, bool midiSense) override;
-		void SetCallback(void (*callback)(double, std::vector<unsigned char>*, void*)) override;
+		void SetCallback(void (*callback)(double, std::vector<unsigned char>*, void*), void* userData) override;
 	};
 } // namespace MackieOfTheUnicorn::LibraryAbstractions::RtMidi
 
