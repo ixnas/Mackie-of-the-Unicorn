@@ -7,6 +7,7 @@
 
 #include <functional>
 #include <string>
+#undef SendMessage
 
 namespace MackieOfTheUnicorn::LibraryAbstractions::RtMidi
 {
