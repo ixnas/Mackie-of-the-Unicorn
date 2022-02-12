@@ -10,7 +10,7 @@
 
 namespace MackieOfTheUnicorn::LibraryAbstractions::RtMidi
 {
-	class RtMidiInAbstractionImpl : RtMidiInAbstraction
+	class RtMidiInAbstractionImpl : public RtMidiInAbstraction
 	{
 		RtMidiIn RtMidiIn;
 
