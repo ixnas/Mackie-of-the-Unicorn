@@ -16,8 +16,11 @@ namespace MackieOfTheUnicorn::Tests::Unit::MIDI
 		void SetUp() override
 		{
 			rtMidiFactory = std::make_unique<MackieOfTheUnicorn::LibraryAbstractions::RtMidi::Factories::RtMidiAbstractionFactoryFake>();
-			instance = std::make_unique<MackieOfTheUnicorn::MIDI::MIDIDeviceImpl>(*rtMidiFactory);
+			instance = std::make_unique<MackieOfTheUnicorn::MIDI::MIDIDeviceImpl>(*rtMidiFactory, INPUT_ID, OUTPUT_ID);
 		}
+
+		const int INPUT_ID = 4;
+		const int OUTPUT_ID = 3;
 
 		std::unique_ptr<MackieOfTheUnicorn::MIDI::MIDIDeviceImpl> instance;
 		std::unique_ptr<MackieOfTheUnicorn::LibraryAbstractions::RtMidi::Factories::RtMidiAbstractionFactoryFake> rtMidiFactory;
@@ -32,6 +35,18 @@ namespace MackieOfTheUnicorn::Tests::Unit::MIDI
 			lastMessage = message;
 		}
 	};
+
+	TEST_F(MIDIDeviceImplTest, OpensRtMidiPorts)
+	{
+		auto expectedInputId = INPUT_ID;
+		auto expectedOutputId = OUTPUT_ID;
+
+		auto actualInputId = rtMidiFactory->ReturnedInAbstractions[0]->OpenPortPort;
+		auto actualOutputId = rtMidiFactory->ReturnedOutAbstractions[0]->OpenPortPort;
+
+		EXPECT_EQ(expectedInputId, actualInputId);
+		EXPECT_EQ(expectedOutputId, actualOutputId);
+	}
 
 	TEST_F(MIDIDeviceImplTest, SendsMessages)
 	{

@@ -17,7 +17,7 @@ namespace MackieOfTheUnicorn::LibraryAbstractions::RtMidi
 		unsigned int PortCount;
 		std::string PortName;
 		std::optional<int> GetPortNamePortNumber;
-		std::optional<int> OpenPortPort;
+		std::optional<unsigned int> OpenPortPort;
 		std::vector<std::vector<unsigned char>> SendMessageMessages;
 
 		unsigned int GetPortCount() override

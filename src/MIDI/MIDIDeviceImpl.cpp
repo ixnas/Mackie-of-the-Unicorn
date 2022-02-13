@@ -13,10 +13,14 @@ namespace MackieOfTheUnicorn::MIDI
 		midiReceiver->MIDICallback(*message);
 	}
 
-	MIDIDeviceImpl::MIDIDeviceImpl(LibraryAbstractions::RtMidi::Factories::RtMidiAbstractionFactory& rtMidiFactory)
+	MIDIDeviceImpl::MIDIDeviceImpl(LibraryAbstractions::RtMidi::Factories::RtMidiAbstractionFactory& rtMidiFactory,
+	                               int inputId, int outputId)
 	{
-		RtMidiOut = rtMidiFactory.CreateOutAbstraction();
 		RtMidiIn = rtMidiFactory.CreateInAbstraction();
+		RtMidiOut = rtMidiFactory.CreateOutAbstraction();
+
+		RtMidiIn->OpenPort(inputId);
+		RtMidiOut->OpenPort(outputId);
 	}
 
 	void MIDIDeviceImpl::RegisterCallback(MIDIReceiver *midiReceiver)
