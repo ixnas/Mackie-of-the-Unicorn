@@ -12,7 +12,7 @@ namespace MackieOfTheUnicorn::MIDI
 	class MIDIDeviceFake : public MIDIDevice
 	{
 	  public:
-		void RegisterCallback(std::function<void(std::vector<unsigned char>)> callback) override
+		void RegisterCallback(MIDIReceiver *midiReceiver) override
 		{
 		}
 

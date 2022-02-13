@@ -7,6 +7,7 @@
 
 #include <vector>
 #include <functional>
+#include "MIDIReceiver.h"
 
 namespace MackieOfTheUnicorn::MIDI
 {
@@ -17,7 +18,7 @@ namespace MackieOfTheUnicorn::MIDI
 		virtual ~MIDIDevice() = default;
 
 		/// Sets a callback function for whenever the MIDI device sends a message to the application.
-		virtual void RegisterCallback(std::function<void(std::vector<unsigned char>)> callback) = 0;
+		virtual void RegisterCallback(MIDIReceiver* midiReceiver) = 0;
 
 		/// Sends a MIDI message to the MIDI device.
 		virtual void SendMessage(std::vector<unsigned char> message) = 0;

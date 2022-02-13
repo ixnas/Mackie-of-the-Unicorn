@@ -5,6 +5,7 @@
 #include <gtest/gtest.h>
 #include <memory>
 #include "../../../src/MIDI/MIDIDeviceImpl.h"
+#include "../../../src/MIDI/MIDIReceiver.h"
 #include "../../fakes/LibraryAbstractions/RtMidi/Factories/RtMidiAbstractionFactoryFake.h"
 
 namespace MackieOfTheUnicorn::Tests::Unit::MIDI
@@ -20,6 +21,16 @@ namespace MackieOfTheUnicorn::Tests::Unit::MIDI
 
 		std::unique_ptr<MackieOfTheUnicorn::MIDI::MIDIDeviceImpl> instance;
 		std::unique_ptr<MackieOfTheUnicorn::LibraryAbstractions::RtMidi::Factories::RtMidiAbstractionFactoryFake> rtMidiFactory;
+	};
+
+	class Receiver : public MackieOfTheUnicorn::MIDI::MIDIReceiver
+	{
+	  public:
+		std::vector<unsigned char> lastMessage;
+		void MIDICallback(std::vector<unsigned char>& message) override
+		{
+			lastMessage = message;
+		}
 	};
 
 	TEST_F(MIDIDeviceImplTest, SendsMessages)
@@ -41,6 +52,16 @@ namespace MackieOfTheUnicorn::Tests::Unit::MIDI
 
 	TEST_F(MIDIDeviceImplTest, ListensToDevice)
 	{
+		std::vector<unsigned char> expectedMessage = {2, 3, 2, 7, 5};
+		Receiver receiver;
+		instance->RegisterCallback(&receiver);
+
+		auto inAbstractionInstance = rtMidiFactory->ReturnedInAbstractions[0];
+
+		inAbstractionInstance->FakeMessage(0, expectedMessage);
+		auto actualMessage = receiver.lastMessage;
+
+		EXPECT_EQ(actualMessage, expectedMessage);
 	}
 
 } // namespace MackieOfTheUnicorn::Tests::Unit::MIDI

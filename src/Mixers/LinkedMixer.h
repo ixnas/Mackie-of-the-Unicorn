@@ -15,6 +15,7 @@ namespace MackieOfTheUnicorn::Mixers
 	class LinkedMixer : public Mixer
 	{
 	  public:
+		/// Sets the VirtualMixer instance that the LinkedMixer will update.
 		virtual void SetVirtualMixer(VirtualMixer* virtualMixer) = 0;
 
 		/// Returns a unique ID number for this mixer.

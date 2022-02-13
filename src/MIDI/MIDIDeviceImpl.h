@@ -22,9 +22,11 @@ namespace MackieOfTheUnicorn::MIDI
 		std::unique_ptr<LibraryAbstractions::RtMidi::RtMidiInAbstraction> RtMidiIn;
 		std::unique_ptr<LibraryAbstractions::RtMidi::RtMidiOutAbstraction> RtMidiOut;
 
+		static void CallbackProxy(double deltaTime, std::vector<unsigned char>* message, void* userData);
+
 	  public:
 		explicit MIDIDeviceImpl(LibraryAbstractions::RtMidi::Factories::RtMidiAbstractionFactory& rtMidiFactory);
-		void RegisterCallback(std::function<void(std::vector<unsigned char>)> callback) override;
+		void RegisterCallback(MIDIReceiver *midiReceiver) override;
 		void SendMessage(std::vector<unsigned char> message) override;
 	};
 }
