@@ -28,7 +28,7 @@ namespace MackieOfTheUnicorn::MIDI
 
 		std::unique_ptr<MIDIDevice> GetMIDIDevice(int inputId, int outputId) override
 		{
-			return std::make_unique<MIDIDeviceFake>();
+			return std::make_unique<MIDIDeviceFake>(inputId, outputId);
 		}
 	};
 } // namespace MackieOfTheUnicorn::MIDI

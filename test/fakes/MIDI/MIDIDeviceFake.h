@@ -12,6 +12,13 @@ namespace MackieOfTheUnicorn::MIDI
 	class MIDIDeviceFake : public MIDIDevice
 	{
 	  public:
+		int InputId;
+		int OutputId;
+
+		explicit MIDIDeviceFake(int inputId, int outputId) : InputId(inputId), OutputId(outputId)
+		{
+		}
+
 		void RegisterCallback(MIDIReceiver *midiReceiver) override
 		{
 		}
