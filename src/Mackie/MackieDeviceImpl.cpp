@@ -6,6 +6,13 @@
 
 namespace MackieOfTheUnicorn::Mackie
 {
+	static bool IsChannelMuteMessage(std::vector<unsigned char>& message)
+	{
+		return message[0] == 144 && message[1] >= 16 &&
+		       message[1] < 24 &&
+		       (message[2] == 127 || message[2] == 0);
+	}
+
 	MackieDeviceImpl::MackieDeviceImpl(std::unique_ptr<MIDI::MIDIDevice>& midiDevice) : MIDIDevice(std::move(midiDevice))
 	{
 		MIDIDevice->RegisterCallback(this);
@@ -27,7 +34,7 @@ namespace MackieOfTheUnicorn::Mackie
 
 	void MackieDeviceImpl::MIDICallback(std::vector<unsigned char>& message)
 	{
-		if (message[0] == 144 && message[1] >= 16 && message[1] < 24 && (message[2] == 127 || message[2] == 0))
+		if (IsChannelMuteMessage(message))
 		{
 			auto channelId = message[1] - 16;
 			auto on = message[2] == 127;
