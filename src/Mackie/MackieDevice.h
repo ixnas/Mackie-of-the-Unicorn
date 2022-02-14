@@ -6,17 +6,18 @@
 #define MACKIE_OF_THE_UNICORN_MACKIEDEVICE_H
 
 #include <string>
+#include "../Mixers/MackieMixer.h"
+#include "MackieListener.h"
+#include "../MIDI/MIDIReceiver.h"
 
 namespace MackieOfTheUnicorn::Mackie
 {
 	/// Provides an interface to communicate with a Mackie controller.
-	class MackieDevice
+	class MackieDevice : public Mixers::MackieMixer, public MIDI::MIDIReceiver
 	{
 	  public:
-		virtual ~MackieDevice() = default;
-
-		/// Writes text to the screen starting from a given position.
-		virtual void SetText(int position, std::string text) = 0;
+		/// Sets a MackieListener for state changes (typically a MackieComposite).
+		virtual void SetMackieListener(MackieListener& mackieListener) = 0;
 	};
 } // namespace MackieOfTheUnicorn::Mackie
 

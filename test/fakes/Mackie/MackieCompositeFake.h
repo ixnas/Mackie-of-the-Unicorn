@@ -14,14 +14,12 @@ namespace MackieOfTheUnicorn::Mackie
 	class MackieCompositeFake : public MackieComposite
 	{
 	  public:
-		std::vector<std::unique_ptr<MackieDevice>> Devices;
-		int Position = 0;
-		std::string Text;
-
-		void SetText(int position, std::string text) override
+		void OnSetChannelMute(MackieDevice* origin, int channelId, bool on) override
 		{
-			this->Position = position;
-			this->Text = text;
+		}
+
+		void SetChannelMute(int channelId, bool on) override
+		{
 		}
 	};
 } // namespace MackieOfTheUnicorn::Mackie

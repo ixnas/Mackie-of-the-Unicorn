@@ -14,17 +14,26 @@ namespace MackieOfTheUnicorn::MIDI
 	  public:
 		int InputId;
 		int OutputId;
+		std::vector<std::vector<unsigned char>> SendMessageMessages;
+		MIDIReceiver* MIDIReceiver;
 
 		explicit MIDIDeviceFake(int inputId, int outputId) : InputId(inputId), OutputId(outputId)
 		{
 		}
 
-		void RegisterCallback(MIDIReceiver *midiReceiver) override
+		void RegisterCallback(MIDI::MIDIReceiver *midiReceiver) override
 		{
+			MIDIReceiver = midiReceiver;
 		}
 
 		void SendMessage(std::vector<unsigned char> message) override
 		{
+			SendMessageMessages.push_back(message);
+		}
+
+		void FakeMessage(std::vector<unsigned char> message) const
+		{
+			MIDIReceiver->MIDICallback(message);
 		}
 	};
 } // namespace MackieOfTheUnicorn::MIDI

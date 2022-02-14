@@ -56,7 +56,7 @@ int main()
 	}
 
 	midiIn.OpenPort(0);
-	midiIn.SetCallback(&mycallback);
+	midiIn.SetCallback(&mycallback, nullptr);
 	midiIn.IgnoreTypes(false, false, false);
 	midiOut.OpenPort(0);
 

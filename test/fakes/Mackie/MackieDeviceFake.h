@@ -12,14 +12,6 @@ namespace MackieOfTheUnicorn::Mackie
 	class MackieDeviceFake : public MackieDevice
 	{
 	  public:
-		int Position = 0;
-		std::string Text;
-
-		void SetText(int position, std::string text) override
-		{
-			this->Position = position;
-			this->Text = text;
-		}
 	};
 } // namespace MackieOfTheUnicorn::Mackie
 

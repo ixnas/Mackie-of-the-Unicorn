@@ -5,20 +5,18 @@
 #ifndef MACKIE_OF_THE_UNICORN_MACKIECOMPOSITE_H
 #define MACKIE_OF_THE_UNICORN_MACKIECOMPOSITE_H
 
+#include "MackieListener.h"
+#include "../Mixers/MackieMixer.h"
 #include <string>
 
 namespace MackieOfTheUnicorn::Mackie
 {
 	class MackieDevice;
 
-	/// Provides an interface to communicatie with a group of Mackie controllers.
-	class MackieComposite
+	/// Provides an interface to communicate with a group of Mackie controllers.
+	class MackieComposite : public MackieListener, public Mixers::MackieMixer
 	{
 	  public:
-		virtual ~MackieComposite() = default;
-
-		/// Writes text to the screen starting from a given position.
-		virtual void SetText(int position, std::string text) = 0;
 	};
 } // namespace MackieOfTheUnicorn::Mackie
 
