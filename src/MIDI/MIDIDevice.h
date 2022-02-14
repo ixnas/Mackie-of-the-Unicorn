@@ -21,7 +21,7 @@ namespace MackieOfTheUnicorn::MIDI
 		virtual void RegisterCallback(MIDIReceiver* midiReceiver) = 0;
 
 		/// Sends a MIDI message to the MIDI device.
-		virtual void SendMessage(std::vector<unsigned char> message) = 0;
+		virtual void SendMessage(std::vector<unsigned char>& message) = 0;
 	};
 } // namespace MackieOfTheUnicorn::MIDI
 

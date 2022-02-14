@@ -28,7 +28,7 @@ namespace MackieOfTheUnicorn::MIDI
 		explicit MIDIDeviceImpl(LibraryAbstractions::RtMidi::Factories::RtMidiAbstractionFactory& rtMidiFactory,
 		                        int inputId, int outputId);
 		void RegisterCallback(MIDIReceiver *midiReceiver) override;
-		void SendMessage(std::vector<unsigned char> message) override;
+		void SendMessage(std::vector<unsigned char>& message) override;
 	};
 }
 

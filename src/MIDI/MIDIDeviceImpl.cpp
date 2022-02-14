@@ -28,7 +28,7 @@ namespace MackieOfTheUnicorn::MIDI
 		RtMidiIn->SetCallback(CallbackProxy, midiReceiver);
 	}
 
-	void MIDIDeviceImpl::SendMessage(std::vector<unsigned char> message)
+	void MIDIDeviceImpl::SendMessage(std::vector<unsigned char>& message)
 	{
 		RtMidiOut->SendMessage(&message);
 	}

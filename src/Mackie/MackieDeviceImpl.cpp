@@ -28,8 +28,9 @@ namespace MackieOfTheUnicorn::Mackie
 		const unsigned char byte1 = 144;
 		unsigned char byte2 = 16 + channelNumber;
 		unsigned char byte3 = on ? 127 : 0;
+		std::vector<unsigned char> message = {byte1, byte2, byte3};
 
-		MIDIDevice->SendMessage({byte1, byte2, byte3});
+		MIDIDevice->SendMessage(message);
 	}
 
 	void MackieDeviceImpl::MIDICallback(std::vector<unsigned char>& message)

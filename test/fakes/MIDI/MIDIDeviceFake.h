@@ -26,7 +26,7 @@ namespace MackieOfTheUnicorn::MIDI
 			MIDIReceiver = midiReceiver;
 		}
 
-		void SendMessage(std::vector<unsigned char> message) override
+		void SendMessage(std::vector<unsigned char>& message) override
 		{
 			SendMessageMessages.push_back(message);
 		}
