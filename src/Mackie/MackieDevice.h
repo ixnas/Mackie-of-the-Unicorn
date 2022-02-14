@@ -6,14 +6,14 @@
 #define MACKIE_OF_THE_UNICORN_MACKIEDEVICE_H
 
 #include <string>
-#include "../Mixers/MackieMixer.h"
+#include "MackieInterface.h"
 #include "MackieListener.h"
 #include "../MIDI/MIDIReceiver.h"
 
 namespace MackieOfTheUnicorn::Mackie
 {
 	/// Provides an interface to communicate with a Mackie controller.
-	class MackieDevice : public Mixers::MackieMixer, public MIDI::MIDIReceiver
+	class MackieDevice : public MackieInterface, public MIDI::MIDIReceiver
 	{
 	  public:
 		/// Sets a MackieListener for state changes (typically a MackieComposite).

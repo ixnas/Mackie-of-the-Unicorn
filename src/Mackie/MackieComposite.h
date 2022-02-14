@@ -6,7 +6,7 @@
 #define MACKIE_OF_THE_UNICORN_MACKIECOMPOSITE_H
 
 #include "MackieListener.h"
-#include "../Mixers/MackieMixer.h"
+#include "MackieInterface.h"
 #include <string>
 
 namespace MackieOfTheUnicorn::Mackie
@@ -14,7 +14,7 @@ namespace MackieOfTheUnicorn::Mackie
 	class MackieDevice;
 
 	/// Provides an interface to communicate with a group of Mackie controllers.
-	class MackieComposite : public MackieListener, public Mixers::MackieMixer
+	class MackieComposite : public MackieListener, public MackieInterface
 	{
 	  public:
 	};
