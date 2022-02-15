@@ -15,6 +15,7 @@ namespace MackieOfTheUnicorn::Mackie
 
 namespace MackieOfTheUnicorn::Mixers
 {
+	/// A LinkedMixer implementation that represents a Mackie control surface.
 	class MackieMixer : public LinkedMixer, public Mackie::MackieListener<Mackie::MackieComposite>
 	{
 		std::unique_ptr<Mackie::MackieComposite> MackieComposite;

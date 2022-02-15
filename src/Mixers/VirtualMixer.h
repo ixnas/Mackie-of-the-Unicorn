@@ -9,6 +9,7 @@
 
 namespace MackieOfTheUnicorn::Mixers
 {
+	/// Manages the state and communication between all real mixers.
 	class VirtualMixer : public Mixer
 	{
 	  public:

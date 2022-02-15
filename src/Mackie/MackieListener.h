@@ -9,15 +9,16 @@ namespace MackieOfTheUnicorn::Mackie
 {
 	class MackieDevice;
 
-	/// Interface for classes that listen to state changes from a MackieDevice.
-	template<class T>
+	/// @brief Interface for classes that listen to state changes from a MackieDevice.
+	/// @tparam OriginType The type of the object that the implementation listens to.
+	template<class OriginType>
 	class MackieListener
 	{
 	  public:
 		virtual ~MackieListener() = default;
 
 		/// Handles an event where a MackieDevice changes a channel mute.
-		virtual void OnSetChannelMute(T* origin, int channelId, bool on) = 0;
+		virtual void OnSetChannelMute(OriginType* origin, int channelId, bool on) = 0;
 	};
 }
 
