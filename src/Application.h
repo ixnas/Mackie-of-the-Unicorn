@@ -24,10 +24,10 @@ namespace MackieOfTheUnicorn
 		explicit Application(Mackie::MackieService& mackieService);
 
 		/// Returns a list of available MIDI input devices.
-		std::map<int, std::string> GetAvailableInputDevices() const;
+		[[nodiscard]] std::map<int, std::string> GetAvailableInputDevices() const;
 
 		/// Returns a list of available MIDI output devices.
-		std::map<int, std::string> GetAvailableOutputDevices() const;
+		[[nodiscard]] std::map<int, std::string> GetAvailableOutputDevices() const;
 	};
 } // namespace MackieOfTheUnicorn
 
