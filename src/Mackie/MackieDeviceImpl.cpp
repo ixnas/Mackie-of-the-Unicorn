@@ -18,7 +18,7 @@ namespace MackieOfTheUnicorn::Mackie
 		MIDIDevice->RegisterCallback(this);
 	}
 
-	void MackieDeviceImpl::SetMackieListener(Mackie::MackieListener& mackieListener)
+	void MackieDeviceImpl::SetMackieListener(Mackie::MackieListener<MackieDevice>& mackieListener)
 	{
 		MackieListener = &mackieListener;
 	}

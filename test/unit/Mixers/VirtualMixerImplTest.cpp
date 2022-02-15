@@ -2,7 +2,7 @@
 // Created by Sjoerd Scheffer on 12/02/2022.
 //
 
-#include "../../../src/Mixers/VirtualMixer.h"
+#include "../../../src/Mixers/VirtualMixerImpl.h"
 #include "../../fakes/Mixers/LinkedMixerFake.h"
 #include <gtest/gtest.h>
 #include <memory>
@@ -10,7 +10,7 @@
 
 namespace MackieOfTheUnicorn::Tests::Unit::Mixers
 {
-	class VirtualMixerTest : public ::testing::Test
+	class VirtualMixerImplTest : public ::testing::Test
 	{
 	  protected:
 		void SetUp() override
@@ -25,14 +25,14 @@ namespace MackieOfTheUnicorn::Tests::Unit::Mixers
 				linkedMixerPtrs.push_back(std::move(linkedMixerFakeInstance));
 			}
 
-			instance = std::make_unique<MackieOfTheUnicorn::Mixers::VirtualMixer>(linkedMixerPtrs);
+			instance = std::make_unique<MackieOfTheUnicorn::Mixers::VirtualMixerImpl>(linkedMixerPtrs);
 		}
 
 		std::vector<MackieOfTheUnicorn::Mixers::LinkedMixerFake*> linkedMixerFakes;
-		std::unique_ptr<MackieOfTheUnicorn::Mixers::VirtualMixer> instance;
+		std::unique_ptr<MackieOfTheUnicorn::Mixers::VirtualMixerImpl> instance;
 	};
 
-	TEST_F(VirtualMixerTest, AssignsInstanceToLinkedMixers)
+	TEST_F(VirtualMixerImplTest, AssignsInstanceToLinkedMixers)
 	{
 		auto expectedPtr = instance.get();
 		for (const auto& linkedMixerFake : linkedMixerFakes)
@@ -42,7 +42,7 @@ namespace MackieOfTheUnicorn::Tests::Unit::Mixers
 		}
 	}
 
-	TEST_F(VirtualMixerTest, SetInputChannelMuteCallsOtherMixers)
+	TEST_F(VirtualMixerImplTest, SetInputChannelMuteCallsOtherMixers)
 	{
 		auto expectedOrigin = 1;
 		auto expectedChannel = 24;

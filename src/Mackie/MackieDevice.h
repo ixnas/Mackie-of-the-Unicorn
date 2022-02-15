@@ -17,7 +17,7 @@ namespace MackieOfTheUnicorn::Mackie
 	{
 	  public:
 		/// Sets a MackieListener for state changes (typically a MackieComposite).
-		virtual void SetMackieListener(MackieListener& mackieListener) = 0;
+		virtual void SetMackieListener(MackieListener<MackieDevice>& mackieListener) = 0;
 	};
 } // namespace MackieOfTheUnicorn::Mackie
 

@@ -10,14 +10,15 @@
 
 namespace MackieOfTheUnicorn::Mackie
 {
-	class MackieListenerFake : public MackieListener
+	template<class T>
+	class MackieListenerFake : public MackieListener<T>
 	{
 	  public:
 		MackieDevice* OnSetChannelMuteOrigin = nullptr;
 		std::optional<int> OnSetChannelMuteChannelId;
 		std::optional<bool> OnSetChannelMuteOn;
 
-		void OnSetChannelMute(MackieDevice* origin, int channelId, bool on) override
+		void OnSetChannelMute(T* origin, int channelId, bool on) override
 		{
 			OnSetChannelMuteOrigin = origin;
 			OnSetChannelMuteChannelId = channelId;

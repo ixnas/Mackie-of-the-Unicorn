@@ -13,11 +13,11 @@ namespace MackieOfTheUnicorn::Mackie
 	class MackieDeviceFake : public MackieDevice
 	{
 	  public:
-		MackieListener* MackieListener;
+		MackieListener<MackieDevice>* MackieListener;
 		std::optional<int> SetChannelMuteChannelNumber;
 		std::optional<int> SetChannelMuteOn;
 
-		void SetMackieListener(Mackie::MackieListener& mackieListener) override
+		void SetMackieListener(Mackie::MackieListener<MackieDevice>& mackieListener) override
 		{
 			MackieListener = &mackieListener;
 		}

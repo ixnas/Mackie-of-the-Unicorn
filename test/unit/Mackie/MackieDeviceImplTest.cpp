@@ -15,14 +15,14 @@ namespace MackieOfTheUnicorn::Tests::Unit::Mackie
 		void SetUp() override
 		{
 			midiDeviceFake = new MIDI::MIDIDeviceFake(0, 0);
-			mackieListenerFake = std::make_unique<MackieOfTheUnicorn::Mackie::MackieListenerFake>();
+			mackieListenerFake = std::make_unique<MackieOfTheUnicorn::Mackie::MackieListenerFake<MackieOfTheUnicorn::Mackie::MackieDevice>>();
 			auto midiDeviceFakePtr = std::unique_ptr<MIDI::MIDIDevice>(midiDeviceFake);
 			instance = std::make_unique<::MackieOfTheUnicorn::Mackie::MackieDeviceImpl>(midiDeviceFakePtr);
 			instance->SetMackieListener(*mackieListenerFake);
 		}
 
 		std::unique_ptr<MackieOfTheUnicorn::Mackie::MackieDeviceImpl> instance;
-		std::unique_ptr<MackieOfTheUnicorn::Mackie::MackieListenerFake> mackieListenerFake;
+		std::unique_ptr<MackieOfTheUnicorn::Mackie::MackieListenerFake<MackieOfTheUnicorn::Mackie::MackieDevice>> mackieListenerFake;
 		MIDI::MIDIDeviceFake* midiDeviceFake;
 
 		void SetsMuteChannels(bool on)

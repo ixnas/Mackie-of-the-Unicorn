@@ -14,7 +14,7 @@ namespace MackieOfTheUnicorn::Mackie
 	class MackieDevice;
 
 	/// Provides an interface to communicate with a group of Mackie controllers.
-	class MackieComposite : public MackieListener, public MackieInterface
+	class MackieComposite : public MackieListener<MackieDevice>, public MackieInterface
 	{
 	};
 } // namespace MackieOfTheUnicorn::Mackie

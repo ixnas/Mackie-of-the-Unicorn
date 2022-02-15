@@ -14,12 +14,17 @@ namespace MackieOfTheUnicorn::Mackie
 	class MackieCompositeFake : public MackieComposite
 	{
 	  public:
+		std::optional<int> SetChannelMuteChannelId;
+		std::optional<bool> SetChannelMuteOn;
+
 		void OnSetChannelMute(MackieDevice* origin, int channelId, bool on) override
 		{
 		}
 
 		void SetChannelMute(int channelId, bool on) override
 		{
+			SetChannelMuteChannelId = channelId;
+			SetChannelMuteOn = on;
 		}
 	};
 } // namespace MackieOfTheUnicorn::Mackie
