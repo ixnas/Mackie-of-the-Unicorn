@@ -34,6 +34,10 @@ namespace MackieOfTheUnicorn::Mackie
 			SetChannelMuteChannelId = channelId;
 			SetChannelMuteOn = on;
 		}
+
+		void SetMackieListener(MackieListener<MackieComposite>& mackieListener) override
+		{
+		}
 	};
 } // namespace MackieOfTheUnicorn::Mackie
 

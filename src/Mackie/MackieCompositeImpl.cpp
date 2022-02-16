@@ -9,6 +9,10 @@ namespace MackieOfTheUnicorn::Mackie
 {
 	MackieCompositeImpl::MackieCompositeImpl(std::vector<std::unique_ptr<MackieDevice>>& mackieDevices) : MackieDevices(std::move(mackieDevices))
 	{
+		for (const auto& mackieDevice : MackieDevices)
+		{
+			mackieDevice->SetMackieListener(*this);
+		}
 	}
 
 	void MackieCompositeImpl::SetChannelMute(int channelNumber, bool on)
@@ -20,6 +24,10 @@ namespace MackieOfTheUnicorn::Mackie
 	}
 
 	void MackieCompositeImpl::OnChannelMutePressed(MackieDevice* origin, int channelId, bool on)
+	{
+	}
+
+	void MackieCompositeImpl::SetMackieListener(MackieListener<MackieComposite>& mackieListener)
 	{
 	}
 }

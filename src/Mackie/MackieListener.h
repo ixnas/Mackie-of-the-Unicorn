@@ -7,8 +7,6 @@
 
 namespace MackieOfTheUnicorn::Mackie
 {
-	class MackieDevice;
-
 	/// @brief Interface for classes that listen to state changes from a MackieDevice.
 	/// @tparam OriginType The type of the object that the implementation listens to.
 	template<class OriginType>

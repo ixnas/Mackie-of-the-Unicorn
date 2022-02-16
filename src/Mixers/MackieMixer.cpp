@@ -27,6 +27,7 @@ namespace MackieOfTheUnicorn::Mixers
 
 	MackieMixer::MackieMixer(std::unique_ptr<Mackie::MackieComposite>& mackieComposite, int id) : MackieComposite(std::move(mackieComposite)), Id(id), VirtualMixer(nullptr)
 	{
+		MackieComposite->SetMackieListener(*this);
 	}
 
 	void MackieMixer::SetVirtualMixer(Mixers::VirtualMixer* virtualMixer)
