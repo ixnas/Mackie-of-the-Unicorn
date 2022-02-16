@@ -39,6 +39,7 @@ void mycallback(double deltatime, std::vector<unsigned char>* message, void* use
 
 int main()
 {
+	std::cout << "Mackie of the Unicorn " << MackieOfTheUnicorn::VERSION << std::endl << "Copyright \u00a9 2022 Sjoerd Scheffer" << std::endl << std::endl;
 	auto injector = di::make_injector(
 	    di::bind<MackieOfTheUnicorn::Mackie::MackieService>.to<MackieOfTheUnicorn::Mackie::MackieServiceImpl>(),
 	    di::bind<MackieOfTheUnicorn::Mackie::Factories::MackieCompositeFactory>.to<MackieOfTheUnicorn::Mackie::Factories::MackieCompositeFactoryImpl>(),

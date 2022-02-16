@@ -10,18 +10,11 @@ endif ()
 
 # Version labeling
 execute_process(
-        COMMAND git log -1 --format=%h
+        COMMAND git describe --always
         WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR}
-        OUTPUT_VARIABLE GIT_HASH
+        OUTPUT_VARIABLE GIT_VERSION
         OUTPUT_STRIP_TRAILING_WHITESPACE
 )
-execute_process(
-        COMMAND git branch --show-current
-        WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR}
-        OUTPUT_VARIABLE GIT_BRANCH
-        OUTPUT_STRIP_TRAILING_WHITESPACE
-)
-set(GIT_VERSION ${GIT_BRANCH}-${GIT_HASH})
 configure_file(${CMAKE_SOURCE_DIR}/src/git_version.h.in ${CMAKE_SOURCE_DIR}/src/git_version.h @ONLY)
 
 # Set up project
