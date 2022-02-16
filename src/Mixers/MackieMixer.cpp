@@ -7,6 +7,34 @@
 
 namespace MackieOfTheUnicorn::Mixers
 {
+	template<class OptionType>
+	static bool OptionSet(std::vector<OptionType>& optionList, OptionType id)
+	{
+		return std::any_of(optionList.begin(), optionList.end(), [id](int i){ return i == id; });
+	}
+
+	template<class OptionType>
+	static void SetOption(std::vector<OptionType>& optionList, OptionType id, bool on)
+	{
+		if (on)
+		{
+			if (OptionSet(optionList, id))
+			{
+				return;
+			}
+
+			optionList.push_back(id);
+			return;
+		}
+
+		if (!OptionSet(optionList, id))
+		{
+			return;
+		}
+
+		optionList.erase(std::remove(optionList.begin(), optionList.end(), id), optionList.end());
+	}
+
 	MackieMixer::MackieMixer(std::unique_ptr<Mackie::MackieComposite>& mackieComposite, int id) : MackieComposite(std::move(mackieComposite)), Id(id), VirtualMixer(nullptr)
 	{
 	}
@@ -28,6 +56,15 @@ namespace MackieOfTheUnicorn::Mixers
 
 	void MackieMixer::OnChannelMutePressed(Mackie::MackieComposite* origin, int channelId, bool on)
 	{
-		VirtualMixer->SetInputChannelMute(Id, channelId, on);
+		if (!on)
+		{
+			return;
+		}
+
+		auto channelWasMuted = OptionSet(MutesOn, channelId);
+		SetOption(MutesOn, channelId, !channelWasMuted);
+
+		VirtualMixer->SetInputChannelMute(Id, channelId, !channelWasMuted);
+		MackieComposite->SetChannelMute(channelId, !channelWasMuted);
 	}
 }

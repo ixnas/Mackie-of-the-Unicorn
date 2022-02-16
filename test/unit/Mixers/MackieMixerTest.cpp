@@ -66,4 +66,58 @@ namespace MackieOfTheUnicorn::Tests::Unit::Mixers
 		EXPECT_EQ(actualChannel, expectedChannel);
 		EXPECT_EQ(actualOn, expectedOn);
 	}
+
+	TEST_F(MackieMixerTest, SetsChannelMuteOnComposite)
+	{
+		auto expectedChannel = 8;
+		auto expectedOn = true;
+
+		instance->OnChannelMutePressed(mackieCompositeFake, expectedChannel, expectedOn);
+
+		auto actualChannel = mackieCompositeFake->SetChannelMuteChannelId;
+		auto actualOn = mackieCompositeFake->SetChannelMuteOn;
+
+		EXPECT_EQ(actualChannel, expectedChannel);
+		EXPECT_EQ(actualOn, expectedOn);
+	}
+
+	TEST_F(MackieMixerTest, IgnoreReleaseMuteButton)
+	{
+		auto expectedChannel = 8;
+		auto expectedOn = true;
+
+		instance->OnChannelMutePressed(mackieCompositeFake, expectedChannel, true);
+		instance->OnChannelMutePressed(mackieCompositeFake, expectedChannel, false);
+
+		auto actualMackieChannel = mackieCompositeFake->SetChannelMuteChannelId;
+		auto actualMackieOn = mackieCompositeFake->SetChannelMuteOn;
+		auto actualVirtualMixerChannel = virtualMixerFake->SetInputChannelMuteChannel;
+		auto actualVirtualMixerOn = virtualMixerFake->SetInputChannelMuteOn;
+
+		EXPECT_EQ(actualMackieChannel, expectedChannel);
+		EXPECT_EQ(actualMackieOn, expectedOn);
+		EXPECT_EQ(actualVirtualMixerChannel, expectedChannel);
+		EXPECT_EQ(actualVirtualMixerOn, expectedOn);
+	}
+
+	TEST_F(MackieMixerTest, CanTurnMuteOffAgain)
+	{
+		auto expectedChannel = 8;
+		auto expectedOn = false;
+
+		instance->OnChannelMutePressed(mackieCompositeFake, expectedChannel, true);
+		instance->OnChannelMutePressed(mackieCompositeFake, expectedChannel, false);
+		instance->OnChannelMutePressed(mackieCompositeFake, expectedChannel, true);
+		instance->OnChannelMutePressed(mackieCompositeFake, expectedChannel, false);
+
+		auto actualMackieChannel = mackieCompositeFake->SetChannelMuteChannelId;
+		auto actualMackieOn = mackieCompositeFake->SetChannelMuteOn;
+		auto actualVirtualMixerChannel = virtualMixerFake->SetInputChannelMuteChannel;
+		auto actualVirtualMixerOn = virtualMixerFake->SetInputChannelMuteOn;
+
+		EXPECT_EQ(actualMackieChannel, expectedChannel);
+		EXPECT_EQ(actualMackieOn, expectedOn);
+		EXPECT_EQ(actualVirtualMixerChannel, expectedChannel);
+		EXPECT_EQ(actualVirtualMixerOn, expectedOn);
+	}
 }
