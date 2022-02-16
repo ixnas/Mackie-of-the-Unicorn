@@ -14,7 +14,7 @@ namespace MackieOfTheUnicorn::Mackie
 	class MackieListenerFake : public MackieListener<T>
 	{
 	  public:
-		MackieDevice* OnChannelMutePressedOrigin = nullptr;
+		T* OnChannelMutePressedOrigin = nullptr;
 		std::optional<int> OnChannelMutePressedChannelId;
 		std::optional<bool> OnChannelMutePressedOn;
 

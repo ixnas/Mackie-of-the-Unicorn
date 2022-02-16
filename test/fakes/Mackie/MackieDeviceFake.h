@@ -26,6 +26,7 @@ namespace MackieOfTheUnicorn::Mackie
 		{
 			SetChannelMuteChannelNumber = channelNumber;
 			SetChannelMuteOn = on;
+			MackieListener->OnChannelMutePressed(this, channelNumber, on);
 		}
 
 		void MIDICallback(std::vector<unsigned char>& message) override

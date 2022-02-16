@@ -62,6 +62,9 @@ int main()
 	{
 		std::cout << outputDevice.first << ": " << outputDevice.second << std::endl;
 	}
+
+	app.Start({{0, 0}});
+	getchar();
 	/*
 	MackieOfTheUnicorn::LibraryAbstractions::RtMidi::RtMidiInAbstractionImpl midiIn;
 

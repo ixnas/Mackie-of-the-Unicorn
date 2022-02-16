@@ -25,9 +25,11 @@ namespace MackieOfTheUnicorn::Mackie
 
 	void MackieCompositeImpl::OnChannelMutePressed(MackieDevice* origin, int channelId, bool on)
 	{
+		MackieListener->OnChannelMutePressed(this, channelId, on);
 	}
 
-	void MackieCompositeImpl::SetMackieListener(MackieListener<MackieComposite>& mackieListener)
+	void MackieCompositeImpl::SetMackieListener(Mackie::MackieListener<MackieComposite>& mackieListener)
 	{
+		MackieListener = &mackieListener;
 	}
 }

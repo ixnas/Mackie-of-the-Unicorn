@@ -14,12 +14,13 @@ namespace MackieOfTheUnicorn::Mackie
 	class MackieCompositeImpl : public MackieComposite
 	{
 		std::vector<std::unique_ptr<MackieDevice>> MackieDevices;
+		MackieListener<MackieComposite>* MackieListener;
 
 	  public:
 		explicit MackieCompositeImpl(std::vector<std::unique_ptr<MackieDevice>>& mackieDevices);
 		void SetChannelMute(int channelNumber, bool on) override;
 		void OnChannelMutePressed(MackieDevice* origin, int channelId, bool on) override;
-		void SetMackieListener(MackieListener<MackieComposite>& mackieListener) override;
+		void SetMackieListener(Mackie::MackieListener<MackieComposite>& mackieListener) override;
 	};
 }
 
