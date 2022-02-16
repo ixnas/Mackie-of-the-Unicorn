@@ -19,7 +19,7 @@ namespace MackieOfTheUnicorn::Mackie
 		}
 	}
 
-	void MackieCompositeImpl::OnSetChannelMute(MackieDevice* origin, int channelId, bool on)
+	void MackieCompositeImpl::OnChannelMutePressed(MackieDevice* origin, int channelId, bool on)
 	{
 	}
 }

@@ -56,7 +56,7 @@ namespace MackieOfTheUnicorn::Tests::Unit::Mixers
 		auto expectedChannel = 8;
 		auto expectedOn = true;
 
-		instance->OnSetChannelMute(mackieCompositeFake, expectedChannel, expectedOn);
+		instance->OnChannelMutePressed(mackieCompositeFake, expectedChannel, expectedOn);
 
 		auto actualOriginId = virtualMixerFake->SetInputChannelMuteOriginId = expectedOriginId;
 		auto actualChannel = virtualMixerFake->SetInputChannelMuteChannel;

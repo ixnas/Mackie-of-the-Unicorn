@@ -14,15 +14,15 @@ namespace MackieOfTheUnicorn::Mackie
 	class MackieListenerFake : public MackieListener<T>
 	{
 	  public:
-		MackieDevice* OnSetChannelMuteOrigin = nullptr;
-		std::optional<int> OnSetChannelMuteChannelId;
-		std::optional<bool> OnSetChannelMuteOn;
+		MackieDevice* OnChannelMutePressedOrigin = nullptr;
+		std::optional<int> OnChannelMutePressedChannelId;
+		std::optional<bool> OnChannelMutePressedOn;
 
-		void OnSetChannelMute(T* origin, int channelId, bool on) override
+		void OnChannelMutePressed(T* origin, int channelId, bool on) override
 		{
-			OnSetChannelMuteOrigin = origin;
-			OnSetChannelMuteChannelId = channelId;
-			OnSetChannelMuteOn = on;
+			OnChannelMutePressedOrigin = origin;
+			OnChannelMutePressedChannelId = channelId;
+			OnChannelMutePressedOn = on;
 		}
 	};
 }

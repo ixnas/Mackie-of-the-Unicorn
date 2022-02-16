@@ -27,7 +27,7 @@ namespace MackieOfTheUnicorn::Mixers
 		void SetVirtualMixer(Mixers::VirtualMixer* virtualMixer) override;
 		int GetId() override;
 		void SetInputChannelMute(int originId, int channel, bool on) override;
-		void OnSetChannelMute(Mackie::MackieComposite* origin, int channelId, bool on) override;
+		void OnChannelMutePressed(Mackie::MackieComposite* origin, int channelId, bool on) override;
 	};
 }
 

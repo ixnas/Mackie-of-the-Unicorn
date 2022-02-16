@@ -56,9 +56,9 @@ namespace MackieOfTheUnicorn::Tests::Unit::Mackie
 				auto expectedChannelId = i;
 				auto expectedOn = on;
 
-				auto actualOrigin = mackieListenerFake->OnSetChannelMuteOrigin;
-				auto actualChannelId = mackieListenerFake->OnSetChannelMuteChannelId;
-				auto actualOn = mackieListenerFake->OnSetChannelMuteOn;
+				auto actualOrigin = mackieListenerFake->OnChannelMutePressedOrigin;
+				auto actualChannelId = mackieListenerFake->OnChannelMutePressedChannelId;
+				auto actualOn = mackieListenerFake->OnChannelMutePressedOn;
 
 				EXPECT_EQ(actualOrigin, expectedOrigin);
 				EXPECT_EQ(actualChannelId, expectedChannelId);

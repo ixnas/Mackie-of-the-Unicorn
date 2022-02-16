@@ -18,7 +18,7 @@ namespace MackieOfTheUnicorn::Mackie
 		virtual ~MackieListener() = default;
 
 		/// Handles an event where a MackieDevice changes a channel mute.
-		virtual void OnSetChannelMute(OriginType* origin, int channelId, bool on) = 0;
+		virtual void OnChannelMutePressed(OriginType* origin, int channelId, bool on) = 0;
 	};
 }
 

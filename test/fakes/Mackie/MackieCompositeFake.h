@@ -17,7 +17,7 @@ namespace MackieOfTheUnicorn::Mackie
 		std::optional<int> SetChannelMuteChannelId;
 		std::optional<bool> SetChannelMuteOn;
 
-		void OnSetChannelMute(MackieDevice* origin, int channelId, bool on) override
+		void OnChannelMutePressed(MackieDevice* origin, int channelId, bool on) override
 		{
 		}
 

@@ -26,7 +26,7 @@ namespace MackieOfTheUnicorn::Mixers
 		MackieComposite->SetChannelMute(channel, on);
 	}
 
-	void MackieMixer::OnSetChannelMute(Mackie::MackieComposite* origin, int channelId, bool on)
+	void MackieMixer::OnChannelMutePressed(Mackie::MackieComposite* origin, int channelId, bool on)
 	{
 		VirtualMixer->SetInputChannelMute(Id, channelId, on);
 	}

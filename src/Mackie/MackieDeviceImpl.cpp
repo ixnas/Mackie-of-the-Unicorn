@@ -39,7 +39,7 @@ namespace MackieOfTheUnicorn::Mackie
 		{
 			auto channelId = message[1] - 16;
 			auto on = message[2] == 127;
-			MackieListener->OnSetChannelMute(this, channelId, on);
+			MackieListener->OnChannelMutePressed(this, channelId, on);
 		}
 	}
 }
