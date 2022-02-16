@@ -6,15 +6,19 @@
 #define MACKIE_OF_THE_UNICORN_MACKIEDEVICEFACTORYFAKE_H
 
 #include "../../../../src/Mackie/Factories/MackieDeviceFactory.h"
+#include "../../MIDI/MIDIDeviceFake.h"
 #include "../MackieDeviceFake.h"
 
 namespace MackieOfTheUnicorn::Mackie::Factories
 {
 	class MackieDeviceFactoryFake : public MackieDeviceFactory
 	{
+		MIDI::MIDIDeviceFake* MIDIDevice;
+
 	  public:
-		std::unique_ptr<MackieDevice> Create(std::unique_ptr<MIDI::MIDIDevice> midiDevice) override
+		std::unique_ptr<MackieDevice> Create(std::unique_ptr<MIDI::MIDIDevice>& midiDevice) override
 		{
+			MIDIDevice = (MIDI::MIDIDeviceFake*) midiDevice.get();
 			return std::make_unique<MackieDeviceFake>();
 		}
 	};

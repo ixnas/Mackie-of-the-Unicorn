@@ -6,6 +6,7 @@
 #define MACKIE_OF_THE_UNICORN_MACKIECOMPOSITEFAKE_H
 
 #include "../../../src/Mackie/MackieComposite.h"
+#include "../../../src/Mackie/MackieDevice.h"
 #include <string>
 #include <vector>
 
@@ -16,6 +17,13 @@ namespace MackieOfTheUnicorn::Mackie
 	  public:
 		std::optional<int> SetChannelMuteChannelId;
 		std::optional<bool> SetChannelMuteOn;
+		std::vector<std::unique_ptr<MackieDevice>> MackieDevices;
+
+		MackieCompositeFake() = default;
+
+		explicit MackieCompositeFake(std::vector<std::unique_ptr<MackieDevice>>& mackieDevices) : MackieDevices(std::move(mackieDevices))
+		{
+		}
 
 		void OnChannelMutePressed(MackieDevice* origin, int channelId, bool on) override
 		{
