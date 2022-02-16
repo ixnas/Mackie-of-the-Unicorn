@@ -6,6 +6,7 @@
 #define MACKIE_OF_THE_UNICORN_MACKIESERVICEFAKE_H
 
 #include "../../../src/Mackie/MackieService.h"
+#include "MackieCompositeFake.h"
 
 namespace MackieOfTheUnicorn::Mackie
 {
@@ -28,7 +29,7 @@ namespace MackieOfTheUnicorn::Mackie
 		std::unique_ptr<MackieComposite> GetMackieComposite(
 		    const std::vector<std::pair<int, int>>& inAndOutIds) override
 		{
-			return {};
+			return std::make_unique<MackieCompositeFake>();
 		}
 	};
 } // namespace MackieOfTheUnicorn::Mackie

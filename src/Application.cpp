@@ -4,7 +4,7 @@
 
 #include "Application.h"
 #include "Mackie/MackieService.h"
-#include "Mixers/LinkedMixer.h"
+#include "Mixers/VirtualMixerBuilder.h"
 #include "Mixers/VirtualMixerImpl.h"
 
 namespace MackieOfTheUnicorn
@@ -23,12 +23,9 @@ namespace MackieOfTheUnicorn
 		return MackieService->GetOutputDevices();
 	}
 
-	void Application::Start(const std::vector<std::pair<int, int>>& inputAndOutputIds)
+	void Application::Start(std::vector<std::pair<int, int>>& inputAndOutputIds)
 	{
-		auto mackieComposite = MackieService->GetMackieComposite(inputAndOutputIds);
-		auto mackieMixer = std::make_unique<Mixers::MackieMixer>(mackieComposite, 0);
-		std::vector<std::unique_ptr<Mixers::LinkedMixer>> linkedMixers;
-		linkedMixers.push_back(std::move(mackieMixer));
-		VirtualMixer = std::make_unique<Mixers::VirtualMixerImpl>(linkedMixers);
+		auto virtualMixerBuilder = std::make_unique<Mixers::VirtualMixerBuilder>(*MackieService);
+		VirtualMixer = virtualMixerBuilder->AddMackieMixer(inputAndOutputIds)->Build();
 	}
 } // namespace MackieOfTheUnicorn
