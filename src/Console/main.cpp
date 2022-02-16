@@ -1,13 +1,20 @@
 #include "../Application.h"
-#include "../di.h"
-#include <curl/curl.h>
-#include <sstream>
+#include "../LibraryAbstractions/RtMidi/Factories/RtMidiAbstractionFactoryImpl.h"
 #include "../LibraryAbstractions/RtMidi/RtMidiInAbstractionImpl.h"
 #include "../LibraryAbstractions/RtMidi/RtMidiOutAbstractionImpl.h"
+#include "../MIDI/Factories/MIDIDeviceFactoryImpl.h"
+#include "../MIDI/MIDIServiceImpl.h"
+#include "../Mackie/Factories/MackieCompositeFactoryImpl.h"
+#include "../Mackie/Factories/MackieDeviceFactoryImpl.h"
+#include "../Mackie/MackieServiceImpl.h"
+#include "../di.h"
 #include "../git_version.h"
+#include <curl/curl.h>
+#include <sstream>
 
 MackieOfTheUnicorn::LibraryAbstractions::RtMidi::RtMidiOutAbstractionImpl midiOut;
 
+/*
 void mycallback(double deltatime, std::vector<unsigned char>* message, void* userData)
 {
 	unsigned int nBytes = message->size();
@@ -28,14 +35,33 @@ void mycallback(double deltatime, std::vector<unsigned char>* message, void* use
 		}
 	}
 }
+ */
 
 int main()
 {
+	auto injector = di::make_injector(
+	    di::bind<MackieOfTheUnicorn::Mackie::MackieService>.to<MackieOfTheUnicorn::Mackie::MackieServiceImpl>(),
+	    di::bind<MackieOfTheUnicorn::Mackie::Factories::MackieCompositeFactory>.to<MackieOfTheUnicorn::Mackie::Factories::MackieCompositeFactoryImpl>(),
+	    di::bind<MackieOfTheUnicorn::MIDI::MIDIService>.to<MackieOfTheUnicorn::MIDI::MIDIServiceImpl>(),
+	    di::bind<MackieOfTheUnicorn::MIDI::Factories::MIDIDeviceFactory>.to<MackieOfTheUnicorn::MIDI::Factories::MIDIDeviceFactoryImpl>(),
+	    di::bind<MackieOfTheUnicorn::LibraryAbstractions::RtMidi::Factories::RtMidiAbstractionFactory>.to<MackieOfTheUnicorn::LibraryAbstractions::RtMidi::Factories::RtMidiAbstractionFactoryImpl>(),
+	    di::bind<MackieOfTheUnicorn::Mackie::Factories::MackieDeviceFactory>.to<MackieOfTheUnicorn::Mackie::Factories::MackieDeviceFactoryImpl>());
+	auto app = injector.create<MackieOfTheUnicorn::Application>();
+	auto inputDevices = app.GetAvailableInputDevices();
+	auto outputDevices = app.GetAvailableOutputDevices();
+
+	std::cout << "Input devices:" << std::endl;
+	for (const auto& inputDevice : inputDevices)
+	{
+		std::cout << inputDevice.first << ": " << inputDevice.second << std::endl;
+	}
+
+	std::cout << std::endl << "Output devices:" << std::endl;
+	for (const auto& outputDevice : outputDevices)
+	{
+		std::cout << outputDevice.first << ": " << outputDevice.second << std::endl;
+	}
 	/*
-	auto injector = di::make_injector(di::bind<MackieService>().to<MackieServiceImpl>());
-	auto app = injector.create<Application>();
-	app.Start();
-	 */
 	MackieOfTheUnicorn::LibraryAbstractions::RtMidi::RtMidiInAbstractionImpl midiIn;
 
 	auto midiInCount = midiIn.GetPortCount();
@@ -46,13 +72,13 @@ int main()
 	std::cout << "Input labels:" << std::endl;
 	for (auto i = 0; i < midiInCount; i++)
 	{
-		std::cout << i << ": " << midiIn.GetPortName(i) << std::endl;
+	    std::cout << i << ": " << midiIn.GetPortName(i) << std::endl;
 	}
 
 	std::cout << "Output labels:" << std::endl;
 	for (auto i = 0; i < midiOutCount; i++)
 	{
-		std::cout << i << ": " << midiOut.GetPortName(i) << std::endl;
+	    std::cout << i << ": " << midiOut.GetPortName(i) << std::endl;
 	}
 
 	midiIn.OpenPort(0);
@@ -64,7 +90,7 @@ int main()
 	std::vector<unsigned char> message = {0xF0, 0x00, 0x00, 0x66, 0x14, 0x12, 0};
 	for (int i = 0; i < 56; i++)
 	{
-		message.push_back(' ');
+	    message.push_back(' ');
 	}
 	message.push_back(0xF7);
 	midiOut.SendMessage(&message);
@@ -73,7 +99,7 @@ int main()
 	message = {0xF0, 0x00, 0x00, 0x66, 0x14, 0x12, 0x38};
 	for (int i = 0; i < 56; i++)
 	{
-		message.push_back(' ');
+	    message.push_back(' ');
 	}
 	message.push_back(0xF7);
 	midiOut.SendMessage(&message);
@@ -85,7 +111,7 @@ int main()
 	message = {0xF0, 0x00, 0x00, 0x66, 0x14, 0x12, 0};
 	for (int i = 0; i < textMessage1.size(); i++)
 	{
-		message.push_back(textMessage1[i]);
+	    message.push_back(textMessage1[i]);
 	}
 	message.push_back(0xF7);
 	midiOut.SendMessage(&message);
@@ -95,7 +121,7 @@ int main()
 	message = {0xF0, 0x00, 0x00, 0x66, 0x14, 0x12, 0x38};
 	for (int i = 0; i < textMessage2.size(); i++)
 	{
-		message.push_back(textMessage2[i]);
+	    message.push_back(textMessage2[i]);
 	}
 	message.push_back(0xF7);
 	midiOut.SendMessage(&message);
@@ -103,14 +129,14 @@ int main()
 	// Set faders to -inf
 	for (unsigned char i = 224; i < 233; i++)
 	{
-		message = {i, 0, 0};
-		midiOut.SendMessage(&message);
+	    message = {i, 0, 0};
+	    midiOut.SendMessage(&message);
 	}
 
 	for (unsigned char i = 0; i < 113; i++)
 	{
-		message = {144, i, 127};
-		midiOut.SendMessage(&message);
+	    message = {144, i, 127};
+	    midiOut.SendMessage(&message);
 	}
 
 	message = {0xF0, 0x00, 0x00, 0x66, 0x14, 0x20, 0x01, 0b00000100, 0xF7};
@@ -119,4 +145,5 @@ int main()
 	midiOut.SendMessage(&message);
 
 	getchar();
+	 */
 }
