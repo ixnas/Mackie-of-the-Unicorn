@@ -18,17 +18,7 @@ namespace MackieOfTheUnicorn::Mixers
 	{
 		if (on)
 		{
-			if (OptionSet(optionList, id))
-			{
-				return;
-			}
-
 			optionList.push_back(id);
-			return;
-		}
-
-		if (!OptionSet(optionList, id))
-		{
 			return;
 		}
 
