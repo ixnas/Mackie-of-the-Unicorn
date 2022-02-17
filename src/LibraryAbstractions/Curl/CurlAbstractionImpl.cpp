@@ -35,15 +35,17 @@ namespace MackieOfTheUnicorn::LibraryAbstractions::Curl
 		curl_easy_cleanup(curl);
 	}
 
-	void CurlAbstractionImpl::SetURL(std::string url)
+	CurlAbstraction& CurlAbstractionImpl::SetURL(std::string url)
 	{
 		curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
 		curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, &Callback);
 		curl_easy_setopt(curl, CURLOPT_WRITEDATA, &readBuffer);
 		curl_easy_setopt(curl, CURLOPT_HEADERDATA, &headerBuffer);
+
+		return *this;
 	}
 
-	void CurlAbstractionImpl::SetHeaders(std::map<std::string, std::string> headers)
+	CurlAbstraction& CurlAbstractionImpl::SetHeaders(std::map<std::string, std::string> headers)
 	{
 		for (const auto& header : headers)
 		{
@@ -52,18 +54,25 @@ namespace MackieOfTheUnicorn::LibraryAbstractions::Curl
 			auto headerString = headerStringBuffer.str();
 			list = curl_slist_append(list, headerString.c_str());
 		}
+
 		curl_easy_setopt(curl, CURLOPT_HTTPHEADER, list);
+
+		return *this;
 	}
 
-	void CurlAbstractionImpl::SetPostData(std::string postData)
+	CurlAbstraction& CurlAbstractionImpl::SetPostData(std::string postData)
 	{
 		this->postData = postData;
 		curl_easy_setopt(curl, CURLOPT_POSTFIELDS, this->postData.c_str());
+
+		return *this;
 	}
 
-	void CurlAbstractionImpl::Perform()
+	CurlAbstraction& CurlAbstractionImpl::Perform()
 	{
 		curl_easy_perform(curl);
+
+		return *this;
 	}
 
 	std::string CurlAbstractionImpl::GetResponseHeaders()
@@ -76,20 +85,24 @@ namespace MackieOfTheUnicorn::LibraryAbstractions::Curl
 		return readBuffer;
 	}
 
-	void CurlAbstractionImpl::Reset()
+	CurlAbstraction& CurlAbstractionImpl::Reset()
 	{
 		ClearHeaders();
 		headerBuffer.clear();
 		readBuffer.clear();
 		curl_easy_reset(curl);
+
+		return *this;
 	}
 
-	void CurlAbstractionImpl::ClearHeaders()
+	CurlAbstraction& CurlAbstractionImpl::ClearHeaders()
 	{
 		if (list != nullptr)
 		{
 			curl_slist_free_all(list);
 			list = nullptr;
 		}
+
+		return *this;
 	}
 }

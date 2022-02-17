@@ -21,14 +21,14 @@ namespace MackieOfTheUnicorn::LibraryAbstractions::Curl
 	  public:
 		explicit CurlAbstractionImpl();
 		~CurlAbstractionImpl() override;
-		void SetURL(std::string url) override;
-		void SetHeaders(std::map<std::string, std::string> headers) override;
-		void SetPostData(std::string postData) override;
-		void Perform() override;
+		CurlAbstraction& SetURL(std::string url) override;
+		CurlAbstraction& SetHeaders(std::map<std::string, std::string> headers) override;
+		CurlAbstraction& SetPostData(std::string postData) override;
+		CurlAbstraction& Perform() override;
 		std::string GetResponseHeaders() override;
 		std::string GetResponseBody() override;
-		void Reset() override;
-		void ClearHeaders() override;
+		CurlAbstraction& Reset() override;
+		CurlAbstraction& ClearHeaders() override;
 	};
 }
 

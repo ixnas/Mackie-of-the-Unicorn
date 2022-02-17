@@ -17,16 +17,16 @@ namespace MackieOfTheUnicorn::LibraryAbstractions::Curl
 		virtual ~CurlAbstraction() = default;
 
 		/// Sets the URL to send a request to.
-		virtual void SetURL(std::string url) = 0;
+		virtual CurlAbstraction& SetURL(std::string url) = 0;
 
 		/// Sets a list of request headers.
-		virtual void SetHeaders(std::map<std::string, std::string> headers) = 0;
+		virtual CurlAbstraction& SetHeaders(std::map<std::string, std::string> headers) = 0;
 
 		/// Sets the request body.
-		virtual void SetPostData(std::string postData) = 0;
+		virtual CurlAbstraction& SetPostData(std::string postData) = 0;
 
 		/// Sends the request.
-		virtual void Perform() = 0;
+		virtual CurlAbstraction& Perform() = 0;
 
 		/// Returns the headers from the response.
 		virtual std::string GetResponseHeaders() = 0;
@@ -35,10 +35,10 @@ namespace MackieOfTheUnicorn::LibraryAbstractions::Curl
 		virtual std::string GetResponseBody() = 0;
 
 		/// Resets the object while keeping the connection alive.
-		virtual void Reset() = 0;
+		virtual CurlAbstraction& Reset() = 0;
 
 		/// Clears the set request headers.
-		virtual void ClearHeaders() = 0;
+		virtual CurlAbstraction& ClearHeaders() = 0;
 	};
 }
 #endif // MACKIE_OF_THE_UNICORN_CURLABSTRACTION_H
