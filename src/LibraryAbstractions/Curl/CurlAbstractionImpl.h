@@ -12,11 +12,11 @@ namespace MackieOfTheUnicorn::LibraryAbstractions::Curl
 {
 	class CurlAbstractionImpl : public CurlAbstraction
 	{
-		CURL* curl;
-		struct curl_slist* list;
-		std::string readBuffer;
-		std::string headerBuffer;
-		std::string postData;
+		CURL* CurlObject;
+		struct curl_slist* RequestHeaders;
+		std::string ResponseBody;
+		std::string ResponseHeaders;
+		std::string RequestBody;
 
 	  public:
 		explicit CurlAbstractionImpl();

@@ -21,26 +21,26 @@ namespace MackieOfTheUnicorn::LibraryAbstractions::Curl
 		return newLength;
 	}
 
-	CurlAbstractionImpl::CurlAbstractionImpl() : list(nullptr), curl(curl_easy_init())
+	CurlAbstractionImpl::CurlAbstractionImpl() : RequestHeaders(nullptr), CurlObject(curl_easy_init())
 	{
 	}
 
 	CurlAbstractionImpl::~CurlAbstractionImpl()
 	{
-		if (list != nullptr)
+		if (RequestHeaders != nullptr)
 		{
-			curl_slist_free_all(list);
-			list = nullptr;
+			curl_slist_free_all(RequestHeaders);
+			RequestHeaders = nullptr;
 		}
-		curl_easy_cleanup(curl);
+		curl_easy_cleanup(CurlObject);
 	}
 
 	CurlAbstraction& CurlAbstractionImpl::SetURL(std::string url)
 	{
-		curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
-		curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, &Callback);
-		curl_easy_setopt(curl, CURLOPT_WRITEDATA, &readBuffer);
-		curl_easy_setopt(curl, CURLOPT_HEADERDATA, &headerBuffer);
+		curl_easy_setopt(CurlObject, CURLOPT_URL, url.c_str());
+		curl_easy_setopt(CurlObject, CURLOPT_WRITEFUNCTION, &Callback);
+		curl_easy_setopt(CurlObject, CURLOPT_WRITEDATA, &ResponseBody);
+		curl_easy_setopt(CurlObject, CURLOPT_HEADERDATA, &ResponseHeaders);
 
 		return *this;
 	}
@@ -52,55 +52,55 @@ namespace MackieOfTheUnicorn::LibraryAbstractions::Curl
 			std::ostringstream headerStringBuffer;
 			headerStringBuffer << header.first << ": " << header.second;
 			auto headerString = headerStringBuffer.str();
-			list = curl_slist_append(list, headerString.c_str());
+			RequestHeaders = curl_slist_append(RequestHeaders, headerString.c_str());
 		}
 
-		curl_easy_setopt(curl, CURLOPT_HTTPHEADER, list);
+		curl_easy_setopt(CurlObject, CURLOPT_HTTPHEADER, RequestHeaders);
 
 		return *this;
 	}
 
 	CurlAbstraction& CurlAbstractionImpl::SetPostData(std::string postData)
 	{
-		this->postData = postData;
-		curl_easy_setopt(curl, CURLOPT_POSTFIELDS, this->postData.c_str());
+		this->RequestBody = postData;
+		curl_easy_setopt(CurlObject, CURLOPT_POSTFIELDS, this->RequestBody.c_str());
 
 		return *this;
 	}
 
 	CurlAbstraction& CurlAbstractionImpl::Perform()
 	{
-		curl_easy_perform(curl);
+		curl_easy_perform(CurlObject);
 
 		return *this;
 	}
 
 	std::string CurlAbstractionImpl::GetResponseHeaders()
 	{
-		return headerBuffer;
+		return ResponseHeaders;
 	}
 
 	std::string CurlAbstractionImpl::GetResponseBody()
 	{
-		return readBuffer;
+		return ResponseBody;
 	}
 
 	CurlAbstraction& CurlAbstractionImpl::Reset()
 	{
 		ClearHeaders();
-		headerBuffer.clear();
-		readBuffer.clear();
-		curl_easy_reset(curl);
+		ResponseHeaders.clear();
+		ResponseBody.clear();
+		curl_easy_reset(CurlObject);
 
 		return *this;
 	}
 
 	CurlAbstraction& CurlAbstractionImpl::ClearHeaders()
 	{
-		if (list != nullptr)
+		if (RequestHeaders != nullptr)
 		{
-			curl_slist_free_all(list);
-			list = nullptr;
+			curl_slist_free_all(RequestHeaders);
+			RequestHeaders = nullptr;
 		}
 
 		return *this;
