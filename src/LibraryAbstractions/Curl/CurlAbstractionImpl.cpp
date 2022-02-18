@@ -43,9 +43,6 @@ namespace MackieOfTheUnicorn::LibraryAbstractions::Curl
 		std::lock_guard<std::mutex> lock(Mutex);
 
 		curl_easy_setopt(CurlObject, CURLOPT_URL, url.c_str());
-		curl_easy_setopt(CurlObject, CURLOPT_WRITEFUNCTION, &Callback);
-		curl_easy_setopt(CurlObject, CURLOPT_WRITEDATA, &ResponseBody);
-		curl_easy_setopt(CurlObject, CURLOPT_HEADERDATA, &ResponseHeaders);
 
 		return *this;
 	}
@@ -81,6 +78,11 @@ namespace MackieOfTheUnicorn::LibraryAbstractions::Curl
 	{
 		std::lock_guard<std::mutex> lock(Mutex);
 
+		ResponseBody.clear();
+		ResponseHeaders.clear();
+		curl_easy_setopt(CurlObject, CURLOPT_WRITEFUNCTION, &Callback);
+		curl_easy_setopt(CurlObject, CURLOPT_WRITEDATA, &ResponseBody);
+		curl_easy_setopt(CurlObject, CURLOPT_HEADERDATA, &ResponseHeaders);
 		curl_easy_perform(CurlObject);
 
 		return *this;
