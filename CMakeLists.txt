@@ -79,7 +79,7 @@ file(GLOB_RECURSE integration_tests test/integration/*.cpp test/integration/*.h 
 # Main executable
 add_executable(Mackie_of_the_Unicorn ${sources})
 add_dependencies(Mackie_of_the_Unicorn rtmidi ${WX_LIBRARIES})
-target_include_directories(Mackie_of_the_Unicorn PUBLIC rapidjson/include rtmidi ${CURL_INCLUDE_DIR})
+target_include_directories(Mackie_of_the_Unicorn PUBLIC ext/rapidjson/include rtmidi ${CURL_INCLUDE_DIR})
 target_link_libraries(Mackie_of_the_Unicorn ${CMAKE_BINARY_DIR}/ext/rtmidi/librtmidi.a ${CURL_LIBRARIES} ${WX_LIBRARIES} ${OS_FLAGS})
 
 # Tests
@@ -89,7 +89,7 @@ if (BUILD_TESTS)
     # Unit tests
     add_executable(Unit_Tests ${test_sources} ${unit_tests})
     add_dependencies(Unit_Tests rtmidi)
-    target_include_directories(Unit_Tests PUBLIC rapidjson/include rtmidi ${CURL_INCLUDE_DIR})
+    target_include_directories(Unit_Tests PUBLIC ext/rapidjson/include rtmidi ${CURL_INCLUDE_DIR})
     target_link_libraries(Unit_Tests gtest_main gmock ${CMAKE_BINARY_DIR}/ext/rtmidi/librtmidi.a ${CURL_LIBRARIES} ${OS_FLAGS})
 
     # Integration tests
