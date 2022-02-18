@@ -7,6 +7,7 @@
 
 #include "CurlAbstraction.h"
 #include <curl/curl.h>
+#include <mutex>
 
 namespace MackieOfTheUnicorn::LibraryAbstractions::Curl
 {
@@ -17,6 +18,7 @@ namespace MackieOfTheUnicorn::LibraryAbstractions::Curl
 		std::string ResponseBody;
 		std::string ResponseHeaders;
 		std::string RequestBody;
+		std::mutex Mutex;
 
 	  public:
 		explicit CurlAbstractionImpl();
@@ -29,6 +31,7 @@ namespace MackieOfTheUnicorn::LibraryAbstractions::Curl
 		std::string GetResponseBody() override;
 		CurlAbstraction& Reset() override;
 		CurlAbstraction& ClearHeaders() override;
+		CurlAbstraction& Abort() override;
 	};
 }
 

@@ -39,6 +39,9 @@ namespace MackieOfTheUnicorn::LibraryAbstractions::Curl
 
 		/// Clears the set request headers.
 		virtual CurlAbstraction& ClearHeaders() = 0;
+
+		/// Aborts the currently active request.
+		virtual CurlAbstraction& Abort() = 0;
 	};
 }
 #endif // MACKIE_OF_THE_UNICORN_CURLABSTRACTION_H
