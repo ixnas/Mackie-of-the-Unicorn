@@ -7,6 +7,7 @@
 
 #include "LinkedMixer.h"
 #include "../HTTP/HTTPDevice.h"
+#include "../HTTP/HTTPListener.h"
 
 namespace MackieOfTheUnicorn::HTTP::Factories
 {
@@ -15,16 +16,19 @@ namespace MackieOfTheUnicorn::HTTP::Factories
 
 namespace MackieOfTheUnicorn::Mixers
 {
-	class MOTUMixer : public LinkedMixer
+	/// A LinkedMixer implementation that represents a Mackie control surface.
+	class MOTUMixer : public LinkedMixer, public HTTP::HTTPListener
 	{
 		std::unique_ptr<HTTP::HTTPDevice> HTTPDevice;
 		VirtualMixer* VirtualMixer;
+		int Id;
 
 	  public:
-		explicit MOTUMixer(std::unique_ptr<HTTP::HTTPDevice> httpDevice);
+		explicit MOTUMixer(std::unique_ptr<HTTP::HTTPDevice> httpDevice, int id);
 		void SetVirtualMixer(Mixers::VirtualMixer* virtualMixer) override;
 		int GetId() override;
 		void SetInputChannelMute(int originId, int channel, bool on) override;
+		void HTTPCallback(std::pair<std::string, JSON::JSONValue>& message) override;
 	};
 }
 
