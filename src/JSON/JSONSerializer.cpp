@@ -74,10 +74,6 @@ namespace MackieOfTheUnicorn::JSON
 				auto stringValueLength = value.String.value().length();
 				jsonValue.SetString(stringValue, stringValueLength, allocator);
 			}
-			else
-			{
-				continue;
-			}
 			document.AddMember(jsonKey, jsonValue, allocator);
 		}
 
