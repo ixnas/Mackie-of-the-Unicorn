@@ -14,16 +14,16 @@ namespace MackieOfTheUnicorn::HTTP
 	class HTTPDeviceImpl : public HTTPDevice
 	{
 		HTTPListener* Listener;
-		LibraryAbstractions::Curl::CurlAbstraction* CurlIn;
-		LibraryAbstractions::Curl::CurlAbstraction* CurlOut;
+		std::unique_ptr<LibraryAbstractions::Curl::CurlAbstraction> CurlIn;
+		std::unique_ptr<LibraryAbstractions::Curl::CurlAbstraction> CurlOut;
 		bool Running;
 		std::future<void> Task;
 
 		void Loop();
 
 	  public:
-		explicit HTTPDeviceImpl(LibraryAbstractions::Curl::CurlAbstraction& curlIn,
-								LibraryAbstractions::Curl::CurlAbstraction& curlOut);
+		explicit HTTPDeviceImpl(std::unique_ptr<LibraryAbstractions::Curl::CurlAbstraction> curlIn,
+								std::unique_ptr<LibraryAbstractions::Curl::CurlAbstraction> curlOut);
 		~HTTPDeviceImpl() override;
 		void StartListening() override;
 		void StopListening() override;

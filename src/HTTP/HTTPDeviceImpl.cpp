@@ -52,9 +52,9 @@ namespace MackieOfTheUnicorn::HTTP
 		}
 	}
 
-	HTTPDeviceImpl::HTTPDeviceImpl(LibraryAbstractions::Curl::CurlAbstraction& curlIn,
-	                               LibraryAbstractions::Curl::CurlAbstraction& curlOut)
-		: Listener(nullptr), CurlIn(&curlIn), CurlOut(&curlOut), Running(false)
+	HTTPDeviceImpl::HTTPDeviceImpl(std::unique_ptr<LibraryAbstractions::Curl::CurlAbstraction> curlIn,
+	                               std::unique_ptr<LibraryAbstractions::Curl::CurlAbstraction> curlOut)
+		: Listener(nullptr), CurlIn(std::move(curlIn)), CurlOut(std::move(curlOut)), Running(false)
 	{
 	}
 
