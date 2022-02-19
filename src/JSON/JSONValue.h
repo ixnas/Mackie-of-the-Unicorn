@@ -13,10 +13,16 @@ namespace MackieOfTheUnicorn::JSON
 	/// A value container for JSON values.
 	struct JSONValue
 	{
+		/// Integer representation if it's present.
 		std::optional<int> Integer;
+
+		/// String representation if it's present.
 		std::optional<std::string> String;
+
+		/// Float representation if it's present.
 		std::optional<float> Float;
 
+		/// Enables comparing all values between two JSONValue objects.
 		bool operator==(JSONValue const& object) const;
 	};
 } // namespace MackieOfTheUnicorn::JSON
