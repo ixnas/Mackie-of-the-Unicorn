@@ -5,6 +5,7 @@
 #include "../../../src/Mixers/VirtualMixerBuilder.h"
 #include "../../fakes/Mackie/MackieServiceFake.h"
 #include "../../../src/Exceptions/DeviceUnavailableException.h"
+#include "../../fakes/HTTP/Factories/HTTPDeviceFactoryFake.h"
 #include "gtest/gtest.h"
 
 namespace MackieOfTheUnicorn::Tests::Unit::Mixers
@@ -15,10 +16,12 @@ namespace MackieOfTheUnicorn::Tests::Unit::Mixers
 		void SetUp() override
 		{
 			mackieServiceFake = std::make_unique<Mackie::MackieServiceFake>();
-			instance = std::make_unique<MackieOfTheUnicorn::Mixers::VirtualMixerBuilder>(*mackieServiceFake);
+			httpDeviceFactoryFake = std::make_unique<MackieOfTheUnicorn::HTTP::Factories::HTTPDeviceFactoryFake>();
+			instance = std::make_unique<MackieOfTheUnicorn::Mixers::VirtualMixerBuilder>(*mackieServiceFake, *httpDeviceFactoryFake);
 		}
 
 		std::unique_ptr<MackieOfTheUnicorn::Mackie::MackieServiceFake> mackieServiceFake;
+		std::unique_ptr<MackieOfTheUnicorn::HTTP::Factories::HTTPDeviceFactoryFake> httpDeviceFactoryFake;
 		std::unique_ptr<MackieOfTheUnicorn::Mixers::VirtualMixerBuilder> instance;
 	};
 
@@ -50,6 +53,7 @@ namespace MackieOfTheUnicorn::Tests::Unit::Mixers
 
 		std::vector<std::pair<int, int>> inputAndOutputIds = {{0, 0}};
 		instance->AddMackieMixer(inputAndOutputIds);
+		instance->AddMOTUMixer("motu.local");
 		auto actualInstance = instance->Build();
 
 		EXPECT_NE(actualInstance.get(), nullptr);

@@ -1,4 +1,8 @@
 #include "../Application.h"
+#include "../HTTP/Factories/HTTPDeviceFactoryImpl.h"
+#include "../HTTP/HTTPDeviceImpl.h"
+#include "../HTTP/HTTPListener.h"
+#include "../JSON/JSONValue.h"
 #include "../LibraryAbstractions/Curl/CurlAbstractionImpl.h"
 #include "../LibraryAbstractions/RtMidi/Factories/RtMidiAbstractionFactoryImpl.h"
 #include "../LibraryAbstractions/RtMidi/RtMidiInAbstractionImpl.h"
@@ -8,11 +12,9 @@
 #include "../Mackie/Factories/MackieCompositeFactoryImpl.h"
 #include "../Mackie/Factories/MackieDeviceFactoryImpl.h"
 #include "../Mackie/MackieServiceImpl.h"
-#include "../JSON/JSONValue.h"
 #include "../di.h"
 #include "../git_version.h"
-#include "../HTTP/HTTPDeviceImpl.h"
-#include "../HTTP/HTTPListener.h"
+#include "../LibraryAbstractions/Curl/Factories/CurlAbstractionFactoryImpl.h"
 #include <curl/curl.h>
 #include <future>
 #include <sstream>
@@ -39,20 +41,6 @@ class HTTPListenerImpl : public MackieOfTheUnicorn::HTTP::HTTPListener
 
 int main()
 {
-	MackieOfTheUnicorn::LibraryAbstractions::Curl::CurlAbstractionImpl curlIn;
-	curlIn.SetURL("http://motu.local/datastore");
-	MackieOfTheUnicorn::LibraryAbstractions::Curl::CurlAbstractionImpl curlOut;
-	curlIn.SetURL("http://motu.local/datastore");
-
-	MackieOfTheUnicorn::HTTP::HTTPDeviceImpl restDevice(curlIn, curlOut);
-	HTTPListenerImpl restListener;
-	restDevice.RegisterCallback(restListener);
-	restDevice.StartListening();
-	std::this_thread::sleep_for(std::chrono::seconds(500));
-	std::cout << "Stop" << std::endl;
-	restDevice.StopListening();
-
-	return 0;
 	std::cout << "Mackie of the Unicorn " << MackieOfTheUnicorn::VERSION << std::endl
 	          << "Copyright \u00a9 2022 Sjoerd Scheffer" << std::endl
 	          << std::endl;
@@ -62,7 +50,9 @@ int main()
 	    di::bind<MackieOfTheUnicorn::MIDI::MIDIService>.to<MackieOfTheUnicorn::MIDI::MIDIServiceImpl>(),
 	    di::bind<MackieOfTheUnicorn::MIDI::Factories::MIDIDeviceFactory>.to<MackieOfTheUnicorn::MIDI::Factories::MIDIDeviceFactoryImpl>(),
 	    di::bind<MackieOfTheUnicorn::LibraryAbstractions::RtMidi::Factories::RtMidiAbstractionFactory>.to<MackieOfTheUnicorn::LibraryAbstractions::RtMidi::Factories::RtMidiAbstractionFactoryImpl>(),
-	    di::bind<MackieOfTheUnicorn::Mackie::Factories::MackieDeviceFactory>.to<MackieOfTheUnicorn::Mackie::Factories::MackieDeviceFactoryImpl>());
+	    di::bind<MackieOfTheUnicorn::Mackie::Factories::MackieDeviceFactory>.to<MackieOfTheUnicorn::Mackie::Factories::MackieDeviceFactoryImpl>(),
+	    di::bind<MackieOfTheUnicorn::HTTP::Factories::HTTPDeviceFactory>.to<MackieOfTheUnicorn::HTTP::Factories::HTTPDeviceFactoryImpl>(),
+	    di::bind<MackieOfTheUnicorn::LibraryAbstractions::Curl::Factories::CurlAbstractionFactory>.to<MackieOfTheUnicorn::LibraryAbstractions::Curl::Factories::CurlAbstractionFactoryImpl>());
 	auto app = injector.create<MackieOfTheUnicorn::Application>();
 	auto inputDevices = app.GetAvailableInputDevices();
 	auto outputDevices = app.GetAvailableOutputDevices();

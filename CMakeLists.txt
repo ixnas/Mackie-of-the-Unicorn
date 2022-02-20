@@ -91,12 +91,14 @@ if (BUILD_TESTS)
     add_dependencies(Unit_Tests rtmidi)
     target_include_directories(Unit_Tests PUBLIC ext/rapidjson/include rtmidi ${CURL_INCLUDE_DIR})
     target_link_libraries(Unit_Tests gtest_main gmock ${CMAKE_BINARY_DIR}/ext/rtmidi/librtmidi.a ${CURL_LIBRARIES} ${OS_FLAGS})
+    target_compile_definitions(Unit_Tests PRIVATE TESTING=1)
 
     # Integration tests
     add_executable(Integration_Tests ${test_sources} ${integration_tests})
     add_dependencies(Integration_Tests rtmidi)
     target_include_directories(Integration_Tests PUBLIC rapidjson/include rtmidi ${CURL_INCLUDE_DIR})
     target_link_libraries(Integration_Tests gtest_main gmock ${CMAKE_BINARY_DIR}/ext/rtmidi/librtmidi.a ${CURL_LIBRARIES} ${OS_FLAGS})
+    target_compile_definitions(Integration_Tests PRIVATE TESTING=1)
 endif ()
 
 # Documentation

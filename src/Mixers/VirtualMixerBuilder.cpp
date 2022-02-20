@@ -6,6 +6,7 @@
 #include "../Exceptions/DeviceUnavailableException.h"
 #include "../Mackie/MackieService.h"
 #include "VirtualMixerImpl.h"
+#include <sstream>
 
 namespace MackieOfTheUnicorn::Mixers
 {
@@ -19,8 +20,9 @@ namespace MackieOfTheUnicorn::Mixers
 		                   });
 	}
 
-	VirtualMixerBuilder::VirtualMixerBuilder(Mackie::MackieService& mackieService)
-	    : MackieService(&mackieService), CurrentMixerId(0)
+	VirtualMixerBuilder::VirtualMixerBuilder(Mackie::MackieService& mackieService,
+	                                         HTTP::Factories::HTTPDeviceFactory& httpDeviceFactory)
+	    : MackieService(&mackieService), CurrentMixerId(0), HTTPDeviceFactory(&httpDeviceFactory)
 	{
 	}
 
@@ -43,15 +45,31 @@ namespace MackieOfTheUnicorn::Mixers
 		return this;
 	}
 
+	VirtualMixerBuilder* VirtualMixerBuilder::AddMOTUMixer(std::string hostname)
+	{
+		std::ostringstream stringStream;
+		stringStream << "http://" << hostname << "/datastore";
+		auto url = stringStream.str();
+		auto httpDevice = HTTPDeviceFactory->Create(url);
+		MOTUMixer = std::make_unique<Mixers::MOTUMixer>(std::move(httpDevice), CurrentMixerId++);
+		return this;
+	}
+
 	std::unique_ptr<VirtualMixer> VirtualMixerBuilder::Build()
 	{
 		if (MackieMixer == nullptr)
 		{
-			throw Exceptions::DeviceUnavailableException("No LinkedMixers added.");
+			throw Exceptions::DeviceUnavailableException("No MackieMixer added.");
+		}
+
+		if (MOTUMixer == nullptr)
+		{
+			throw Exceptions::DeviceUnavailableException("No MOTUMixer added.");
 		}
 
 		std::vector<std::unique_ptr<LinkedMixer>> linkedMixers;
 		linkedMixers.push_back(std::move(MackieMixer));
+		linkedMixers.push_back(std::move(MOTUMixer));
 		auto virtualMixer = std::make_unique<VirtualMixerImpl>(linkedMixers);
 		MackieMixer = nullptr;
 		return virtualMixer;

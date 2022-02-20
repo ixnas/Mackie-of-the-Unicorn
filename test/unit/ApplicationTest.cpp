@@ -4,6 +4,7 @@
 #include "../../src/Application.h"
 #include "../fakes/Mackie/MackieServiceFake.h"
 #include "gtest/gtest.h"
+#include "../fakes/HTTP/Factories/HTTPDeviceFactoryFake.h"
 
 namespace MackieOfTheUnicorn::Tests::Integration
 {
@@ -13,9 +14,13 @@ namespace MackieOfTheUnicorn::Tests::Integration
 		void SetUp() override
 		{
 			mackieService = std::make_unique<Mackie::MackieServiceFake>();
-			instance = std::make_unique<MackieOfTheUnicorn::Application>(*mackieService);
+			httpDeviceFactoryFake = std::make_unique<HTTP::Factories::HTTPDeviceFactoryFake>();
+			virtualMixerBuilder = std::make_unique<MackieOfTheUnicorn::Mixers::VirtualMixerBuilder>(*mackieService, *httpDeviceFactoryFake);
+			instance = std::make_unique<MackieOfTheUnicorn::Application>(*mackieService, *virtualMixerBuilder);
 		}
 
+		std::unique_ptr<Mixers::VirtualMixerBuilder> virtualMixerBuilder;
+		std::unique_ptr<HTTP::Factories::HTTPDeviceFactoryFake> httpDeviceFactoryFake;
 		std::unique_ptr<Mackie::MackieServiceFake> mackieService;
 		std::unique_ptr<MackieOfTheUnicorn::Application> instance;
 	};

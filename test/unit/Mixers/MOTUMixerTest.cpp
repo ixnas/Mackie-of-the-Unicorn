@@ -39,7 +39,7 @@ namespace MackieOfTheUnicorn::Tests::Unit::Mixers
 	{
 		std::string expectedKey = "mix/chan/5/matrix/mute";
 		JSON::JSONValue expectedValue;
-		expectedValue.Float = 1;
+		expectedValue.Integer = 1;
 		std::pair<std::string, JSON::JSONValue> expectedMessage = {expectedKey, expectedValue};
 
 		instance->SetInputChannelMute(2, 5, true);
@@ -49,7 +49,7 @@ namespace MackieOfTheUnicorn::Tests::Unit::Mixers
 		EXPECT_EQ(actualMessage, expectedMessage);
 
 		expectedKey = "mix/chan/7/matrix/mute";
-		expectedValue.Float = 0;
+		expectedValue.Integer = 0;
 		expectedMessage = {expectedKey, expectedValue};
 
 		instance->SetInputChannelMute(2, 7, false);

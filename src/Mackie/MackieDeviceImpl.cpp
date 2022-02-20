@@ -3,6 +3,7 @@
 //
 
 #include "MackieDeviceImpl.h"
+#include <thread>
 
 namespace MackieOfTheUnicorn::Mackie
 {
@@ -25,12 +26,20 @@ namespace MackieOfTheUnicorn::Mackie
 
 	void MackieDeviceImpl::SetChannelMute(int channelNumber, bool on)
 	{
+		if (channelNumber > 7)
+		{
+			return;
+		}
+
 		const unsigned char byte1 = 144;
 		unsigned char byte2 = 16 + channelNumber;
 		unsigned char byte3 = on ? 127 : 0;
 		std::vector<unsigned char> message = {byte1, byte2, byte3};
 
 		MIDIDevice->SendMessage(message);
+#if !TESTING
+		std::this_thread::sleep_for(std::chrono::milliseconds(10));
+#endif
 	}
 
 	void MackieDeviceImpl::MIDICallback(std::vector<unsigned char>& message)

@@ -39,7 +39,7 @@ namespace MackieOfTheUnicorn::Tests::Unit::HTTP
 
 		std::pair<std::string, JSON::JSONValue> message = {key1, value1};
 
-		auto expectedMessage1 = "{\"key1\":128}";
+		auto expectedMessage1 = "json={\"key1\":128}";
 		instance->SendMessage(message);
 		auto actualMessage1 = curlOut->SetPostDataPostData;
 		auto sent = curlOut->Performed;

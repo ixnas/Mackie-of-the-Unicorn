@@ -17,6 +17,7 @@ namespace MackieOfTheUnicorn::Mixers
 	void MOTUMixer::SetVirtualMixer(Mixers::VirtualMixer* virtualMixer)
 	{
 		VirtualMixer = virtualMixer;
+		HTTPDevice->StartListening();
 	}
 
 	int MOTUMixer::GetId()
@@ -30,7 +31,7 @@ namespace MackieOfTheUnicorn::Mixers
 		stringStream << "mix/chan/" << channel << "/matrix/mute";
 		auto key = stringStream.str();
 		JSON::JSONValue value;
-		value.Float = on ? 1 : 0;
+		value.Integer = on ? 1 : 0;
 		std::pair<std::string, JSON::JSONValue> message = {key, value};
 		HTTPDevice->SendMessage(message);
 	}

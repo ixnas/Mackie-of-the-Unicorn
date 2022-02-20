@@ -9,6 +9,7 @@
 #include <memory>
 #include "Mixers/MackieMixer.h"
 #include "Mixers/VirtualMixer.h"
+#include "Mixers/VirtualMixerBuilder.h"
 
 namespace MackieOfTheUnicorn::Mackie
 {
@@ -21,10 +22,11 @@ namespace MackieOfTheUnicorn
 	class Application
 	{
 		Mackie::MackieService* MackieService;
+		Mixers::VirtualMixerBuilder* VirtualMixerBuilder;
 		std::unique_ptr<Mixers::VirtualMixer> VirtualMixer;
 
 	  public:
-		explicit Application(Mackie::MackieService& mackieService);
+		explicit Application(Mackie::MackieService& mackieService, Mixers::VirtualMixerBuilder& virtualMixerBuilder);
 
 		/// Returns a list of available MIDI input devices.
 		[[nodiscard]] std::map<int, std::string> GetAvailableInputDevices() const;

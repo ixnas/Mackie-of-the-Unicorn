@@ -9,7 +9,7 @@
 
 namespace MackieOfTheUnicorn
 {
-	Application::Application(Mackie::MackieService& mackieService) : MackieService(&mackieService)
+	Application::Application(Mackie::MackieService& mackieService, Mixers::VirtualMixerBuilder& virtualMixerBuilder) : MackieService(&mackieService), VirtualMixerBuilder(&virtualMixerBuilder)
 	{
 	}
 
@@ -25,7 +25,6 @@ namespace MackieOfTheUnicorn
 
 	void Application::Start(std::vector<std::pair<int, int>>& inputAndOutputIds)
 	{
-		auto virtualMixerBuilder = std::make_unique<Mixers::VirtualMixerBuilder>(*MackieService);
-		VirtualMixer = virtualMixerBuilder->AddMackieMixer(inputAndOutputIds)->Build();
+		VirtualMixer = VirtualMixerBuilder->AddMackieMixer(inputAndOutputIds)->AddMOTUMixer("169.254.133.172")->Build();
 	}
 } // namespace MackieOfTheUnicorn

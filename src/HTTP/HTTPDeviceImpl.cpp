@@ -6,6 +6,7 @@
 #include "HTTPListener.h"
 #include "../JSON/JSONSerializer.h"
 #include "ETagParser.h"
+#include <sstream>
 
 namespace MackieOfTheUnicorn::HTTP
 {
@@ -91,7 +92,11 @@ namespace MackieOfTheUnicorn::HTTP
 		std::vector<std::pair<std::string, MackieOfTheUnicorn::JSON::JSONValue>> objects = {message};
 		auto messageString = MackieOfTheUnicorn::JSON::JSONSerializer::Serialize(objects);
 
-		CurlOut->SetPostData(messageString);
+		std::ostringstream stringStream;
+		stringStream << "json=" << messageString;
+		auto messageWithPrefix = stringStream.str();
+
+		CurlOut->SetPostData(messageWithPrefix);
 		CurlOut->Perform();
 	}
 }

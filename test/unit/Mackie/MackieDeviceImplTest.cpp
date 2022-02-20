@@ -86,4 +86,13 @@ namespace MackieOfTheUnicorn::Tests::Unit::Mackie
 	{
 		SetsMuteChannelsOnListener(false);
 	}
+
+	TEST_F(MackieDeviceImplTest, IgnoresChannelsAbove7)
+	{
+		instance->SetChannelMute(8, true);
+
+		auto gotMessages = !midiDeviceFake->SendMessageMessages.empty();
+
+		EXPECT_FALSE(gotMessages);
+	}
 } // namespace MackieOfTheUnicorn::Tests::Unit::Mackie
