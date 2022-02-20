@@ -145,4 +145,12 @@ namespace MackieOfTheUnicorn::Tests::Unit::JSON
 
 		EXPECT_EQ(actualString, expectedString);
 	}
+
+	TEST_F(JSONSerializerTest, EmptyStringReturnsEmptyObject)
+	{
+		std::string input;
+		std::vector<std::pair<std::string, MackieOfTheUnicorn::JSON::JSONValue>> expectedOutput;
+		auto actualOutput = instance->Parse(input);
+		EXPECT_EQ(actualOutput, expectedOutput);
+	}
 }

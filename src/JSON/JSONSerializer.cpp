@@ -12,6 +12,11 @@ namespace MackieOfTheUnicorn::JSON
 {
 	std::vector<std::pair<std::string, JSONValue>> JSONSerializer::Parse(std::string& string)
 	{
+		if (string.empty())
+		{
+			return {};
+		}
+
 		rapidjson::Document document;
 		document.Parse(string.c_str());
 

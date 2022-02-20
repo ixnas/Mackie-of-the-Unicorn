@@ -3,9 +3,9 @@
 //
 
 #include "HTTPDeviceImpl.h"
-#include "HTTPListener.h"
 #include "../JSON/JSONSerializer.h"
 #include "ETagParser.h"
+#include "HTTPListener.h"
 #include <sstream>
 
 namespace MackieOfTheUnicorn::HTTP
@@ -55,13 +55,13 @@ namespace MackieOfTheUnicorn::HTTP
 
 	HTTPDeviceImpl::HTTPDeviceImpl(std::unique_ptr<LibraryAbstractions::Curl::CurlAbstraction> curlIn,
 	                               std::unique_ptr<LibraryAbstractions::Curl::CurlAbstraction> curlOut)
-		: Listener(nullptr), CurlIn(std::move(curlIn)), CurlOut(std::move(curlOut)), Running(false)
+	    : Listener(nullptr), CurlIn(std::move(curlIn)), CurlOut(std::move(curlOut)), Running(false)
 	{
 	}
 
 	HTTPDeviceImpl::~HTTPDeviceImpl()
 	{
-		if(Task.valid())
+		if (Running)
 		{
 			Running = false;
 			CurlIn->Abort();
@@ -79,7 +79,7 @@ namespace MackieOfTheUnicorn::HTTP
 	{
 		Running = false;
 		CurlIn->Abort();
-		Task.wait();
+		Task.get();
 	}
 
 	void HTTPDeviceImpl::RegisterCallback(HTTPListener& listener)
@@ -99,4 +99,4 @@ namespace MackieOfTheUnicorn::HTTP
 		CurlOut->SetPostData(messageWithPrefix);
 		CurlOut->Perform();
 	}
-}
+} // namespace MackieOfTheUnicorn::HTTP
