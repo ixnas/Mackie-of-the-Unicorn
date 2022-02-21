@@ -24,6 +24,31 @@ namespace MackieOfTheUnicorn::Tests::Integration
 
 		std::unique_ptr<ApplicationContainerWrapper> wrapper;
 		ApplicationContainer* instance;
+
+		void MOTUCanSwitchFirst8Channels(bool expectedOn)
+		{
+			for (int i = 0; i < 8; i++)
+			{
+				auto curlIn = wrapper->CurlInAbstractionFake;
+				auto rtMidiOut = wrapper->RtMidiOutAbstractionFake;
+				std::ostringstream stringStream;
+				stringStream << "{\"mix/chan/" << i << "/matrix/mute\":" << (expectedOn ? "1.000000" : "0.000000")
+				             << "}";
+				auto jsonMessage = stringStream.str();
+
+				std::vector<unsigned char> expectedMIDIMessage = {144, (unsigned char)(16 + i),
+				                                                  (unsigned char)(expectedOn ? 127 : 0)};
+
+				auto oldSize = rtMidiOut->SendMessageMessages.size();
+				curlIn->FakeHasChangedMessage(jsonMessage);
+				while (rtMidiOut->SendMessageMessages.size() == oldSize)
+				{
+				}
+
+				auto actualMIDIMessage = *(rtMidiOut->SendMessageMessages.end() - 1);
+				EXPECT_EQ(actualMIDIMessage, expectedMIDIMessage);
+			}
+		}
 	};
 
 	TEST_F(ChannelMutesTest, MackieCanSwitchFirst8Mutes)
@@ -57,59 +82,11 @@ namespace MackieOfTheUnicorn::Tests::Integration
 
 	TEST_F(ChannelMutesTest, MOTUCanSwitchFirst8ChannelsOn)
 	{
-		int etag = 0;
-		auto switchMute = [&etag](auto& wrapper, int i, bool expectedOn) {
-			auto curlIn = wrapper->CurlInAbstractionFake;
-			auto rtMidiOut = wrapper->RtMidiOutAbstractionFake;
-			std::ostringstream stringStream;
-			stringStream << "{\"mix/chan/" << i << "/matrix/mute\":" << (expectedOn ? "1.000000" : "0.000000") << "}";
-			auto jsonMessage = stringStream.str();
-
-			std::vector<unsigned char> expectedMIDIMessage = {144, (unsigned char)(16 + i),
-			                                                  (unsigned char)(expectedOn ? 127 : 0)};
-
-			auto oldSize = rtMidiOut->SendMessageMessages.size();
-			curlIn->FakeHasChangedMessage(jsonMessage);
-			while (rtMidiOut->SendMessageMessages.size() == oldSize)
-			{
-			}
-
-			auto actualMIDIMessage = *(rtMidiOut->SendMessageMessages.end() - 1);
-			EXPECT_EQ(actualMIDIMessage, expectedMIDIMessage);
-		};
-
-		for (int i = 0; i < 8; i++)
-		{
-			switchMute(wrapper, i, true);
-		}
+		MOTUCanSwitchFirst8Channels(true);
 	}
 
 	TEST_F(ChannelMutesTest, MOTUCanSwitchFirst8ChannelsOff)
 	{
-		int etag = 1;
-		auto switchMute = [&etag](auto& wrapper, int i, bool expectedOn) {
-			auto curlIn = wrapper->CurlInAbstractionFake;
-			auto rtMidiOut = wrapper->RtMidiOutAbstractionFake;
-			std::ostringstream stringStream;
-			stringStream << "{\"mix/chan/" << i << "/matrix/mute\":" << (expectedOn ? "1.000000" : "0.000000") << "}";
-			auto jsonMessage = stringStream.str();
-
-			std::vector<unsigned char> expectedMIDIMessage = {144, (unsigned char)(16 + i),
-			                                                  (unsigned char)(expectedOn ? 127 : 0)};
-
-			auto oldSize = rtMidiOut->SendMessageMessages.size();
-			curlIn->FakeHasChangedMessage(jsonMessage);
-			while (rtMidiOut->SendMessageMessages.size() == oldSize)
-			{
-			}
-
-			auto actualMIDIMessage = *(rtMidiOut->SendMessageMessages.end() - 1);
-			EXPECT_EQ(actualMIDIMessage, expectedMIDIMessage);
-		};
-
-		for (int i = 0; i < 8; i++)
-		{
-			switchMute(wrapper, i, true);
-		}
+		MOTUCanSwitchFirst8Channels(false);
 	}
 } // namespace MackieOfTheUnicorn::Tests::Integration

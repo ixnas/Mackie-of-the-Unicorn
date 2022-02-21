@@ -20,7 +20,7 @@ namespace MackieOfTheUnicorn::Mixers
 	{
 		for(const auto& linkedMixer : LinkedMixers)
 		{
-			if (linkedMixer->GetId() == originId)
+			if (linkedMixer == nullptr && linkedMixer->GetId() == originId)
 			{
 				continue;
 			}
