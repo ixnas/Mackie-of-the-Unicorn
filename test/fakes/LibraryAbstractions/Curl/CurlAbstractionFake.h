@@ -6,11 +6,11 @@
 #define MACKIE_OF_THE_UNICORN_CURLABSTRACTIONFAKE_H
 
 #include "../../../src/LibraryAbstractions/Curl/CurlAbstraction.h"
+#include <iostream>
+#include <memory>
 #include <sstream>
 #include <string>
-#include <memory>
 #include <thread>
-#include <iostream>
 
 namespace MackieOfTheUnicorn::LibraryAbstractions::Curl
 {
@@ -22,9 +22,13 @@ namespace MackieOfTheUnicorn::LibraryAbstractions::Curl
 		std::optional<std::string> SetPostDataPostData;
 		std::string ResponseHeaders;
 		std::string ResponseBody;
-		bool Performed = false;
+		std::string PerformedHeaders;
+		std::string PerformedBody;
 		int ETag = 0;
 		std::mutex Mutex;
+
+		std::vector<std::string> ReturnedBodies;
+		std::vector<std::string> ReturnedHeaders;
 
 		~CurlAbstractionFake() override
 		{
@@ -57,33 +61,43 @@ namespace MackieOfTheUnicorn::LibraryAbstractions::Curl
 			if (SetHeadersHeaders.has_value() && SetHeadersHeaders->contains("If-None-Match") &&
 				SetHeadersHeaders.value()["If-None-Match"] >= std::to_string(ETag))
 			{
-				FakeNoneChangedMessageWithoutMutex();
+				std::ostringstream stringStream;
+
+				stringStream << "HTTP/1.1 304 Not Modified"
+							 << "\r\n";
+				stringStream << "Connection: Keep-Alive"
+							 << "\r\n";
+				stringStream << "Content-Length: 0"
+							 << "\r\n";
+				stringStream << "Cache-Control: no-cache"
+							 << "\r\n";
+				stringStream << "Access-Control-Allow-Origin: *"
+							 << "\r\n";
+				stringStream << "Date: Thu, 01 Jan 1970 00:07:49 GMT"
+							 << "\r\n";
+				stringStream << "\r\n";
+
+				PerformedHeaders = stringStream.str();
+				PerformedBody = "";
+				return *this;
 			}
 
-			Performed = true;
+			PerformedHeaders = ResponseHeaders;
+			PerformedBody = ResponseBody;
+
 			return *this;
 		}
 
 		std::string GetResponseHeaders() override
 		{
 			std::lock_guard<std::mutex> l(Mutex);
-			if (!Performed)
-			{
-				return {};
-			}
-
-			return ResponseHeaders;
+			return PerformedHeaders;
 		}
 
 		std::string GetResponseBody() override
 		{
 			std::lock_guard<std::mutex> l(Mutex);
-			if (!Performed)
-			{
-				return {};
-			}
-
-			return ResponseBody;
+			return PerformedBody;
 		}
 
 		CurlAbstraction& Reset() override
@@ -118,20 +132,19 @@ namespace MackieOfTheUnicorn::LibraryAbstractions::Curl
 			std::ostringstream stringStream;
 
 			stringStream << "HTTP/1.1 304 Not Modified"
-						 << "\r\n";
+			             << "\r\n";
 			stringStream << "Connection: Keep-Alive"
-						 << "\r\n";
+			             << "\r\n";
 			stringStream << "Content-Length: 0"
-						 << "\r\n";
+			             << "\r\n";
 			stringStream << "Cache-Control: no-cache"
-						 << "\r\n";
+			             << "\r\n";
 			stringStream << "Access-Control-Allow-Origin: *"
-						 << "\r\n";
+			             << "\r\n";
 			stringStream << "Date: Thu, 01 Jan 1970 00:07:49 GMT"
-						 << "\r\n";
+			             << "\r\n";
 			stringStream << "\r\n";
 
-			ResponseBody.clear();
 			ResponseHeaders = stringStream.str();
 		}
 

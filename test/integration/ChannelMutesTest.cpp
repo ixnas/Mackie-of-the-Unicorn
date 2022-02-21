@@ -67,10 +67,8 @@ namespace MackieOfTheUnicorn::Tests::Integration
 			rtMidiIn->FakeMessage(0, message);
 
 			auto actualJSONMessage = curlOut->SetPostDataPostData;
-			auto hasPerformed = curlOut->Performed;
 
 			EXPECT_EQ(actualJSONMessage, expectedJSONMessage);
-			EXPECT_TRUE(hasPerformed);
 		};
 
 		for (int i = 0; i < 8; i++)
