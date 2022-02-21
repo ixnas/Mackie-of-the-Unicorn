@@ -42,10 +42,8 @@ namespace MackieOfTheUnicorn::Tests::Unit::HTTP
 		auto expectedMessage1 = "json={\"key1\":128}";
 		instance->SendMessage(message);
 		auto actualMessage1 = curlOut->SetPostDataPostData;
-		auto sent = curlOut->Performed;
 
 		EXPECT_EQ(actualMessage1, expectedMessage1);
-		EXPECT_TRUE(sent);
 	}
 
 	TEST_F(HTTPDeviceImplTest, NoChangeDoesntCallCallback)
