@@ -79,8 +79,8 @@ namespace MackieOfTheUnicorn::Tests::Integration
 		    dynamic_cast<LibraryAbstractions::Curl::Factories::CurlAbstractionFactoryFake*>(
 		        applicationContainer.CurlAbstractionFactory);
 
-		auto rtMidiInAbstractionFake = rtMidiAbstractionFactoryFake->ReturnedInAbstractions[0];
-		auto rtMidiOutAbstractionFake = rtMidiAbstractionFactoryFake->ReturnedOutAbstractions[0];
+		auto rtMidiInAbstractionFake = *(rtMidiAbstractionFactoryFake->ReturnedInAbstractions.end() - 1);
+		auto rtMidiOutAbstractionFake = *(rtMidiAbstractionFactoryFake->ReturnedOutAbstractions.end() - 1);
 
 		rtMidiInAbstractionFake->PortCount = 1;
 		rtMidiInAbstractionFake->PortName = "input1";
@@ -90,11 +90,11 @@ namespace MackieOfTheUnicorn::Tests::Integration
 		std::vector<std::pair<int, int>> inputAndOutputIds = {{0, 0}};
 		applicationContainer.Application->Start(inputAndOutputIds);
 
-		rtMidiInAbstractionFake = rtMidiAbstractionFactoryFake->ReturnedInAbstractions[1];
-		rtMidiOutAbstractionFake = rtMidiAbstractionFactoryFake->ReturnedOutAbstractions[1];
+		rtMidiInAbstractionFake = *(rtMidiAbstractionFactoryFake->ReturnedInAbstractions.end() - 1);
+		rtMidiOutAbstractionFake = *(rtMidiAbstractionFactoryFake->ReturnedOutAbstractions.end() - 1);
 
-		auto curlInAbstractionFake = curlAbstractionFactoryFake->CreateCurlAbstractionFakes[0];
-		auto curlOutAbstractionFake = curlAbstractionFactoryFake->CreateCurlAbstractionFakes[1];
+		auto curlInAbstractionFake = *(curlAbstractionFactoryFake->CreateCurlAbstractionFakes.end() - 2);
+		auto curlOutAbstractionFake = *(curlAbstractionFactoryFake->CreateCurlAbstractionFakes.end() - 1);
 
 		return std::make_unique<ApplicationContainerWrapper>(applicationContainer, rtMidiInAbstractionFake,
 		                                                     rtMidiOutAbstractionFake, curlInAbstractionFake,

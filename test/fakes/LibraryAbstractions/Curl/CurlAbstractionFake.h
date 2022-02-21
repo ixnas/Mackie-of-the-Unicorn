@@ -9,6 +9,8 @@
 #include <sstream>
 #include <string>
 #include <memory>
+#include <thread>
+#include <iostream>
 
 namespace MackieOfTheUnicorn::LibraryAbstractions::Curl
 {
@@ -21,39 +23,32 @@ namespace MackieOfTheUnicorn::LibraryAbstractions::Curl
 		std::string ResponseHeaders;
 		std::string ResponseBody;
 		bool Performed = false;
-		int ETag;
-		std::mutex Mutex;
+		int ETag = 0;
 
 		~CurlAbstractionFake() override
 		{
-			std::lock_guard<std::mutex> m(Mutex);
 		}
 
 		CurlAbstraction& SetURL(std::string url) override
 		{
-			std::lock_guard<std::mutex> m(Mutex);
 			SetURLURL = url;
 			return *this;
 		}
 
 		CurlAbstraction& SetHeaders(std::map<std::string, std::string> headers) override
 		{
-			std::lock_guard<std::mutex> m(Mutex);
 			SetHeadersHeaders = headers;
 			return *this;
 		}
 
 		CurlAbstraction& SetPostData(std::string postData) override
 		{
-			std::lock_guard<std::mutex> m(Mutex);
 			SetPostDataPostData = postData;
 			return *this;
 		}
 
 		CurlAbstraction& Perform() override
 		{
-			std::lock_guard<std::mutex> m(Mutex);
-
 			if (SetHeadersHeaders.has_value() && SetHeadersHeaders->contains("If-None-Match") &&
 				SetHeadersHeaders.value()["If-None-Match"] >= std::to_string(ETag))
 			{
@@ -66,7 +61,6 @@ namespace MackieOfTheUnicorn::LibraryAbstractions::Curl
 
 		std::string GetResponseHeaders() override
 		{
-			std::lock_guard<std::mutex> m(Mutex);
 			if (!Performed)
 			{
 				return {};
@@ -77,7 +71,6 @@ namespace MackieOfTheUnicorn::LibraryAbstractions::Curl
 
 		std::string GetResponseBody() override
 		{
-			std::lock_guard<std::mutex> m(Mutex);
 			if (!Performed)
 			{
 				return {};
@@ -88,7 +81,6 @@ namespace MackieOfTheUnicorn::LibraryAbstractions::Curl
 
 		CurlAbstraction& Reset() override
 		{
-			std::lock_guard<std::mutex> m(Mutex);
 			ClearHeaders();
 			SetPostDataPostData.reset();
 			return *this;
@@ -96,20 +88,17 @@ namespace MackieOfTheUnicorn::LibraryAbstractions::Curl
 
 		CurlAbstraction& ClearHeaders() override
 		{
-			std::lock_guard<std::mutex> m(Mutex);
 			SetHeadersHeaders.reset();
 			return *this;
 		}
 
 		CurlAbstraction& Abort() override
 		{
-			std::lock_guard<std::mutex> m(Mutex);
 			return *this;
 		}
 
 		void FakeNoneChangedMessage()
 		{
-			std::lock_guard<std::mutex> m(Mutex);
 			FakeNoneChangedMessageWithoutMutex();
 		}
 
@@ -135,9 +124,8 @@ namespace MackieOfTheUnicorn::LibraryAbstractions::Curl
 			ResponseHeaders = stringStream.str();
 		}
 
-		void FakeHasChangedMessage(int etag, std::string body)
+		void FakeHasChangedMessage(std::string body)
 		{
-			std::lock_guard<std::mutex> m(Mutex);
 			std::ostringstream stringStream;
 
 			stringStream << "HTTP/1.1 200 OK"
@@ -146,7 +134,7 @@ namespace MackieOfTheUnicorn::LibraryAbstractions::Curl
 			             << "\r\n";
 			stringStream << "Transfer-Encoding: chunked"
 			             << "\r\n";
-			stringStream << "ETag: " << etag << "\r\n";
+			stringStream << "ETag: " << ETag++ << "\r\n";
 			stringStream << "Content-Type: application/json"
 			             << "\r\n";
 			stringStream << "Cache-Control: no-cache"
@@ -158,8 +146,6 @@ namespace MackieOfTheUnicorn::LibraryAbstractions::Curl
 			stringStream << "Date: Thu, 01 Jan 1970 00:08:40 GMT"
 			             << "\r\n";
 			stringStream << "\r\n";
-
-			ETag = etag;
 
 			ResponseHeaders = stringStream.str();
 			ResponseBody = std::move(body);

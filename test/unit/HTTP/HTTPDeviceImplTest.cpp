@@ -59,7 +59,7 @@ namespace MackieOfTheUnicorn::Tests::Unit::HTTP
 
 	TEST_F(HTTPDeviceImplTest, ChangeCallsCallback)
 	{
-		curlIn->FakeHasChangedMessage(100, "{\"key1\":128}");
+		curlIn->FakeHasChangedMessage("{\"key1\":128}");
 		instance->StartListening();
 		instance->StopListening();
 

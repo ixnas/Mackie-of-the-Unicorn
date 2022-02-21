@@ -57,7 +57,7 @@ namespace MackieOfTheUnicorn::Tests::Integration
 
 	TEST_F(ChannelMutesTest, MOTUCanSwitchFirst8ChannelsOn)
 	{
-		int etag = 1;
+		int etag = 0;
 		auto switchMute = [&etag](auto& wrapper, int i, bool expectedOn) {
 			auto curlIn = wrapper->CurlInAbstractionFake;
 			auto rtMidiOut = wrapper->RtMidiOutAbstractionFake;
@@ -69,7 +69,7 @@ namespace MackieOfTheUnicorn::Tests::Integration
 			                                                  (unsigned char)(expectedOn ? 127 : 0)};
 
 			auto oldSize = rtMidiOut->SendMessageMessages.size();
-			curlIn->FakeHasChangedMessage(etag++, jsonMessage);
+			curlIn->FakeHasChangedMessage(jsonMessage);
 			while (rtMidiOut->SendMessageMessages.size() == oldSize)
 			{
 			}
@@ -98,7 +98,7 @@ namespace MackieOfTheUnicorn::Tests::Integration
 			                                                  (unsigned char)(expectedOn ? 127 : 0)};
 
 			auto oldSize = rtMidiOut->SendMessageMessages.size();
-			curlIn->FakeHasChangedMessage(etag++, jsonMessage);
+			curlIn->FakeHasChangedMessage(jsonMessage);
 			while (rtMidiOut->SendMessageMessages.size() == oldSize)
 			{
 			}
