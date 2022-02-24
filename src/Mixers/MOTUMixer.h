@@ -16,7 +16,7 @@ namespace MackieOfTheUnicorn::HTTP::Factories
 
 namespace MackieOfTheUnicorn::Mixers
 {
-	/// A LinkedMixer implementation that represents a Mackie control surface.
+	/// A LinkedMixer implementation that represents a MOTU DSP mixer.
 	class MOTUMixer : public LinkedMixer, public HTTP::HTTPListener
 	{
 		std::unique_ptr<HTTP::HTTPDevice> HTTPDevice;
