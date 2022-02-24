@@ -15,6 +15,9 @@ namespace MackieOfTheUnicorn::Mixers
 
 		/// Mutes a specified input channel.
 		virtual void SetInputChannelMute(int originId, int channel, bool on) = 0;
+
+		/// Solos a specified input channel.
+		virtual void SetInputChannelSolo(int originId, int channel, bool on) = 0;
 	};
 }
 

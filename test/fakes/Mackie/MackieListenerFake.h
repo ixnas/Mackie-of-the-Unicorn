@@ -18,11 +18,22 @@ namespace MackieOfTheUnicorn::Mackie
 		std::optional<int> OnChannelMutePressedChannelId;
 		std::optional<bool> OnChannelMutePressedOn;
 
+		T* OnChannelSoloPressedOrigin = nullptr;
+		std::optional<int> OnChannelSoloPressedChannelId;
+		std::optional<bool> OnChannelSoloPressedOn;
+
 		void OnChannelMutePressed(T* origin, int channelId, bool on) override
 		{
 			OnChannelMutePressedOrigin = origin;
 			OnChannelMutePressedChannelId = channelId;
 			OnChannelMutePressedOn = on;
+		}
+
+		void OnChannelSoloPressed(T* origin, int channelId, bool on) override
+		{
+			OnChannelSoloPressedOrigin = origin;
+			OnChannelSoloPressedChannelId = channelId;
+			OnChannelSoloPressedOn = on;
 		}
 	};
 }

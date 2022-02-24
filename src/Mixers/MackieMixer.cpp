@@ -58,4 +58,12 @@ namespace MackieOfTheUnicorn::Mixers
 
 		VirtualMixer->SetInputChannelMute(Id, channelId, !channelWasMuted);
 	}
+
+	void MackieMixer::SetInputChannelSolo(int originId, int channel, bool on)
+	{
+	}
+
+	void MackieMixer::OnChannelSoloPressed(Mackie::MackieComposite* origin, int channelId, bool on)
+	{
+	}
 }

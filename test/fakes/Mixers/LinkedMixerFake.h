@@ -17,8 +17,12 @@ namespace MackieOfTheUnicorn::Mixers
 		VirtualMixer* VirtualMixer = nullptr;
 
 		std::optional<int> SetInputChannelMuteOriginId;
-		std::optional<int> SetInputChannelChannel;
-		std::optional<bool> SetInputChannelOn;
+		std::optional<int> SetInputChannelMuteChannel;
+		std::optional<bool> SetInputChannelMuteOn;
+
+		std::optional<int> SetInputChannelSoloOriginId;
+		std::optional<int> SetInputChannelSoloChannel;
+		std::optional<bool> SetInputChannelSoloOn;
 
 		int GetId() override
 		{
@@ -33,8 +37,15 @@ namespace MackieOfTheUnicorn::Mixers
 		void SetInputChannelMute(int originId, int channel, bool on) override
 		{
 			SetInputChannelMuteOriginId = originId;
-			SetInputChannelChannel = channel;
-			SetInputChannelOn = on;
+			SetInputChannelMuteChannel = channel;
+			SetInputChannelMuteOn = on;
+		}
+
+		void SetInputChannelSolo(int originId, int channel, bool on) override
+		{
+			SetInputChannelSoloOriginId = originId;
+			SetInputChannelMuteChannel = channel;
+			SetInputChannelMuteOn = on;
 		}
 	};
 }

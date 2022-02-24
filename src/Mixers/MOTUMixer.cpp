@@ -36,6 +36,10 @@ namespace MackieOfTheUnicorn::Mixers
 		HTTPDevice->SendMessage(message);
 	}
 
+	void MOTUMixer::SetInputChannelSolo(int originId, int channel, bool on)
+	{
+	}
+
 	void MOTUMixer::HTTPCallback(std::pair<std::string, JSON::JSONValue>& message)
 	{
 		auto key = message.first;

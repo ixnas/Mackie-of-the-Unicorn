@@ -28,4 +28,8 @@ namespace MackieOfTheUnicorn::Mixers
 			linkedMixer->SetInputChannelMute(originId, channel, on);
 		}
 	}
+
+	void VirtualMixerImpl::SetInputChannelSolo(int originId, int channel, bool on)
+	{
+	}
 }

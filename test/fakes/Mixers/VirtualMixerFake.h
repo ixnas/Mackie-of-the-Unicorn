@@ -17,11 +17,22 @@ namespace MackieOfTheUnicorn::Mixers
 		std::optional<int> SetInputChannelMuteChannel;
 		std::optional<bool> SetInputChannelMuteOn;
 
+		std::optional<int> SetInputChannelSoloOriginId;
+		std::optional<int> SetInputChannelSoloChannel;
+		std::optional<bool> SetInputChannelSoloOn;
+
 		void SetInputChannelMute(int originId, int channel, bool on) override
 		{
 			SetInputChannelMuteOriginId = originId;
 			SetInputChannelMuteChannel = channel;
 			SetInputChannelMuteOn = on;
+		}
+
+		void SetInputChannelSolo(int originId, int channel, bool on) override
+		{
+			SetInputChannelSoloOriginId = originId;
+			SetInputChannelSoloChannel = channel;
+			SetInputChannelSoloOn = on;
 		}
 	};
 }

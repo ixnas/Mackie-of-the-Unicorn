@@ -53,8 +53,8 @@ namespace MackieOfTheUnicorn::Tests::Unit::Mixers
 		for (const auto& linkedMixerFake : linkedMixerFakes)
 		{
 			auto actualOrigin = linkedMixerFake->SetInputChannelMuteOriginId;
-			auto actualChannel = linkedMixerFake->SetInputChannelChannel;
-			auto actualOn = linkedMixerFake->SetInputChannelOn;
+			auto actualChannel = linkedMixerFake->SetInputChannelMuteChannel;
+			auto actualOn = linkedMixerFake->SetInputChannelMuteOn;
 
 			if (expectedOrigin == linkedMixerFake->Id)
 			{

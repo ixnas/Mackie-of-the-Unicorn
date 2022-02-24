@@ -15,6 +15,9 @@ namespace MackieOfTheUnicorn::Mackie
 
 		/// Mutes or unmutes an input channel.
 		virtual void SetChannelMute(int channelNumber, bool on) = 0;
+
+		/// Solos or unsolos an input channel.
+		virtual void SetChannelSolo(int channelNumber, bool on) = 0;
 	};
 }
 

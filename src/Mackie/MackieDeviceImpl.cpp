@@ -51,4 +51,8 @@ namespace MackieOfTheUnicorn::Mackie
 			MackieListener->OnChannelMutePressed(this, channelId, on);
 		}
 	}
+
+	void MackieDeviceImpl::SetChannelSolo(int channelNumber, bool on)
+	{
+	}
 }

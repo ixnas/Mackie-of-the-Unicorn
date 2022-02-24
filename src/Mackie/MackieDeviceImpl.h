@@ -19,6 +19,7 @@ namespace MackieOfTheUnicorn::Mackie
 		explicit MackieDeviceImpl(std::unique_ptr<MIDI::MIDIDevice>& midiDevice);
 		void SetMackieListener(Mackie::MackieListener<MackieDevice>& mackieListener) override;
 		void SetChannelMute(int channelNumber, bool on) override;
+		void SetChannelSolo(int channelNumber, bool on) override;
 		void MIDICallback(std::vector<unsigned char>& message) override;
 	};
 }

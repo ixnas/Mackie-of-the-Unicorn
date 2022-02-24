@@ -28,6 +28,7 @@ namespace MackieOfTheUnicorn::Mixers
 		void SetVirtualMixer(Mixers::VirtualMixer* virtualMixer) override;
 		int GetId() override;
 		void SetInputChannelMute(int originId, int channel, bool on) override;
+		void SetInputChannelSolo(int originId, int channel, bool on) override;
 		void HTTPCallback(std::pair<std::string, JSON::JSONValue>& message) override;
 	};
 }

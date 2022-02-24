@@ -17,6 +17,9 @@ namespace MackieOfTheUnicorn::Mackie
 
 		/// Handles an event where a MackieDevice changes a channel mute.
 		virtual void OnChannelMutePressed(OriginType* origin, int channelId, bool on) = 0;
+
+		/// Handles an event where a MackieDevice changes a channel solo.
+		virtual void OnChannelSoloPressed(OriginType* origin, int channelId, bool on) = 0;
 	};
 }
 

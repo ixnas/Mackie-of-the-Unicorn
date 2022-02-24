@@ -20,6 +20,7 @@ namespace MackieOfTheUnicorn::Mixers
 	  public:
 		explicit VirtualMixerImpl(std::vector<std::unique_ptr<LinkedMixer>>& linkedMixers);
 		void SetInputChannelMute(int originId, int channel, bool on) override;
+		void SetInputChannelSolo(int originId, int channel, bool on) override;
 	};
 }
 

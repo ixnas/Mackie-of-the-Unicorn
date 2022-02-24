@@ -32,4 +32,13 @@ namespace MackieOfTheUnicorn::Mackie
 	{
 		MackieListener = &mackieListener;
 	}
+
+	void MackieCompositeImpl::SetChannelSolo(int channelNumber, bool on)
+	{
+	}
+
+	void MackieCompositeImpl::OnChannelSoloPressed(MackieDevice* origin, int channelId, bool on)
+	{
+	}
+
 }
