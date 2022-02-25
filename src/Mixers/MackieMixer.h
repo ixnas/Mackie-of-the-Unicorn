@@ -23,6 +23,7 @@ namespace MackieOfTheUnicorn::Mixers
 		VirtualMixer* VirtualMixer;
 		int Id;
 		std::vector<int> MutesOn;
+		std::vector<int> SolosOn;
 
 	  public:
 		explicit MackieMixer(std::unique_ptr<Mackie::MackieComposite>& mackieComposite, int id);

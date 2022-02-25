@@ -98,4 +98,67 @@ namespace MackieOfTheUnicorn::Tests::Unit::Mixers
 		EXPECT_EQ(actualVirtualMixerChannel, expectedChannel);
 		EXPECT_EQ(actualVirtualMixerOn, expectedOn);
 	}
+
+	TEST_F(MackieMixerTest, SetsChannelSolo)
+	{
+		auto expectedChannel = 16;
+		auto expectedOn = true;
+
+		instance->SetInputChannelSolo(0, expectedChannel, expectedOn);
+
+		auto actualChannel = mackieCompositeFake->SetChannelSoloChannelId;
+		auto actualOn = mackieCompositeFake->SetChannelSoloOn;
+
+		EXPECT_EQ(actualChannel, expectedChannel);
+		EXPECT_EQ(actualOn, expectedOn);
+	}
+
+	TEST_F(MackieMixerTest, SetsChannelSoloOnVirtualMixer)
+	{
+		auto expectedOriginId = ID;
+		auto expectedChannel = 8;
+		auto expectedOn = true;
+
+		instance->OnChannelSoloPressed(mackieCompositeFake, expectedChannel, expectedOn);
+
+		auto actualOriginId = virtualMixerFake->SetInputChannelSoloOriginId = expectedOriginId;
+		auto actualChannel = virtualMixerFake->SetInputChannelSoloChannel;
+		auto actualOn = virtualMixerFake->SetInputChannelSoloOn;
+
+		EXPECT_EQ(actualOriginId, expectedOriginId);
+		EXPECT_EQ(actualChannel, expectedChannel);
+		EXPECT_EQ(actualOn, expectedOn);
+	}
+
+	TEST_F(MackieMixerTest, IgnoreReleaseSoloButton)
+	{
+		auto expectedChannel = 7;
+		auto expectedOn = true;
+
+		instance->OnChannelSoloPressed(mackieCompositeFake, expectedChannel, true);
+		instance->OnChannelSoloPressed(mackieCompositeFake, expectedChannel, false);
+
+		auto actualVirtualMixerChannel = virtualMixerFake->SetInputChannelSoloChannel;
+		auto actualVirtualMixerOn = virtualMixerFake->SetInputChannelSoloOn;
+
+		EXPECT_EQ(actualVirtualMixerChannel, expectedChannel);
+		EXPECT_EQ(actualVirtualMixerOn, expectedOn);
+	}
+
+	TEST_F(MackieMixerTest, CanTurnSoloOffAgain)
+	{
+		auto expectedChannel = 7;
+		auto expectedOn = false;
+
+		instance->OnChannelSoloPressed(mackieCompositeFake, expectedChannel, true);
+		instance->OnChannelSoloPressed(mackieCompositeFake, expectedChannel, false);
+		instance->OnChannelSoloPressed(mackieCompositeFake, expectedChannel, true);
+		instance->OnChannelSoloPressed(mackieCompositeFake, expectedChannel, false);
+
+		auto actualVirtualMixerChannel = virtualMixerFake->SetInputChannelSoloChannel;
+		auto actualVirtualMixerOn = virtualMixerFake->SetInputChannelSoloOn;
+
+		EXPECT_EQ(actualVirtualMixerChannel, expectedChannel);
+		EXPECT_EQ(actualVirtualMixerOn, expectedOn);
+	}
 }

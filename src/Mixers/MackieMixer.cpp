@@ -61,9 +61,20 @@ namespace MackieOfTheUnicorn::Mixers
 
 	void MackieMixer::SetInputChannelSolo(int originId, int channel, bool on)
 	{
+		SetOption(SolosOn, channel, on);
+		MackieComposite->SetChannelSolo(channel, on);
 	}
 
 	void MackieMixer::OnChannelSoloPressed(Mackie::MackieComposite* origin, int channelId, bool on)
 	{
+		if (!on)
+		{
+			return;
+		}
+
+		auto channelWasSolod = OptionSet(SolosOn, channelId);
+		SetOption(SolosOn, channelId, !channelWasSolod);
+
+		VirtualMixer->SetInputChannelSolo(Id, channelId, !channelWasSolod);
 	}
 }
