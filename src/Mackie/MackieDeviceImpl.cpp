@@ -3,7 +3,6 @@
 //
 
 #include "MackieDeviceImpl.h"
-#include <thread>
 
 namespace MackieOfTheUnicorn::Mackie
 {
@@ -44,9 +43,21 @@ namespace MackieOfTheUnicorn::Mackie
 		std::vector<unsigned char> message = {byte1, byte2, byte3};
 
 		MIDIDevice->SendMessage(message);
-#if !TESTING
-		std::this_thread::sleep_for(std::chrono::milliseconds(10));
-#endif
+	}
+
+	void MackieDeviceImpl::SetChannelSolo(int channelNumber, bool on)
+	{
+		if (channelNumber > 7)
+		{
+			return;
+		}
+
+		const unsigned char byte1 = 144;
+		unsigned char byte2 = 8 + channelNumber;
+		unsigned char byte3 = on ? 127 : 0;
+		std::vector<unsigned char> message = {byte1, byte2, byte3};
+
+		MIDIDevice->SendMessage(message);
 	}
 
 	void MackieDeviceImpl::MIDICallback(std::vector<unsigned char>& message)
@@ -66,23 +77,5 @@ namespace MackieOfTheUnicorn::Mackie
 			MackieListener->OnChannelSoloPressed(this, channelId, on);
 			return;
 		}
-	}
-
-	void MackieDeviceImpl::SetChannelSolo(int channelNumber, bool on)
-	{
-		if (channelNumber > 7)
-		{
-			return;
-		}
-
-		const unsigned char byte1 = 144;
-		unsigned char byte2 = 8 + channelNumber;
-		unsigned char byte3 = on ? 127 : 0;
-		std::vector<unsigned char> message = {byte1, byte2, byte3};
-
-		MIDIDevice->SendMessage(message);
-#if !TESTING
-		std::this_thread::sleep_for(std::chrono::milliseconds(10));
-#endif
 	}
 }

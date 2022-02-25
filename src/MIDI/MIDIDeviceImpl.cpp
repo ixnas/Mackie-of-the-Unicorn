@@ -4,6 +4,9 @@
 
 #include "MIDIDeviceImpl.h"
 #include "../LibraryAbstractions/RtMidi/Factories/RtMidiAbstractionFactory.h"
+#if !TESTING
+#include <thread>
+#endif
 
 namespace MackieOfTheUnicorn::MIDI
 {
@@ -31,5 +34,8 @@ namespace MackieOfTheUnicorn::MIDI
 	void MIDIDeviceImpl::SendMessage(std::vector<unsigned char>& message)
 	{
 		RtMidiOut->SendMessage(&message);
+#if !TESTING
+		std::this_thread::sleep_for(std::chrono::milliseconds(10));
+#endif
 	}
 }
