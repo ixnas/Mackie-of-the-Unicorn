@@ -14,6 +14,13 @@ namespace MackieOfTheUnicorn::Mackie
 		       (message[2] == 127 || message[2] == 0);
 	}
 
+	static bool IsChannelSoloMessage(std::vector<unsigned char>& message)
+	{
+		return message[0] == 144 && message[1] >= 8 &&
+			   message[1] < 16 &&
+			   (message[2] == 127 || message[2] == 0);
+	}
+
 	MackieDeviceImpl::MackieDeviceImpl(std::unique_ptr<MIDI::MIDIDevice>& midiDevice) : MIDIDevice(std::move(midiDevice))
 	{
 		MIDIDevice->RegisterCallback(this);
@@ -49,10 +56,33 @@ namespace MackieOfTheUnicorn::Mackie
 			auto channelId = message[1] - 16;
 			auto on = message[2] == 127;
 			MackieListener->OnChannelMutePressed(this, channelId, on);
+			return;
+		}
+
+		if (IsChannelSoloMessage(message))
+		{
+			auto channelId = message[1] - 8;
+			auto on = message[2] == 127;
+			MackieListener->OnChannelSoloPressed(this, channelId, on);
+			return;
 		}
 	}
 
 	void MackieDeviceImpl::SetChannelSolo(int channelNumber, bool on)
 	{
+		if (channelNumber > 7)
+		{
+			return;
+		}
+
+		const unsigned char byte1 = 144;
+		unsigned char byte2 = 8 + channelNumber;
+		unsigned char byte3 = on ? 127 : 0;
+		std::vector<unsigned char> message = {byte1, byte2, byte3};
+
+		MIDIDevice->SendMessage(message);
+#if !TESTING
+		std::this_thread::sleep_for(std::chrono::milliseconds(10));
+#endif
 	}
 }

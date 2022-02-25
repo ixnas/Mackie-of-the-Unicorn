@@ -65,6 +65,47 @@ namespace MackieOfTheUnicorn::Tests::Unit::Mackie
 				EXPECT_EQ(actualOn, expectedOn);
 			}
 		}
+
+		void SetsSoloChannels(bool on)
+		{
+			for (auto i = 0; i < 8; i++)
+			{
+				unsigned char byte1 = 144;
+				unsigned char byte2 = 8 + i;
+				unsigned char byte3 = on ? 127 : 0;
+				std::vector<unsigned char> expectedMidiMessage = {byte1, byte2, byte3};
+
+				instance->SetChannelSolo(i, on);
+
+				auto actualMidiMessage = *(midiDeviceFake->SendMessageMessages.end() - 1);
+
+				EXPECT_EQ(actualMidiMessage, expectedMidiMessage);
+			}
+		}
+
+		void SetsSoloChannelsOnListener(bool on)
+		{
+			for (auto i = 0; i < 8; i++)
+			{
+				unsigned char byte1 = 144;
+				unsigned char byte2 = 8 + i;
+				unsigned char byte3 = on ? 127 : 0;
+
+				midiDeviceFake->FakeMessage({byte1, byte2, byte3});
+
+				auto expectedOrigin = instance.get();
+				auto expectedChannelId = i;
+				auto expectedOn = on;
+
+				auto actualOrigin = mackieListenerFake->OnChannelSoloPressedOrigin;
+				auto actualChannelId = mackieListenerFake->OnChannelSoloPressedChannelId;
+				auto actualOn = mackieListenerFake->OnChannelSoloPressedOn;
+
+				EXPECT_EQ(actualOrigin, expectedOrigin);
+				EXPECT_EQ(actualChannelId, expectedChannelId);
+				EXPECT_EQ(actualOn, expectedOn);
+			}
+		}
 	};
 
 	TEST_F(MackieDeviceImplTest, SetsChannelMutesOn)
@@ -87,9 +128,30 @@ namespace MackieOfTheUnicorn::Tests::Unit::Mackie
 		SetsMuteChannelsOnListener(false);
 	}
 
+	TEST_F(MackieDeviceImplTest, SetsChannelSolosOn)
+	{
+		SetsSoloChannels(true);
+	}
+
+	TEST_F(MackieDeviceImplTest, SetsChannelSolosOff)
+	{
+		SetsSoloChannels(false);
+	}
+
+	TEST_F(MackieDeviceImplTest, SetsChannelSolosOnOnListener)
+	{
+		SetsSoloChannelsOnListener(true);
+	}
+
+	TEST_F(MackieDeviceImplTest, SetsChannelSolosOffOnListener)
+	{
+		SetsSoloChannelsOnListener(false);
+	}
+
 	TEST_F(MackieDeviceImplTest, IgnoresChannelsAbove7)
 	{
 		instance->SetChannelMute(8, true);
+		instance->SetChannelSolo(8, true);
 
 		auto gotMessages = !midiDeviceFake->SendMessageMessages.empty();
 
