@@ -44,8 +44,8 @@ namespace MackieOfTheUnicorn::Mixers
 		void SetInputChannelSolo(int originId, int channel, bool on) override
 		{
 			SetInputChannelSoloOriginId = originId;
-			SetInputChannelMuteChannel = channel;
-			SetInputChannelMuteOn = on;
+			SetInputChannelSoloChannel = channel;
+			SetInputChannelSoloOn = on;
 		}
 	};
 }

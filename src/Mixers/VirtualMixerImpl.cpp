@@ -31,5 +31,14 @@ namespace MackieOfTheUnicorn::Mixers
 
 	void VirtualMixerImpl::SetInputChannelSolo(int originId, int channel, bool on)
 	{
+		for(const auto& linkedMixer : LinkedMixers)
+		{
+			if (linkedMixer->GetId() == originId)
+			{
+				continue;
+			}
+
+			linkedMixer->SetInputChannelSolo(originId, channel, on);
+		}
 	}
 }

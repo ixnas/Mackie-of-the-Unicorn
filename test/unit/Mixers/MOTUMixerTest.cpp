@@ -81,9 +81,55 @@ namespace MackieOfTheUnicorn::Tests::Unit::Mixers
 		EXPECT_EQ(actualOn, expectedOn);
 	}
 
+	TEST_F(MOTUMixerTest, SetsInputChannelSoloCorrectly)
+	{
+		std::string expectedKey = "mix/chan/5/matrix/solo";
+		JSON::JSONValue expectedValue;
+		expectedValue.Integer = 1;
+		std::pair<std::string, JSON::JSONValue> expectedMessage = {expectedKey, expectedValue};
+
+		instance->SetInputChannelSolo(2, 5, true);
+
+		auto actualMessage = *(httpDeviceFake->SendMessageMessages.end() - 1);
+
+		EXPECT_EQ(actualMessage, expectedMessage);
+
+		expectedKey = "mix/chan/7/matrix/solo";
+		expectedValue.Integer = 0;
+		expectedMessage = {expectedKey, expectedValue};
+
+		instance->SetInputChannelSolo(2, 7, false);
+
+		actualMessage = *(httpDeviceFake->SendMessageMessages.end() - 1);
+
+		EXPECT_EQ(actualMessage, expectedMessage);
+	}
+
+	TEST_F(MOTUMixerTest, SetsInputChannelSoloCorrectlyOnVirtualMixer)
+	{
+		auto expectedOrigin = ID;
+		auto expectedChannel = 9;
+		auto expectedOn = true;
+
+		std::string key = "mix/chan/9/matrix/solo";
+		JSON::JSONValue value;
+		value.Float = 1;
+		std::pair<std::string, JSON::JSONValue> message = {key, value};
+
+		httpDeviceFake->FakeMessage(message);
+
+		auto actualOrigin = virtualMixerFake->SetInputChannelSoloOriginId;
+		auto actualChannel = virtualMixerFake->SetInputChannelSoloChannel;
+		auto actualOn = virtualMixerFake->SetInputChannelSoloOn;
+
+		EXPECT_EQ(actualOrigin, expectedOrigin);
+		EXPECT_EQ(actualChannel, expectedChannel);
+		EXPECT_EQ(actualOn, expectedOn);
+	}
+
 	TEST_F(MOTUMixerTest, IgnoresDifferentParameterSameLength)
 	{
-		std::string key = "mix/chan/matrix/main/0/send";
+		std::string key = "mix/chan/matrix/main/0/something";
 		JSON::JSONValue value;
 		value.Float = 1;
 		std::pair<std::string, JSON::JSONValue> message = {key, value};
@@ -101,7 +147,7 @@ namespace MackieOfTheUnicorn::Tests::Unit::Mixers
 
 	TEST_F(MOTUMixerTest, IgnoresDifferentParameterDifferentLength)
 	{
-		std::string key = "mix/chan/9/matrix/solo";
+		std::string key = "mix/chan/9/matrix/something";
 		JSON::JSONValue value;
 		value.Float = 1;
 		std::pair<std::string, JSON::JSONValue> message = {key, value};
