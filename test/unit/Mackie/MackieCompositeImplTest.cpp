@@ -61,4 +61,35 @@ namespace MackieOfTheUnicorn::Tests::Unit::Mackie
 		EXPECT_EQ(actualChannelNumber, expectedChannelNumber);
 		EXPECT_EQ(actualOn, expectedOn);
 	}
+
+	TEST_F(MackieCompositeImplTest, SetsChannelSolo)
+	{
+		auto expectedChannelNumber = 2;
+		auto expectedOn = true;
+
+		instance->SetChannelSolo(expectedChannelNumber, expectedOn);
+
+		auto actualChannelNumber = mackieDeviceFake->SetChannelSoloChannelNumber;
+		auto actualOn = mackieDeviceFake->SetChannelSoloOn;
+
+		EXPECT_EQ(actualChannelNumber, expectedChannelNumber);
+		EXPECT_EQ(actualOn, expectedOn);
+	}
+
+	TEST_F(MackieCompositeImplTest, SetsChannelSoloOnListener)
+	{
+		auto expectedOrigin = instance.get();
+		auto expectedChannelNumber = 2;
+		auto expectedOn = true;
+
+		mackieDeviceFake->SetChannelSolo(expectedChannelNumber, expectedOn);
+
+		auto actualOrigin = mackieListenerFake->OnChannelSoloPressedOrigin;
+		auto actualChannelNumber = mackieListenerFake->OnChannelSoloPressedChannelId;
+		auto actualOn = mackieListenerFake->OnChannelSoloPressedOn;
+
+		EXPECT_EQ(actualOrigin, expectedOrigin);
+		EXPECT_EQ(actualChannelNumber, expectedChannelNumber);
+		EXPECT_EQ(actualOn, expectedOn);
+	}
 } // namespace MackieOfTheUnicorn::Tests::Unit::Mackie
