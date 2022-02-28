@@ -7,24 +7,6 @@
 
 namespace MackieOfTheUnicorn::Mixers
 {
-	template<class OptionType>
-	static bool OptionSet(std::vector<OptionType>& optionList, OptionType id)
-	{
-		return std::any_of(optionList.begin(), optionList.end(), [id](int i){ return i == id; });
-	}
-
-	template<class OptionType>
-	static void SetOption(std::vector<OptionType>& optionList, OptionType id, bool on)
-	{
-		if (on)
-		{
-			optionList.push_back(id);
-			return;
-		}
-
-		optionList.erase(std::remove(optionList.begin(), optionList.end(), id), optionList.end());
-	}
-
 	MackieMixer::MackieMixer(std::unique_ptr<Mackie::MackieComposite>& mackieComposite, int id) : MackieComposite(std::move(mackieComposite)), Id(id), VirtualMixer(nullptr)
 	{
 		MackieComposite->SetMackieListener(*this);
@@ -42,7 +24,8 @@ namespace MackieOfTheUnicorn::Mixers
 
 	void MackieMixer::SetInputChannelMute(int originId, int channel, bool on)
 	{
-		SetOption(MutesOn, channel, on);
+		//SetOption(MutesOn, channel, on);
+		ViewData.SetMute(channel, on);
 		MackieComposite->SetChannelMute(channel, on);
 	}
 
@@ -53,15 +36,17 @@ namespace MackieOfTheUnicorn::Mixers
 			return;
 		}
 
-		auto channelWasMuted = OptionSet(MutesOn, channelId);
-		SetOption(MutesOn, channelId, !channelWasMuted);
+		auto channelWasMuted = ViewData.GetMute(channelId);
+		//SetOption(MutesOn, channelId, !channelWasMuted);
+		ViewData.SetMute(channelId, !channelWasMuted);
 
 		VirtualMixer->SetInputChannelMute(Id, channelId, !channelWasMuted);
 	}
 
 	void MackieMixer::SetInputChannelSolo(int originId, int channel, bool on)
 	{
-		SetOption(SolosOn, channel, on);
+		//SetOption(SolosOn, channel, on);
+		ViewData.SetMute(channel, on);
 		MackieComposite->SetChannelSolo(channel, on);
 	}
 
@@ -72,8 +57,9 @@ namespace MackieOfTheUnicorn::Mixers
 			return;
 		}
 
-		auto channelWasSolod = OptionSet(SolosOn, channelId);
-		SetOption(SolosOn, channelId, !channelWasSolod);
+		auto channelWasSolod = ViewData.GetSolo(channelId);
+		//SetOption(SolosOn, channelId, !channelWasSolod);
+		ViewData.SetSolo(channelId, !channelWasSolod);
 
 		VirtualMixer->SetInputChannelSolo(Id, channelId, !channelWasSolod);
 	}

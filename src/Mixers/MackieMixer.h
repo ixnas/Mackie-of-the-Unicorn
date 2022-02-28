@@ -7,6 +7,7 @@
 
 #include "LinkedMixer.h"
 #include "../Mackie/MackieComposite.h"
+#include "../Views/MackieViewDataImpl.h"
 #include <vector>
 
 namespace MackieOfTheUnicorn::Mackie
@@ -22,8 +23,7 @@ namespace MackieOfTheUnicorn::Mixers
 		std::unique_ptr<Mackie::MackieComposite> MackieComposite;
 		VirtualMixer* VirtualMixer;
 		int Id;
-		std::vector<int> MutesOn;
-		std::vector<int> SolosOn;
+		Views::MackieViewDataImpl ViewData;
 
 	  public:
 		explicit MackieMixer(std::unique_ptr<Mackie::MackieComposite>& mackieComposite, int id);
