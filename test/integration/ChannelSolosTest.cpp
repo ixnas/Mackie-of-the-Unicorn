@@ -59,7 +59,7 @@ namespace MackieOfTheUnicorn::Tests::Integration
 		}
 	};
 
-	TEST_F(ChannelSolosTest, MackieCanSwitchFirst8Mutes)
+	TEST_F(ChannelSolosTest, MackieCanSwitchFirst8Solos)
 	{
 		auto curlOut = wrapper->CurlOutAbstractionFake;
 		auto rtMidiIn = wrapper->RtMidiInAbstractionFake;
