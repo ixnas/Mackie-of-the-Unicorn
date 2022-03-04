@@ -9,12 +9,16 @@
 
 namespace MackieOfTheUnicorn
 {
-	template <class StateType>
+	/// @brief Interface classes that implement a state machine pattern.
+	/// @tparam OriginType Additional arguments for setting the next state that may be required by the state machine.
+	template <class StateType, class... AdditionalArguments>
 	class StateMachine
 	{
 	  public:
 		virtual ~StateMachine() = default;
-		virtual void SetState(std::unique_ptr<StateType> nextState) = 0;
+
+		/// Sets the next state of the state machine.
+		virtual void SetState(std::unique_ptr<StateType> nextState, AdditionalArguments... additionalArguments) = 0;
 	};
 }
 

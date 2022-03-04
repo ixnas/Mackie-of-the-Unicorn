@@ -8,6 +8,8 @@
 #include "LinkedMixer.h"
 #include "../Mackie/MackieComposite.h"
 #include "../Views/MackieViewDataImpl.h"
+#include "../StateMachine.h"
+#include "../Views/MackieView.h"
 #include <vector>
 
 namespace MackieOfTheUnicorn::Mackie
@@ -18,12 +20,15 @@ namespace MackieOfTheUnicorn::Mackie
 namespace MackieOfTheUnicorn::Mixers
 {
 	/// A LinkedMixer implementation that represents a Mackie control surface.
-	class MackieMixer : public LinkedMixer, public Mackie::MackieListener<Mackie::MackieComposite>
+	class MackieMixer
+	    : public LinkedMixer,
+	      public Mackie::MackieListener<Mackie::MackieComposite>,
+	      public StateMachine<Views::MackieView, VirtualMixer&, Mackie::MackieComposite&>
 	{
 		std::unique_ptr<Mackie::MackieComposite> MackieComposite;
 		VirtualMixer* VirtualMixer;
-		int Id;
 		Views::MackieViewDataImpl ViewData;
+		std::unique_ptr<Views::MackieView> View;
 
 	  public:
 		explicit MackieMixer(std::unique_ptr<Mackie::MackieComposite>& mackieComposite, int id);
@@ -33,6 +38,7 @@ namespace MackieOfTheUnicorn::Mixers
 		void OnChannelMutePressed(Mackie::MackieComposite* origin, int channelId, bool on) override;
 		void SetInputChannelSolo(int originId, int channel, bool on) override;
 		void OnChannelSoloPressed(Mackie::MackieComposite* origin, int channelId, bool on) override;
+		void SetState(std::unique_ptr<Views::MackieView> newState, Mixers::VirtualMixer& virtualMixer, Mackie::MackieComposite& mackieComposite) override;
 	};
 }
 

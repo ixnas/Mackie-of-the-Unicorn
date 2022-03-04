@@ -24,6 +24,11 @@ namespace MackieOfTheUnicorn::Views
 		optionList.erase(std::remove(optionList.begin(), optionList.end(), id), optionList.end());
 	}
 
+	int MackieViewDataImpl::GetId()
+	{
+		return Id;
+	}
+
 	void MackieViewDataImpl::SetMute(int channelId, bool on)
 	{
 		SetOption(MutedChannels, channelId, on);
@@ -42,5 +47,9 @@ namespace MackieOfTheUnicorn::Views
 	bool MackieViewDataImpl::GetSolo(int channelId)
 	{
 		return OptionSet(SolodChannels, channelId);
+	}
+
+	MackieViewDataImpl::MackieViewDataImpl(int id) : Id(id)
+	{
 	}
 }

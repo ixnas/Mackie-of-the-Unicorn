@@ -12,10 +12,13 @@ namespace MackieOfTheUnicorn::Views
 {
 	class MackieViewDataImpl : public MackieViewData
 	{
+		int Id;
 		std::vector<int> MutedChannels;
 		std::vector<int> SolodChannels;
 
 	  public:
+		explicit MackieViewDataImpl(int id);
+		int GetId() override;
 		void SetMute(int channelId, bool on) override;
 		bool GetMute(int channelId) override;
 		void SetSolo(int channelId, bool on) override;

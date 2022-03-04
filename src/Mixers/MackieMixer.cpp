@@ -3,64 +3,52 @@
 //
 
 #include "MackieMixer.h"
-#include "../Mixers/VirtualMixer.h"
+#include "../Views/ChannelView.h"
 
 namespace MackieOfTheUnicorn::Mixers
 {
-	MackieMixer::MackieMixer(std::unique_ptr<Mackie::MackieComposite>& mackieComposite, int id) : MackieComposite(std::move(mackieComposite)), Id(id), VirtualMixer(nullptr)
+	MackieMixer::MackieMixer(std::unique_ptr<Mackie::MackieComposite>& mackieComposite, int id) : MackieComposite(std::move(mackieComposite)), VirtualMixer(nullptr), ViewData(id)
 	{
 		MackieComposite->SetMackieListener(*this);
+		View = std::make_unique<Views::ChannelView>(ViewData);
+		View->SetMackieComposite(*MackieComposite);
 	}
 
 	void MackieMixer::SetVirtualMixer(Mixers::VirtualMixer* virtualMixer)
 	{
 		VirtualMixer = virtualMixer;
+		View->SetVirtualMixer(*virtualMixer);
 	}
 
 	int MackieMixer::GetId()
 	{
-		return Id;
+		return ViewData.GetId();
 	}
 
 	void MackieMixer::SetInputChannelMute(int originId, int channel, bool on)
 	{
-		//SetOption(MutesOn, channel, on);
 		ViewData.SetMute(channel, on);
-		MackieComposite->SetChannelMute(channel, on);
+		View->SetInputChannelMute(originId, channel, on);
 	}
 
 	void MackieMixer::OnChannelMutePressed(Mackie::MackieComposite* origin, int channelId, bool on)
 	{
-		if (!on)
-		{
-			return;
-		}
-
-		auto channelWasMuted = ViewData.GetMute(channelId);
-		//SetOption(MutesOn, channelId, !channelWasMuted);
-		ViewData.SetMute(channelId, !channelWasMuted);
-
-		VirtualMixer->SetInputChannelMute(Id, channelId, !channelWasMuted);
+		View->OnChannelMutePressed(origin, channelId, on);
 	}
 
 	void MackieMixer::SetInputChannelSolo(int originId, int channel, bool on)
 	{
-		//SetOption(SolosOn, channel, on);
 		ViewData.SetMute(channel, on);
-		MackieComposite->SetChannelSolo(channel, on);
+		View->SetInputChannelSolo(originId, channel, on);
 	}
 
 	void MackieMixer::OnChannelSoloPressed(Mackie::MackieComposite* origin, int channelId, bool on)
 	{
-		if (!on)
-		{
-			return;
-		}
+		View->OnChannelSoloPressed(origin, channelId, on);
+	}
 
-		auto channelWasSolod = ViewData.GetSolo(channelId);
-		//SetOption(SolosOn, channelId, !channelWasSolod);
-		ViewData.SetSolo(channelId, !channelWasSolod);
-
-		VirtualMixer->SetInputChannelSolo(Id, channelId, !channelWasSolod);
+	void MackieMixer::SetState(std::unique_ptr<Views::MackieView> newState, Mixers::VirtualMixer& virtualMixer,
+	                           Mackie::MackieComposite& mackieComposite)
+	{
 	}
 }
