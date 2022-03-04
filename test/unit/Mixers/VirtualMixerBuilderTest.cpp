@@ -59,10 +59,23 @@ namespace MackieOfTheUnicorn::Tests::Unit::Mixers
 		EXPECT_NE(actualInstance.get(), nullptr);
 	}
 
-	TEST_F(VirtualMixerBuilderTest, BuildThrowsExceptionIfNoLinkedMixers)
+	TEST_F(VirtualMixerBuilderTest, BuildThrowsExceptionIfNoMackieMixer)
 	{
+		instance->AddMOTUMixer("motu.local");
 		EXPECT_THROW({
 			instance->Build();
 		}, Exceptions::DeviceUnavailableException);
+	}
+
+	TEST_F(VirtualMixerBuilderTest, BuildThrowsExceptionIfNoMOTUMixer)
+	{
+		mackieServiceFake->InputDevices = {{0, "input1"}};
+		mackieServiceFake->OutputDevices = {{0, "output1"}};
+
+		std::vector<std::pair<int, int>> inputAndOutputIds = {{0, 0}};
+		instance->AddMackieMixer(inputAndOutputIds);
+		EXPECT_THROW({
+						 instance->Build();
+					 }, Exceptions::DeviceUnavailableException);
 	}
 } // namespace MackieOfTheUnicorn::Tests::Unit::Mixers
