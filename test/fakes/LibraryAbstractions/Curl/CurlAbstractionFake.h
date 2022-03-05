@@ -26,6 +26,7 @@ namespace MackieOfTheUnicorn::LibraryAbstractions::Curl
 		std::string PerformedBody;
 		int ETag = 0;
 		std::mutex Mutex;
+		bool AbortCalled = false;
 
 		std::vector<std::string> ReturnedBodies;
 		std::vector<std::string> ReturnedHeaders;
@@ -118,6 +119,7 @@ namespace MackieOfTheUnicorn::LibraryAbstractions::Curl
 		CurlAbstraction& Abort() override
 		{
 			std::lock_guard<std::mutex> l(Mutex);
+			AbortCalled = true;
 			return *this;
 		}
 

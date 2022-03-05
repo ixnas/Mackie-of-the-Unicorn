@@ -74,4 +74,40 @@ namespace MackieOfTheUnicorn::Tests::Unit::HTTP
 		EXPECT_EQ(actualLastMessageKey, expectedLastMessageKey);
 		EXPECT_EQ(actualLastMessageValue, expectedLastMessageValue);
 	}
+
+	TEST_F(HTTPDeviceImplTest, UsesETagAfterFirstRound)
+	{
+		curlIn->FakeHasChangedMessage("{\"key1\":128}");
+		instance->StartListening();
+		curlIn->FakeHasChangedMessage("{\"key1\":127}");
+
+		auto start = std::chrono::system_clock::now();
+		while (!curlIn->SetHeadersHeaders.has_value())
+		{
+			auto end = std::chrono::system_clock::now();
+			auto diff = start - end;
+			auto duration = std::chrono::duration_cast<std::chrono::seconds>(diff).count();
+			if (duration > 0)
+			{
+				FAIL() << "Headers didn't get set.";
+			}
+		}
+		instance->StopListening();
+
+		auto hasSetHeaders = curlIn->SetHeadersHeaders.has_value();
+
+		EXPECT_TRUE(hasSetHeaders);
+	}
+
+	TEST_F(HTTPDeviceImplTest, AbortsCurlWhenDeconstructing)
+	{
+		curlIn->FakeHasChangedMessage("{\"key1\":128}");
+		instance->StartListening();
+
+		instance.reset();
+
+		auto abortCalled = curlIn->AbortCalled;
+
+		EXPECT_TRUE(abortCalled);
+	}
 } // namespace MackieOfTheUnicorn::Tests::Unit::HTTP
