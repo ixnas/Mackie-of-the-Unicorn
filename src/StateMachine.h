@@ -10,7 +10,8 @@
 namespace MackieOfTheUnicorn
 {
 	/// @brief Interface classes that implement a state machine pattern.
-	/// @tparam OriginType Additional arguments for setting the next state that may be required by the state machine.
+	/// @tparam StateType Type of the state implementation.
+	/// @tparam AdditionalArguments Additional arguments for setting the next state that may be required by the state machine.
 	template <class StateType, class... AdditionalArguments>
 	class StateMachine
 	{
