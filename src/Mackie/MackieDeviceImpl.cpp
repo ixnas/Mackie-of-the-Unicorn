@@ -20,6 +20,20 @@ namespace MackieOfTheUnicorn::Mackie
 			   (message[2] == 127 || message[2] == 0);
 	}
 
+	static bool IsBankForwardMessage(std::vector<unsigned char>& message)
+	{
+		return message[0] == 144 &&
+		       message[1] == 47 &&
+		       message[2] == 127;
+	}
+
+	static bool IsBankBackwardsMessage(std::vector<unsigned char>& message)
+	{
+		return message[0] == 144 &&
+			   message[1] == 46 &&
+			   message[2] == 127;
+	}
+
 	MackieDeviceImpl::MackieDeviceImpl(std::unique_ptr<MIDI::MIDIDevice>& midiDevice) : MIDIDevice(std::move(midiDevice))
 	{
 		MIDIDevice->RegisterCallback(this);
@@ -76,6 +90,16 @@ namespace MackieOfTheUnicorn::Mackie
 			auto on = message[2] == 127;
 			MackieListener->OnChannelSoloPressed(this, channelId, on);
 			return;
+		}
+
+		if (IsBankForwardMessage(message))
+		{
+			MackieListener->OnBankForwardPressed();
+		}
+
+		if (IsBankBackwardsMessage(message))
+		{
+			MackieListener->OnBankBackwardsPressed();
 		}
 	}
 }

@@ -157,4 +157,22 @@ namespace MackieOfTheUnicorn::Tests::Unit::Mackie
 
 		EXPECT_FALSE(gotMessages);
 	}
+
+	TEST_F(MackieDeviceImplTest, SetsBankForwardOnListener)
+	{
+		std::vector<unsigned char> midiMessage = { 0x90, 0x2F, 0x7F };
+		midiDeviceFake->FakeMessage(midiMessage);
+		auto setBankFowardOnListener = mackieListenerFake->OnBankForwardPressedCalled;
+
+		EXPECT_TRUE(setBankFowardOnListener);
+	}
+
+	TEST_F(MackieDeviceImplTest, SetsBankBackwardsOnListener)
+	{
+		std::vector<unsigned char> midiMessage = { 0x90, 0x2E, 0x7F };
+		midiDeviceFake->FakeMessage(midiMessage);
+		auto setBankBackwardsOnListener = mackieListenerFake->OnBankBackwardsPressedCalled;
+
+		EXPECT_TRUE(setBankBackwardsOnListener);
+	}
 } // namespace MackieOfTheUnicorn::Tests::Unit::Mackie
