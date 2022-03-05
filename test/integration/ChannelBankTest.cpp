@@ -34,8 +34,8 @@ namespace MackieOfTheUnicorn::Tests::Integration
 		std::ostringstream motuMessage;
 		motuMessage << "{\"mix/chan/0/matrix/solo\":1.000000,\n"
 		            << "\"mix/chan/1/matrix/mute\":1.000000,\n"
-		            << "\"mix/chan/15/matrix/mute\":1.000000,\n"
-		            << "\"mix/chan/16/matrix/solo\":1.000000}\n";
+		            << "\"mix/chan/8/matrix/mute\":1.000000,\n"
+		            << "\"mix/chan/9/matrix/solo\":1.000000}\n";
 		auto motuMessageStr = motuMessage.str();
 
 		auto oldSize = rtMidiOut->SendMessageMessages.size();
@@ -53,6 +53,7 @@ namespace MackieOfTheUnicorn::Tests::Integration
 			}
 		}
 
+		std::this_thread::sleep_for(std::chrono::milliseconds(1));
 		rtMidiOut->SendMessageMessages.clear();
 		oldSize = rtMidiOut->SendMessageMessages.size();
 
