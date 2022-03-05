@@ -6,7 +6,29 @@
 
 namespace MackieOfTheUnicorn::Views
 {
-	ChannelView::ChannelView(MackieViewData& viewData) : ViewData(viewData), MackieComposite(nullptr), VirtualMixer(nullptr)
+	static void OnChangeOffset(int previousOffset, int nextOffset, MackieViewData& viewData, Mackie::MackieComposite& mackieComposite)
+	{
+		for (auto i = previousOffset; i < 48; i++)
+		{
+			auto currentMute = viewData.GetMute(i);
+			auto nextMute = viewData.GetMute(i + nextOffset - previousOffset);
+
+			if (currentMute != nextMute)
+			{
+				mackieComposite.SetChannelMute(i - previousOffset, nextMute);
+			}
+
+			auto currentSolo = viewData.GetSolo(i);
+			auto nextSolo = viewData.GetSolo(i + nextOffset - previousOffset);
+
+			if (currentSolo != nextSolo)
+			{
+				mackieComposite.SetChannelSolo(i - previousOffset, nextSolo);
+			}
+		}
+	}
+
+	ChannelView::ChannelView(MackieViewData& viewData) : ViewData(viewData), MackieComposite(nullptr), VirtualMixer(nullptr), Offset(0)
 	{
 	}
 
@@ -22,12 +44,12 @@ namespace MackieOfTheUnicorn::Views
 
 	void ChannelView::SetInputChannelMute(int originId, int channel, bool on)
 	{
-		MackieComposite->SetChannelMute(channel, on);
+		MackieComposite->SetChannelMute(channel - Offset, on);
 	}
 
 	void ChannelView::SetInputChannelSolo(int originId, int channel, bool on)
 	{
-		MackieComposite->SetChannelSolo(channel, on);
+		MackieComposite->SetChannelSolo(channel - Offset, on);
 	}
 
 	void ChannelView::OnChannelMutePressed(Mackie::MackieComposite* origin, int channelId, bool on)
@@ -36,6 +58,8 @@ namespace MackieOfTheUnicorn::Views
 		{
 			return;
 		}
+
+		channelId = channelId + Offset;
 
 		auto channelWasMuted = ViewData.GetMute(channelId);
 		ViewData.SetMute(channelId, !channelWasMuted);
@@ -50,6 +74,8 @@ namespace MackieOfTheUnicorn::Views
 			return;
 		}
 
+		channelId = channelId + Offset;
+
 		auto channelWasSolod = ViewData.GetSolo(channelId);
 		ViewData.SetSolo(channelId, !channelWasSolod);
 
@@ -58,9 +84,31 @@ namespace MackieOfTheUnicorn::Views
 
 	void ChannelView::OnBankForwardPressed()
 	{
+		if (Offset >= 40)
+		{
+			return;
+		}
+
+		auto previousOffset = Offset;
+		auto nextOffset = previousOffset + 8;
+
+		OnChangeOffset(previousOffset, nextOffset, ViewData, *MackieComposite);
+
+		Offset = nextOffset;
 	}
 
 	void ChannelView::OnBankBackwardsPressed()
 	{
+		if (Offset <= 0)
+		{
+			return;
+		}
+
+		auto previousOffset = Offset;
+		auto nextOffset = previousOffset - 8;
+
+		OnChangeOffset(previousOffset, nextOffset, ViewData, *MackieComposite);
+
+		Offset = nextOffset;
 	}
 }

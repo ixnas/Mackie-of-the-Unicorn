@@ -162,9 +162,9 @@ namespace MackieOfTheUnicorn::Tests::Unit::Mackie
 	{
 		std::vector<unsigned char> midiMessage = { 0x90, 0x2F, 0x7F };
 		midiDeviceFake->FakeMessage(midiMessage);
-		auto setBankFowardOnListener = mackieListenerFake->OnBankForwardPressedCalled;
+		auto setBankForwardOnListener = mackieListenerFake->OnBankForwardPressedCalled;
 
-		EXPECT_TRUE(setBankFowardOnListener);
+		EXPECT_TRUE(setBankForwardOnListener);
 	}
 
 	TEST_F(MackieDeviceImplTest, SetsBankBackwardsOnListener)

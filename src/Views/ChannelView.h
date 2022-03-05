@@ -16,6 +16,7 @@ namespace MackieOfTheUnicorn::Views
 		MackieViewData& ViewData;
 		Mackie::MackieComposite* MackieComposite;
 		Mixers::VirtualMixer* VirtualMixer;
+		int Offset;
 
 	  public:
 		explicit ChannelView(MackieViewData& viewData);

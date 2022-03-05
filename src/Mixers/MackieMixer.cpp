@@ -38,7 +38,7 @@ namespace MackieOfTheUnicorn::Mixers
 
 	void MackieMixer::SetInputChannelSolo(int originId, int channel, bool on)
 	{
-		ViewData.SetMute(channel, on);
+		ViewData.SetSolo(channel, on);
 		View->SetInputChannelSolo(originId, channel, on);
 	}
 
@@ -49,10 +49,12 @@ namespace MackieOfTheUnicorn::Mixers
 
 	void MackieMixer::OnBankForwardPressed()
 	{
+		View->OnBankForwardPressed();
 	}
 
 	void MackieMixer::OnBankBackwardsPressed()
 	{
+		View->OnBankBackwardsPressed();
 	}
 
 	void MackieMixer::SetState(std::unique_ptr<Views::MackieView> newState, Mixers::VirtualMixer& virtualMixer,

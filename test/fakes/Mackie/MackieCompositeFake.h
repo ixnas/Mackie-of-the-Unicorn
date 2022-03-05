@@ -21,6 +21,11 @@ namespace MackieOfTheUnicorn::Mackie
 		std::optional<bool> SetChannelSoloOn;
 		std::vector<std::unique_ptr<MackieDevice>> MackieDevices;
 
+		std::vector<bool> SolosOn;
+		std::vector<int> SoloChannels;
+		std::vector<bool> MutesOn;
+		std::vector<int> MuteChannels;
+
 		MackieCompositeFake() = default;
 
 		explicit MackieCompositeFake(std::vector<std::unique_ptr<MackieDevice>>& mackieDevices) : MackieDevices(std::move(mackieDevices))
@@ -35,6 +40,8 @@ namespace MackieOfTheUnicorn::Mackie
 		{
 			SetChannelMuteChannelId = channelId;
 			SetChannelMuteOn = on;
+			MuteChannels.push_back(channelId);
+			MutesOn.push_back(on);
 		}
 
 		void OnChannelSoloPressed(MackieDevice* origin, int channelId, bool on) override
@@ -45,6 +52,8 @@ namespace MackieOfTheUnicorn::Mackie
 		{
 			SetChannelSoloChannelId = channelId;
 			SetChannelSoloOn = on;
+			SoloChannels.push_back(channelId);
+			SolosOn.push_back(on);
 		}
 
 		void SetMackieListener(MackieListener<MackieComposite>& mackieListener) override

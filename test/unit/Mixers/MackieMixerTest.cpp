@@ -26,6 +26,50 @@ namespace MackieOfTheUnicorn::Tests::Unit::Mixers
 		std::unique_ptr<MackieOfTheUnicorn::Mixers::VirtualMixerFake> virtualMixerFake;
 		std::unique_ptr<MackieOfTheUnicorn::Mixers::MackieMixer> instance;
 		MackieOfTheUnicorn::Mackie::MackieCompositeFake* mackieCompositeFake;
+
+		template<class T>
+		static long FindIndex(std::vector<T>& vector, T value)
+		{
+			auto it = std::find(vector.begin(), vector.end(), value);
+
+			if (it == vector.end())
+			{
+				return -1;
+			}
+
+			return it - vector.begin();
+		}
+
+		void BankingTest(int oldSolo, int newSolo, int oldMute, int newMute, const std::function<void()>& bankingFunction)
+		{
+			instance->SetInputChannelSolo(0, oldSolo, true);
+			instance->SetInputChannelMute(0, oldMute, true);
+
+			auto soloChannelIndex = FindIndex(mackieCompositeFake->SoloChannels, oldSolo);
+			auto muteChannelIndex = FindIndex(mackieCompositeFake->MuteChannels, oldMute);
+
+			ASSERT_TRUE(mackieCompositeFake->SolosOn[soloChannelIndex]);
+			ASSERT_TRUE(mackieCompositeFake->MutesOn[muteChannelIndex]);
+
+			mackieCompositeFake->SolosOn.clear();
+			mackieCompositeFake->MutesOn.clear();
+			mackieCompositeFake->SoloChannels.clear();
+			mackieCompositeFake->MuteChannels.clear();
+
+			bankingFunction();
+
+			auto oldSoloChannelIndex = FindIndex(mackieCompositeFake->SoloChannels, oldSolo);
+			auto oldMuteChannelIndex = FindIndex(mackieCompositeFake->MuteChannels, oldMute);
+
+			ASSERT_FALSE(mackieCompositeFake->SolosOn[oldSoloChannelIndex]);
+			ASSERT_FALSE(mackieCompositeFake->MutesOn[oldMuteChannelIndex]);
+
+			auto newSoloChannelIndex = FindIndex(mackieCompositeFake->SoloChannels, newSolo);
+			auto newMuteChannelIndex = FindIndex(mackieCompositeFake->MuteChannels, newMute);
+
+			ASSERT_TRUE(mackieCompositeFake->SolosOn[newSoloChannelIndex]);
+			ASSERT_TRUE(mackieCompositeFake->MutesOn[newMuteChannelIndex]);
+		}
 	};
 
 	TEST_F(MackieMixerTest, HasCorrectId)
@@ -160,5 +204,56 @@ namespace MackieOfTheUnicorn::Tests::Unit::Mixers
 
 		EXPECT_EQ(actualVirtualMixerChannel, expectedChannel);
 		EXPECT_EQ(actualVirtualMixerOn, expectedOn);
+	}
+
+	TEST_F(MackieMixerTest, BanksForwardCorrectly)
+	{
+		BankingTest(8, 0, 9, 1, [this] () { instance->OnBankForwardPressed(); });
+	}
+
+	TEST_F(MackieMixerTest, BanksBackwardsCorrectly)
+	{
+		BankingTest(8, 0, 9, 1, [this] () { instance->OnBankForwardPressed(); });
+		BankingTest(0, 8, 1, 9, [this] () { instance->OnBankBackwardsPressed(); });
+	}
+
+	TEST_F(MackieMixerTest, CantBankBackwardsOutOfBounds)
+	{
+		auto oldSolo = 9;
+		auto oldMute = 8;
+
+		instance->SetInputChannelSolo(0, oldSolo, true);
+		instance->SetInputChannelMute(0, oldMute, true);
+
+		auto soloChannelIndex = FindIndex(mackieCompositeFake->SoloChannels, oldSolo);
+		auto muteChannelIndex = FindIndex(mackieCompositeFake->MuteChannels, oldMute);
+
+		ASSERT_TRUE(mackieCompositeFake->SolosOn[soloChannelIndex]);
+		ASSERT_TRUE(mackieCompositeFake->MutesOn[muteChannelIndex]);
+
+		mackieCompositeFake->SolosOn.clear();
+		mackieCompositeFake->MutesOn.clear();
+		mackieCompositeFake->SoloChannels.clear();
+		mackieCompositeFake->MuteChannels.clear();
+
+		instance->OnBankBackwardsPressed();
+
+		auto expectedSize = 0;
+
+		auto actualMutesSize = mackieCompositeFake->MutesOn.size();
+		auto actualSolosSize = mackieCompositeFake->SolosOn.size();
+
+		ASSERT_EQ(actualMutesSize, expectedSize);
+		ASSERT_EQ(actualSolosSize, expectedSize);
+	}
+
+	TEST_F(MackieMixerTest, CantBankForwardOutOfBounds)
+	{
+		BankingTest(47, 7, 46, 6, [this] () {
+			for (int i = 0; i < 20; i++)
+			{
+				instance->OnBankForwardPressed();
+			}
+		});
 	}
 }
