@@ -22,8 +22,7 @@ namespace MackieOfTheUnicorn::Mixers
 	/// A LinkedMixer implementation that represents a Mackie control surface.
 	class MackieMixer
 	    : public LinkedMixer,
-	      public Mackie::MackieListener<Mackie::MackieComposite>,
-	      public StateMachine<Views::MackieView, VirtualMixer&, Mackie::MackieComposite&>
+	      public Mackie::MackieListener<Mackie::MackieComposite>
 	{
 		std::unique_ptr<Mackie::MackieComposite> MackieComposite;
 		VirtualMixer* VirtualMixer;
@@ -40,7 +39,6 @@ namespace MackieOfTheUnicorn::Mixers
 		void OnChannelSoloPressed(Mackie::MackieComposite* origin, int channelId, bool on) override;
 		void OnBankForwardPressed() override;
 		void OnBankBackwardsPressed() override;
-		void SetState(std::unique_ptr<Views::MackieView> newState, Mixers::VirtualMixer& virtualMixer, Mackie::MackieComposite& mackieComposite) override;
 	};
 }
 

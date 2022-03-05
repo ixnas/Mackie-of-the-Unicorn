@@ -56,9 +56,4 @@ namespace MackieOfTheUnicorn::Mixers
 	{
 		View->OnBankBackwardsPressed();
 	}
-
-	void MackieMixer::SetState(std::unique_ptr<Views::MackieView> newState, Mixers::VirtualMixer& virtualMixer,
-	                           Mackie::MackieComposite& mackieComposite)
-	{
-	}
 }
