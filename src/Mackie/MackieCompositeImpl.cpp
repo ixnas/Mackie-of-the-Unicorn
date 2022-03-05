@@ -48,9 +48,11 @@ namespace MackieOfTheUnicorn::Mackie
 
 	void MackieCompositeImpl::OnBankForwardPressed()
 	{
+		MackieListener->OnBankForwardPressed();
 	}
 
 	void MackieCompositeImpl::OnBankBackwardsPressed()
 	{
+		MackieListener->OnBankBackwardsPressed();
 	}
 }

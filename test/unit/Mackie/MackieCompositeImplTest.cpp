@@ -92,4 +92,20 @@ namespace MackieOfTheUnicorn::Tests::Unit::Mackie
 		EXPECT_EQ(actualChannelNumber, expectedChannelNumber);
 		EXPECT_EQ(actualOn, expectedOn);
 	}
+
+	TEST_F(MackieCompositeImplTest, SetsBankForwardOnListener)
+	{
+		instance->OnBankForwardPressed();
+		auto actual = mackieListenerFake->OnBankForwardPressedCalled;
+
+		EXPECT_TRUE(actual);
+	}
+
+	TEST_F(MackieCompositeImplTest, SetsBankBackwardsOnListener)
+	{
+		instance->OnBankBackwardsPressed();
+		auto actual = mackieListenerFake->OnBankBackwardsPressedCalled;
+
+		EXPECT_TRUE(actual);
+	}
 } // namespace MackieOfTheUnicorn::Tests::Unit::Mackie
