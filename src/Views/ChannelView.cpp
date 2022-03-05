@@ -55,4 +55,12 @@ namespace MackieOfTheUnicorn::Views
 
 		VirtualMixer->SetInputChannelSolo(ViewData.GetId(), channelId, !channelWasSolod);
 	}
+
+	void ChannelView::OnBankForwardPressed()
+	{
+	}
+
+	void ChannelView::OnBankBackwardsPressed()
+	{
+	}
 }

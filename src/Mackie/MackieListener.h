@@ -20,6 +20,12 @@ namespace MackieOfTheUnicorn::Mackie
 
 		/// Handles an event where a MackieDevice changes a channel solo.
 		virtual void OnChannelSoloPressed(OriginType* origin, int channelId, bool on) = 0;
+
+		/// Handles an event where a MackieDevice banks to the next 8 channels.
+		virtual void OnBankForwardPressed() = 0;
+
+		/// Handles an event where a MackieDevice banks to the previous 8 channels.
+		virtual void OnBankBackwardsPressed() = 0;
 	};
 }
 

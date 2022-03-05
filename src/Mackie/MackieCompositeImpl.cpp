@@ -45,4 +45,12 @@ namespace MackieOfTheUnicorn::Mackie
 	{
 		MackieListener->OnChannelSoloPressed(this, channelId, on);
 	}
+
+	void MackieCompositeImpl::OnBankForwardPressed()
+	{
+	}
+
+	void MackieCompositeImpl::OnBankBackwardsPressed()
+	{
+	}
 }

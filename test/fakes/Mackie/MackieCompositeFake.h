@@ -50,6 +50,16 @@ namespace MackieOfTheUnicorn::Mackie
 		void SetMackieListener(MackieListener<MackieComposite>& mackieListener) override
 		{
 		}
+
+		void OnBankForwardPressed() override
+		{
+
+		}
+
+		void OnBankBackwardsPressed() override
+		{
+
+		}
 	};
 } // namespace MackieOfTheUnicorn::Mackie
 

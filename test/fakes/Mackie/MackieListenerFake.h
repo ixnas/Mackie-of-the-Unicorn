@@ -35,6 +35,16 @@ namespace MackieOfTheUnicorn::Mackie
 			OnChannelSoloPressedChannelId = channelId;
 			OnChannelSoloPressedOn = on;
 		}
+
+		void OnBankForwardPressed() override
+		{
+
+		}
+
+		void OnBankBackwardsPressed() override
+		{
+
+		}
 	};
 }
 

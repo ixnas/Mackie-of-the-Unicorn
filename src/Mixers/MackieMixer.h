@@ -38,6 +38,8 @@ namespace MackieOfTheUnicorn::Mixers
 		void OnChannelMutePressed(Mackie::MackieComposite* origin, int channelId, bool on) override;
 		void SetInputChannelSolo(int originId, int channel, bool on) override;
 		void OnChannelSoloPressed(Mackie::MackieComposite* origin, int channelId, bool on) override;
+		void OnBankForwardPressed() override;
+		void OnBankBackwardsPressed() override;
 		void SetState(std::unique_ptr<Views::MackieView> newState, Mixers::VirtualMixer& virtualMixer, Mackie::MackieComposite& mackieComposite) override;
 	};
 }

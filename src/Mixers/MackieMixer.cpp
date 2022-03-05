@@ -47,6 +47,14 @@ namespace MackieOfTheUnicorn::Mixers
 		View->OnChannelSoloPressed(origin, channelId, on);
 	}
 
+	void MackieMixer::OnBankForwardPressed()
+	{
+	}
+
+	void MackieMixer::OnBankBackwardsPressed()
+	{
+	}
+
 	void MackieMixer::SetState(std::unique_ptr<Views::MackieView> newState, Mixers::VirtualMixer& virtualMixer,
 	                           Mackie::MackieComposite& mackieComposite)
 	{

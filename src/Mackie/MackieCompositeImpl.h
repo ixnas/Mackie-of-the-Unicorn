@@ -22,6 +22,8 @@ namespace MackieOfTheUnicorn::Mackie
 		void OnChannelMutePressed(MackieDevice* origin, int channelId, bool on) override;
 		void SetChannelSolo(int channelNumber, bool on) override;
 		void OnChannelSoloPressed(MackieDevice* origin, int channelId, bool on) override;
+		void OnBankForwardPressed() override;
+		void OnBankBackwardsPressed() override;
 		void SetMackieListener(Mackie::MackieListener<MackieComposite>& mackieListener) override;
 	};
 }
