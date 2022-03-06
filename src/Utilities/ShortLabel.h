@@ -9,12 +9,18 @@
 
 namespace MackieOfTheUnicorn::Utilities
 {
+	/// Represents a version of a string that fits into a scribble strip on a Mackie control surface.
 	class ShortLabel
 	{
-		char OutputLabel[7];
+	  public:
+		static constexpr int MAX_LENGTH = 6;
+	  private:
+		char OutputLabel[MAX_LENGTH + 1];
 
 	  public:
 		explicit ShortLabel(std::string_view inputLabel);
+
+		/// Returns the generated label.
 		std::string_view Get();
 	};
 }

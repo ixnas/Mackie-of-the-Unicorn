@@ -17,7 +17,6 @@ namespace MackieOfTheUnicorn::Utilities
 
 	static constexpr std::string_view Vowels = "aeiouyAEIOUY";
 	static constexpr std::string_view Consonants = "bcdfghjklmnpqrstvwxzBCDFGHJKLMNPQRSTVWXZ";
-	static constexpr int MAX_LENGTH = 6;
 	static constexpr int NUMBERS_0 = 48;
 	static constexpr int NUMBERS_9 = 57;
 
@@ -69,7 +68,7 @@ namespace MackieOfTheUnicorn::Utilities
 		auto it = characterTypes.begin() + (characterTypes.size() / 2);
 		for (int i = 0; i < characterTypes.size(); ++i)
 		{
-			if (characterTypes.size() - skipped <= MAX_LENGTH || it == characterTypes.begin() || it == characterTypes.end() - 1)
+			if (characterTypes.size() - skipped <= ShortLabel::MAX_LENGTH || it == characterTypes.begin() || it == characterTypes.end() - 1)
 			{
 				break;
 			}
