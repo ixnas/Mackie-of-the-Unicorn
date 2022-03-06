@@ -7,10 +7,14 @@
 
 namespace MackieOfTheUnicorn::Utilities
 {
+	/// Converts between non-linear values from the MOTU API and a linear values between 0 and 1.
 	class FaderValueConverter
 	{
 	  public:
+		/// Converts a linear value to a non-linear MOTU value.
 		static double ToMotu(double linearValue);
+
+		/// Converts a non-linear MOTU value to a linear value.
 		static double ToLinear(double motuValue);
 	};
 }
