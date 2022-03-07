@@ -6,7 +6,7 @@
 #define MACKIE_OF_THE_UNICORN_CURLABSTRACTIONIMPL_H
 
 #include "CurlAbstraction.h"
-#include <curl/curl.h>
+#include "../../../ext/curl/include/curl/curl.h"
 
 namespace MackieOfTheUnicorn::LibraryAbstractions::Curl
 {

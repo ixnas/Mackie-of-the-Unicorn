@@ -10,3 +10,6 @@
 [submodule "wxWidgets"]
 	path = ext/wxWidgets
 	url = https://github.com/wxWidgets/wxWidgets.git
+[submodule "ext/curl"]
+	path = ext/curl
+	url = https://github.com/curl/curl
