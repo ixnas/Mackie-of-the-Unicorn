@@ -32,7 +32,7 @@ namespace MackieOfTheUnicorn::Utilities
 		std::vector<CharacterType> characterTypes;
 		characterTypes.reserve(inputLabel.size());
 
-		for (const char* inputPtr = inputLabel.begin(); *inputPtr != '\0'; ++inputPtr)
+		for (const char* inputPtr = inputLabel.data(); *inputPtr != '\0'; ++inputPtr)
 		{
 			char currentCharacter = *inputPtr;
 			if (currentCharacter >= NUMBERS_0 && currentCharacter <= NUMBERS_9)
@@ -109,7 +109,7 @@ namespace MackieOfTheUnicorn::Utilities
 	{
 		if (inputLabel.length() <= MAX_LENGTH)
 		{
-			CopyString(inputLabel.begin(), OutputLabel, inputLabel.length());
+			CopyString(inputLabel.data(), OutputLabel, inputLabel.length());
 			return;
 		}
 
@@ -122,7 +122,7 @@ namespace MackieOfTheUnicorn::Utilities
 		SkipCharacters(characterTypes, CharacterType::OTHER, skipped);
 		SkipCharacters(characterTypes, CharacterType::NUMBER, skipped);
 
-		CopyStringFiltered(inputLabel.begin(), OutputLabel, characterTypes);
+		CopyStringFiltered(inputLabel.data(), OutputLabel, characterTypes);
 	}
 
 	std::string_view ShortLabel::Get()

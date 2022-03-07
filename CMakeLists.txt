@@ -33,8 +33,8 @@ if (APPLE)
     find_library(COREFOUNDATION CoreFoundation "/")
     set(RTMIDI_API_CORE ON)
     set(OS_FLAGS "-framework CoreFoundation -framework CoreMIDI -framework CoreAudio")
-elseif (MINGW)
-    set(OS_FLAGS "-static-libgcc -static-libstdc++ -static -mwindows" winmm.lib)
+elseif (MSVC)
+    set(OS_FLAGS winmm.lib)
 else ()
     set(OS_FLAGS "")
 endif ()
@@ -73,6 +73,15 @@ else()
     set(MAIN_EXECUTABLE ${CMAKE_SOURCE_DIR}/src/Console/main.cpp)
 endif()
 
+# Linking libraries
+if (MSVC)
+    set(RTMIDILIB ${CMAKE_BINARY_DIR}/ext/rtmidi/Release/rtmidi.lib)
+    set(CURLLIB ${CMAKE_BINARY_DIR}/ext/curl/lib/Release/libcurl.lib)
+else ()
+    set(RTMIDILIB ${CMAKE_BINARY_DIR}/ext/rtmidi/librtmidi.a)
+    set(CURLLIB ${CMAKE_BINARY_DIR}/ext/curl/lib/libcurl-d.a)
+endif()
+
 # Sources
 file(GLOB_RECURSE sources src/*.cpp src/*.h)
 list(FILTER sources EXCLUDE REGEX ".*main\\.cpp$")
@@ -88,9 +97,9 @@ file(GLOB_RECURSE integration_tests test/integration/*.cpp test/integration/*.h 
 
 # Main executable
 add_executable(Mackie_of_the_Unicorn ${sources})
-add_dependencies(Mackie_of_the_Unicorn rtmidi ${WX_LIBRARIES} curl)
+add_dependencies(Mackie_of_the_Unicorn rtmidi ${WX_LIBRARIES} libcurl)
 target_include_directories(Mackie_of_the_Unicorn PRIVATE ext/rapidjson/include rtmidi ext/curl/include)
-target_link_libraries(Mackie_of_the_Unicorn ${CMAKE_BINARY_DIR}/ext/rtmidi/librtmidi.a ${CMAKE_BINARY_DIR}/ext/curl/lib/libcurl-d.a ${WX_LIBRARIES} ${OS_FLAGS})
+target_link_libraries(Mackie_of_the_Unicorn ${RTMIDILIB} ${CURLLIB} ${WX_LIBRARIES} ${OS_FLAGS})
 target_precompile_headers(Mackie_of_the_Unicorn PRIVATE src/precomp.h)
 
 # Tests
