@@ -4,7 +4,6 @@
 
 #include "VirtualMixerImpl.h"
 #include "LinkedMixer.h"
-#include <utility>
 
 namespace MackieOfTheUnicorn::Mixers
 {

@@ -5,8 +5,6 @@
 #ifndef MACKIE_OF_THE_UNICORN_RTMIDIINABSTRACTION_H
 #define MACKIE_OF_THE_UNICORN_RTMIDIINABSTRACTION_H
 
-#include <string>
-
 namespace MackieOfTheUnicorn::LibraryAbstractions::RtMidi
 {
 	/// Abstraction for RtMidiIn.

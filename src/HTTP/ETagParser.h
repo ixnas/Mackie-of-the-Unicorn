@@ -5,9 +5,6 @@
 #ifndef MACKIE_OF_THE_UNICORN_ETAGPARSER_H
 #define MACKIE_OF_THE_UNICORN_ETAGPARSER_H
 
-#include <optional>
-#include <string>
-
 namespace MackieOfTheUnicorn::HTTP
 {
 	/// Parses a string of headers and returns the ETag if it's present.

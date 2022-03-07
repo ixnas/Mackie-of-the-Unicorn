@@ -16,8 +16,6 @@
 #include "../git_version.h"
 #include "../LibraryAbstractions/Curl/Factories/CurlAbstractionFactoryImpl.h"
 #include <curl/curl.h>
-#include <future>
-#include <sstream>
 
 class HTTPListenerImpl : public MackieOfTheUnicorn::HTTP::HTTPListener
 {

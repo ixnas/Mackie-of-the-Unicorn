@@ -6,8 +6,6 @@
 #define MACKIE_OF_THE_UNICORN_MACKIECOMPOSITEIMPL_H
 
 #include "MackieComposite.h"
-#include <memory>
-#include <vector>
 
 namespace MackieOfTheUnicorn::Mackie
 {

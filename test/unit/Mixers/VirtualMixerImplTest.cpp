@@ -5,8 +5,6 @@
 #include "../../../src/Mixers/VirtualMixerImpl.h"
 #include "../../fakes/Mixers/LinkedMixerFake.h"
 #include <gtest/gtest.h>
-#include <memory>
-#include <vector>
 
 namespace MackieOfTheUnicorn::Tests::Unit::Mixers
 {

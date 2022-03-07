@@ -4,7 +4,6 @@
 
 #include "MOTUMixer.h"
 #include "VirtualMixer.h"
-#include <sstream>
 
 namespace MackieOfTheUnicorn::Mixers
 {

@@ -5,8 +5,6 @@
 #ifndef MACKIE_OF_THE_UNICORN_MIDIRECEIVER_H
 #define MACKIE_OF_THE_UNICORN_MIDIRECEIVER_H
 
-#include <vector>
-
 namespace MackieOfTheUnicorn::MIDI
 {
 	/// Interface for classes that implement a callback to receive MIDI messages.

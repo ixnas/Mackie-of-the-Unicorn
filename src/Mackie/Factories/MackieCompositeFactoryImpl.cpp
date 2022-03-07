@@ -7,8 +7,6 @@
 #include "../../MIDI/MIDIDevice.h"
 #include "../MackieCompositeImpl.h"
 #include "../MackieDevice.h"
-#include <memory>
-#include <vector>
 
 namespace MackieOfTheUnicorn::Mackie::Factories
 {

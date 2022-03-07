@@ -3,7 +3,6 @@
 //
 
 #include "FaderValueConverter.h"
-#include <cmath>
 
 namespace MackieOfTheUnicorn::Utilities
 {

@@ -7,7 +7,6 @@
 
 #include "CurlAbstraction.h"
 #include <curl/curl.h>
-#include <mutex>
 
 namespace MackieOfTheUnicorn::LibraryAbstractions::Curl
 {

@@ -5,7 +5,6 @@
 #ifndef MACKIE_OF_THE_UNICORN_MACKIEDEVICE_H
 #define MACKIE_OF_THE_UNICORN_MACKIEDEVICE_H
 
-#include <string>
 #include "MackieInterface.h"
 #include "MackieListener.h"
 #include "../MIDI/MIDIReceiver.h"

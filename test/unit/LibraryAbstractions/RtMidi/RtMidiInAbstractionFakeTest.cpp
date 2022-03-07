@@ -2,8 +2,6 @@
 // Created by Sjoerd Scheffer on 12/02/2022.
 //
 
-#include <memory>
-#include <optional>
 #include "gtest/gtest.h"
 #include "../../../fakes/LibraryAbstractions/RtMidi/RtMidiInAbstractionFake.h"
 

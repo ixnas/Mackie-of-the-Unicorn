@@ -4,7 +4,6 @@
 
 #include "ApplicationContainer.h"
 #include "gtest/gtest.h"
-#include <thread>
 
 namespace MackieOfTheUnicorn::Tests::Integration
 {

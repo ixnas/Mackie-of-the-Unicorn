@@ -7,8 +7,6 @@
 
 #include "../../../src/Mackie/MackieComposite.h"
 #include "../../../src/Mackie/MackieDevice.h"
-#include <string>
-#include <vector>
 
 namespace MackieOfTheUnicorn::Mackie
 {

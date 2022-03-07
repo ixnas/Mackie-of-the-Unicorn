@@ -5,8 +5,6 @@
 #ifndef MACKIE_OF_THE_UNICORN_RTMIDIOUTABSTRACTION_H
 #define MACKIE_OF_THE_UNICORN_RTMIDIOUTABSTRACTION_H
 
-#include <functional>
-#include <string>
 #undef SendMessage
 
 namespace MackieOfTheUnicorn::LibraryAbstractions::RtMidi

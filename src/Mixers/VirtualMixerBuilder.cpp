@@ -6,7 +6,6 @@
 #include "../Exceptions/DeviceUnavailableException.h"
 #include "../Mackie/MackieService.h"
 #include "VirtualMixerImpl.h"
-#include <sstream>
 
 namespace MackieOfTheUnicorn::Mixers
 {

@@ -3,9 +3,7 @@
 //
 
 #include "../../../fakes/LibraryAbstractions/RtMidi/RtMidiOutAbstractionFake.h"
-#include <gtest/gtest.h>
-#include <memory>
-#include <vector>
+#include "gtest/gtest.h"
 
 namespace MackieOfTheUnicorn::Tests::Unit::LibraryAbstractions::RtMidi
 {

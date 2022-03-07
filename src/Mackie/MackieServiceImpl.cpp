@@ -9,7 +9,6 @@
 #include "Factories/MackieDeviceFactory.h"
 #include "MackieComposite.h"
 #include "MackieDevice.h"
-#include <vector>
 
 namespace MackieOfTheUnicorn::Mackie
 {

@@ -5,8 +5,6 @@
 #ifndef MACKIE_OF_THE_UNICORN_SHORTLABEL_H
 #define MACKIE_OF_THE_UNICORN_SHORTLABEL_H
 
-#include <string>
-
 namespace MackieOfTheUnicorn::Utilities
 {
 	/// Represents a version of a string that fits into a scribble strip on a Mackie control surface.

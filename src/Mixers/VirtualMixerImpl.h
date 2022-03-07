@@ -6,8 +6,6 @@
 #define MACKIE_OF_THE_UNICORN_VIRTUALMIXERIMPL_H
 
 #include "VirtualMixer.h"
-#include <vector>
-#include <memory>
 
 namespace MackieOfTheUnicorn::Mixers
 {

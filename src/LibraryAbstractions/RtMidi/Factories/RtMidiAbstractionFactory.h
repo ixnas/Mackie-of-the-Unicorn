@@ -5,8 +5,6 @@
 #ifndef MACKIE_OF_THE_UNICORN_RTMIDIABSTRACTIONFACTORY_H
 #define MACKIE_OF_THE_UNICORN_RTMIDIABSTRACTIONFACTORY_H
 
-#include <memory>
-
 namespace MackieOfTheUnicorn::LibraryAbstractions::RtMidi
 {
 	class RtMidiInAbstraction;

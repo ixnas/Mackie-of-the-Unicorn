@@ -9,7 +9,6 @@
 #include "../LibraryAbstractions/RtMidi/Factories/RtMidiAbstractionFactory.h"
 #include "../LibraryAbstractions/RtMidi/RtMidiOutAbstraction.h"
 #include "../LibraryAbstractions/RtMidi/RtMidiInAbstraction.h"
-#include <memory>
 
 namespace MackieOfTheUnicorn::LibraryAbstractions::RtMidi::Factories
 {

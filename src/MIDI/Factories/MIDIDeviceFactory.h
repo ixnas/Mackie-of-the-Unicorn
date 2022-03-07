@@ -5,7 +5,6 @@
 #ifndef MACKIE_OF_THE_UNICORN_MIDIDEVICEFACTORY_H
 #define MACKIE_OF_THE_UNICORN_MIDIDEVICEFACTORY_H
 
-#include <memory>
 #include "../MIDIDevice.h"
 
 namespace MackieOfTheUnicorn::MIDI

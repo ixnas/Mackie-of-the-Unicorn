@@ -6,7 +6,6 @@
 #define MACKIE_OF_THE_UNICORN_RTMIDIINABSTRACTIONFAKE_H
 
 #include "../../../../src/LibraryAbstractions/RtMidi/RtMidiInAbstraction.h"
-#include <optional>
 
 namespace MackieOfTheUnicorn::LibraryAbstractions::RtMidi
 {

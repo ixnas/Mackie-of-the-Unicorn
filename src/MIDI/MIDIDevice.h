@@ -5,8 +5,6 @@
 #ifndef MACKIE_OF_THE_UNICORN_MIDIDEVICE_H
 #define MACKIE_OF_THE_UNICORN_MIDIDEVICE_H
 
-#include <vector>
-#include <functional>
 #include "MIDIReceiver.h"
 
 namespace MackieOfTheUnicorn::MIDI

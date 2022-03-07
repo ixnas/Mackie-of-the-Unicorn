@@ -5,11 +5,6 @@
 #ifndef MACKIE_OF_THE_UNICORN_MACKIESERVICE_H
 #define MACKIE_OF_THE_UNICORN_MACKIESERVICE_H
 
-#include <map>
-#include <string>
-#include <memory>
-#include <vector>
-
 namespace MackieOfTheUnicorn::Mackie
 {
 	class MackieComposite;

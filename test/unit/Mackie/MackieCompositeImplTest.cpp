@@ -6,8 +6,6 @@
 #include "../../fakes/Mackie/MackieDeviceFake.h"
 #include "gtest/gtest.h"
 #include "../../fakes/Mackie/MackieListenerFake.h"
-#include <memory>
-#include <vector>
 
 namespace MackieOfTheUnicorn::Tests::Unit::Mackie
 {

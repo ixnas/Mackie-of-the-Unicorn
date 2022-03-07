@@ -6,11 +6,6 @@
 #define MACKIE_OF_THE_UNICORN_CURLABSTRACTIONFAKE_H
 
 #include "../../../src/LibraryAbstractions/Curl/CurlAbstraction.h"
-#include <iostream>
-#include <memory>
-#include <sstream>
-#include <string>
-#include <thread>
 
 namespace MackieOfTheUnicorn::LibraryAbstractions::Curl
 {

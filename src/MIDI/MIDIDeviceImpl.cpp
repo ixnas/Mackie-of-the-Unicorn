@@ -4,9 +4,6 @@
 
 #include "MIDIDeviceImpl.h"
 #include "../LibraryAbstractions/RtMidi/Factories/RtMidiAbstractionFactory.h"
-#if !TESTING
-#include <thread>
-#endif
 
 namespace MackieOfTheUnicorn::MIDI
 {

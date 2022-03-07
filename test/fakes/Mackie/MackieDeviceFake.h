@@ -6,7 +6,6 @@
 #define MACKIE_OF_THE_UNICORN_MACKIEDEVICEFAKE_H
 
 #include "../../../src/Mackie/MackieDevice.h"
-#include <optional>
 
 namespace MackieOfTheUnicorn::Mackie
 {

@@ -5,8 +5,6 @@
 #ifndef MACKIE_OF_THE_UNICORN_DEVICEUNAVAILABLEEXCEPTION_H
 #define MACKIE_OF_THE_UNICORN_DEVICEUNAVAILABLEEXCEPTION_H
 
-#include <stdexcept>
-
 namespace MackieOfTheUnicorn::Exceptions
 {
 	class DeviceUnavailableException : public std::runtime_error

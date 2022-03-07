@@ -17,7 +17,6 @@
 #include "../../src/di.h"
 #include "../fakes/LibraryAbstractions/Curl/Factories/CurlAbstractionFactoryFake.h"
 #include "../fakes/LibraryAbstractions/RtMidi/Factories/RtMidiAbstractionFactoryFake.h"
-#include <memory>
 
 namespace MackieOfTheUnicorn::Tests::Integration
 {

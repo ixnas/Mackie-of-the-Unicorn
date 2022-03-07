@@ -5,10 +5,6 @@
 #ifndef MACKIE_OF_THE_UNICORN_MIDISERVICE_H
 #define MACKIE_OF_THE_UNICORN_MIDISERVICE_H
 
-#include <map>
-#include <string>
-#include <memory>
-
 namespace MackieOfTheUnicorn::MIDI
 {
 	class MIDIDevice;

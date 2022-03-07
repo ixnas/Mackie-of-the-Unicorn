@@ -5,8 +5,6 @@
 #ifndef MACKIE_OF_THE_UNICORN_MACKIECOMPOSITEFACTORY_H
 #define MACKIE_OF_THE_UNICORN_MACKIECOMPOSITEFACTORY_H
 
-#include <memory>
-
 namespace MackieOfTheUnicorn::Mackie
 {
 	class MackieComposite;

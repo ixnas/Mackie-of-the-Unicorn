@@ -10,7 +10,6 @@
 #include "../Views/MackieViewDataImpl.h"
 #include "../StateMachine.h"
 #include "../Views/MackieView.h"
-#include <vector>
 
 namespace MackieOfTheUnicorn::Mackie
 {

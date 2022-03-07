@@ -5,8 +5,6 @@
 #ifndef MACKIE_OF_THE_UNICORN_APPLICATION_H
 #define MACKIE_OF_THE_UNICORN_APPLICATION_H
 
-#include <map>
-#include <memory>
 #include "Mixers/MackieMixer.h"
 #include "Mixers/VirtualMixer.h"
 #include "Mixers/VirtualMixerBuilder.h"

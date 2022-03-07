@@ -6,7 +6,6 @@
 #define MACKIE_OF_THE_UNICORN_MACKIELISTENERFAKE_H
 
 #include "../../../src/Mackie/MackieListener.h"
-#include <optional>
 
 namespace MackieOfTheUnicorn::Mackie
 {

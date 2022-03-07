@@ -6,7 +6,6 @@
 #define MACKIE_OF_THE_UNICORN_MACKIEVIEWDATAIMPL_H
 
 #include "MackieViewData.h"
-#include <vector>
 
 namespace MackieOfTheUnicorn::Views
 {

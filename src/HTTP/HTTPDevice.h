@@ -4,8 +4,7 @@
 
 #ifndef MACKIE_OF_THE_UNICORN_HTTPDEVICE_H
 #define MACKIE_OF_THE_UNICORN_HTTPDEVICE_H
-#include <vector>
-#include <string>
+
 #include "../JSON/JSONValue.h"
 
 namespace MackieOfTheUnicorn::HTTP

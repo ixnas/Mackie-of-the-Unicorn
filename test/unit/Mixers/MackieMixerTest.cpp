@@ -6,7 +6,6 @@
 #include "../../../src/Mixers/MackieMixer.h"
 #include "../../fakes/Mackie/MackieCompositeFake.h"
 #include "../../fakes/Mixers/VirtualMixerFake.h"
-#include <memory>
 
 namespace MackieOfTheUnicorn::Tests::Unit::Mixers
 {

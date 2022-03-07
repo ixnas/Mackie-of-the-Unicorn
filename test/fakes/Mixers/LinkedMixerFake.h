@@ -6,7 +6,6 @@
 #define MACKIE_OF_THE_UNICORN_LINKEDMIXERFAKE_H
 
 #include "../../../src/Mixers/LinkedMixer.h"
-#include <optional>
 
 namespace MackieOfTheUnicorn::Mixers
 {

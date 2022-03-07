@@ -5,9 +5,6 @@
 #ifndef MACKIE_OF_THE_UNICORN_JSONVALUE_H
 #define MACKIE_OF_THE_UNICORN_JSONVALUE_H
 
-#include <optional>
-#include <string>
-
 namespace MackieOfTheUnicorn::JSON
 {
 	/// A value container for JSON values.

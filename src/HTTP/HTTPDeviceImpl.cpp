@@ -6,7 +6,6 @@
 #include "../JSON/JSONSerializer.h"
 #include "ETagParser.h"
 #include "HTTPListener.h"
-#include <sstream>
 
 namespace MackieOfTheUnicorn::HTTP
 {

@@ -3,7 +3,6 @@
 //
 
 #include "CurlAbstractionImpl.h"
-#include <sstream>
 
 namespace MackieOfTheUnicorn::LibraryAbstractions::Curl
 {

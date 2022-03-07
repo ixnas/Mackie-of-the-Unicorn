@@ -4,7 +4,6 @@
 
 #include "MackieDeviceFactoryImpl.h"
 #include "../MackieDeviceImpl.h"
-#include <memory>
 
 namespace MackieOfTheUnicorn::Mackie::Factories
 {

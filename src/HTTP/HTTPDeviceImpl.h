@@ -7,7 +7,6 @@
 
 #include "HTTPDevice.h"
 #include "../LibraryAbstractions/Curl/CurlAbstraction.h"
-#include <future>
 
 namespace MackieOfTheUnicorn::HTTP
 {

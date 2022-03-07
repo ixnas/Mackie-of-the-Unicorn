@@ -5,8 +5,6 @@
 #ifndef MACKIE_OF_THE_UNICORN_VIRTUALMIXERBUILDER_H
 #define MACKIE_OF_THE_UNICORN_VIRTUALMIXERBUILDER_H
 
-#include <vector>
-#include <memory>
 #include "VirtualMixer.h"
 #include "MackieMixer.h"
 #include "../Mackie/MackieComposite.h"

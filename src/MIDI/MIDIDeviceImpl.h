@@ -8,7 +8,6 @@
 #include "MIDIDevice.h"
 #include "../LibraryAbstractions/RtMidi/RtMidiInAbstraction.h"
 #include "../LibraryAbstractions/RtMidi/RtMidiOutAbstraction.h"
-#include <memory>
 
 namespace MackieOfTheUnicorn::LibraryAbstractions::RtMidi::Factories
 {

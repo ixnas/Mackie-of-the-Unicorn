@@ -2,7 +2,6 @@
 // Created by Sjoerd Scheffer on 06/03/2022.
 //
 
-#include <vector>
 #include "ShortLabel.h"
 
 namespace MackieOfTheUnicorn::Utilities

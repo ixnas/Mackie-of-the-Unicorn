@@ -5,8 +5,6 @@
 #ifndef MACKIE_OF_THE_UNICORN_BUILDERNOTREADYEXCEPTION_H
 #define MACKIE_OF_THE_UNICORN_BUILDERNOTREADYEXCEPTION_H
 
-#include <stdexcept>
-
 namespace MackieOfTheUnicorn::Exceptions
 {
 	class BuilderNotReadyException : public std::runtime_error

@@ -5,8 +5,6 @@
 #ifndef MACKIE_OF_THE_UNICORN_STATEMACHINE_H
 #define MACKIE_OF_THE_UNICORN_STATEMACHINE_H
 
-#include <memory>
-
 namespace MackieOfTheUnicorn
 {
 	/// @brief Interface classes that implement a state machine pattern.

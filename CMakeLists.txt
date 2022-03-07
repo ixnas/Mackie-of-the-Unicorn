@@ -81,6 +81,7 @@ add_executable(Mackie_of_the_Unicorn ${sources})
 add_dependencies(Mackie_of_the_Unicorn rtmidi ${WX_LIBRARIES})
 target_include_directories(Mackie_of_the_Unicorn PUBLIC ext/rapidjson/include rtmidi ${CURL_INCLUDE_DIR})
 target_link_libraries(Mackie_of_the_Unicorn ${CMAKE_BINARY_DIR}/ext/rtmidi/librtmidi.a ${CURL_LIBRARIES} ${WX_LIBRARIES} ${OS_FLAGS})
+target_precompile_headers(Mackie_of_the_Unicorn PRIVATE src/precomp.h)
 
 # Tests
 if (BUILD_TESTS)
@@ -91,6 +92,7 @@ if (BUILD_TESTS)
     add_dependencies(Unit_Tests rtmidi)
     target_include_directories(Unit_Tests PUBLIC ext/rapidjson/include rtmidi ${CURL_INCLUDE_DIR})
     target_link_libraries(Unit_Tests gtest_main gmock ${CMAKE_BINARY_DIR}/ext/rtmidi/librtmidi.a ${CURL_LIBRARIES} ${OS_FLAGS})
+    target_precompile_headers(Unit_Tests PRIVATE src/precomp.h)
     target_compile_definitions(Unit_Tests PRIVATE TESTING=1)
 
     # Integration tests
@@ -98,6 +100,7 @@ if (BUILD_TESTS)
     add_dependencies(Integration_Tests rtmidi)
     target_include_directories(Integration_Tests PUBLIC ext/rapidjson/include rtmidi ${CURL_INCLUDE_DIR})
     target_link_libraries(Integration_Tests gtest_main gmock ${CMAKE_BINARY_DIR}/ext/rtmidi/librtmidi.a ${CURL_LIBRARIES} ${OS_FLAGS})
+    target_precompile_headers(Integration_Tests PRIVATE src/precomp.h)
     target_compile_definitions(Integration_Tests PRIVATE TESTING=1)
 endif ()
 

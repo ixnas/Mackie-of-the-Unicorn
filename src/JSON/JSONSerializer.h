@@ -5,9 +5,6 @@
 #ifndef MACKIE_OF_THE_UNICORN_JSONSERIALIZER_H
 #define MACKIE_OF_THE_UNICORN_JSONSERIALIZER_H
 
-#include <vector>
-#include <string>
-
 namespace MackieOfTheUnicorn::JSON
 {
 	class JSONValue;

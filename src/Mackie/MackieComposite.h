@@ -8,7 +8,6 @@
 #include "MackieListener.h"
 #include "MackieInterface.h"
 #include "MackieDevice.h"
-#include <string>
 
 namespace MackieOfTheUnicorn::Mackie
 {

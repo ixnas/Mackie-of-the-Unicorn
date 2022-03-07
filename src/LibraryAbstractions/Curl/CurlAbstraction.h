@@ -5,9 +5,6 @@
 #ifndef MACKIE_OF_THE_UNICORN_CURLABSTRACTION_H
 #define MACKIE_OF_THE_UNICORN_CURLABSTRACTION_H
 
-#include <string>
-#include <map>
-
 namespace MackieOfTheUnicorn::LibraryAbstractions::Curl
 {
 	/// Abstraction for cURL.

@@ -3,7 +3,6 @@
 //
 
 #include <gtest/gtest.h>
-#include <memory>
 #include "../../../src/MIDI/MIDIDeviceImpl.h"
 #include "../../../src/MIDI/MIDIReceiver.h"
 #include "../../fakes/LibraryAbstractions/RtMidi/Factories/RtMidiAbstractionFactoryFake.h"
