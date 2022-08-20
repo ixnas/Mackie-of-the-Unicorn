@@ -79,7 +79,11 @@ if (MSVC)
     set(CURLLIB ${CMAKE_BINARY_DIR}/ext/curl/lib/Release/libcurl.lib)
 else ()
     set(RTMIDILIB ${CMAKE_BINARY_DIR}/ext/rtmidi/librtmidi.a)
-    set(CURLLIB ${CMAKE_BINARY_DIR}/ext/curl/lib/libcurl-d.a)
+    if (CMAKE_BUILD_TYPE STREQUAL "Release")
+        set(CURLLIB ${CMAKE_BINARY_DIR}/ext/curl/lib/libcurl.a)
+    else()
+        set(CURLLIB ${CMAKE_BINARY_DIR}/ext/curl/lib/libcurl-d.a)
+    endif()
 endif()
 
 # Sources
