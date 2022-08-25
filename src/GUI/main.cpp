@@ -2,6 +2,9 @@
 // Created by Sjoerd Scheffer on 10/02/2022.
 //
 
+#ifndef WX_PRECOMP
+#include "wx/wxprec.h" // This header is normally included from wx/wx.h
+#endif
 #include <wx/wx.h>
 
 class MyApp : public wxApp
