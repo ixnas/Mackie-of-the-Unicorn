@@ -104,7 +104,7 @@ file(GLOB_RECURSE integration_tests test/integration/*.cpp test/integration/*.h 
 add_executable(Mackie_of_the_Unicorn ${sources})
 add_dependencies(Mackie_of_the_Unicorn rtmidi ${WX_LIBRARIES} libcurl)
 target_include_directories(Mackie_of_the_Unicorn PRIVATE ext/rapidjson/include rtmidi ext/curl/include)
-target_link_libraries(Mackie_of_the_Unicorn ${RTMIDILIB} ${CURLLIB} ${WX_LIBRARIES} ${OS_FLAGS} z)
+target_link_libraries(Mackie_of_the_Unicorn ${RTMIDILIB} ${CURLLIB} ${WX_LIBRARIES} ${OS_FLAGS})
 target_precompile_headers(Mackie_of_the_Unicorn PRIVATE src/precomp.h)
 
 # Tests
