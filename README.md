@@ -12,7 +12,7 @@ These are the goals for the first release (checked goals are implemented):
 - [ ] Control channel pan
 - [ ] Show channel names on the scribble strip
 - [x] macOS support
-- [ ] Windows support
+- [x] Windows support
 - [x] Integration tests using mocked MIDI and HTTP devices
 - [ ] Graphical user interface
 - [ ] Commandline interface
