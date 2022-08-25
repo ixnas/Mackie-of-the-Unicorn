@@ -5,10 +5,10 @@
 #ifndef MACKIE_OF_THE_UNICORN_JSONSERIALIZER_H
 #define MACKIE_OF_THE_UNICORN_JSONSERIALIZER_H
 
+#include "JSONValue.h"
+
 namespace MackieOfTheUnicorn::JSON
 {
-	class JSONValue;
-
 	/// Serializes or de-serializes flat json documents.
 	class JSONSerializer
 	{

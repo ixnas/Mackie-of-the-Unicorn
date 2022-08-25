@@ -3,3 +3,4 @@
 /.idea
 /src/git_version.h
 /build
+*~
