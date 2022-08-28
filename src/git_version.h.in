@@ -8,6 +8,7 @@
 namespace MackieOfTheUnicorn
 {
     const char *VERSION = "@GIT_VERSION@";
+    const char *YEAR = "@YEAR@";
 }
 
 #endif // MACKIE_OF_THE_UNICORN_GIT_VERSION_H

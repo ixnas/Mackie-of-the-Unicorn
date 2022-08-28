@@ -15,6 +15,7 @@ execute_process(
         OUTPUT_VARIABLE GIT_VERSION
         OUTPUT_STRIP_TRAILING_WHITESPACE
 )
+string(TIMESTAMP YEAR "%Y")
 configure_file(${CMAKE_SOURCE_DIR}/src/git_version.h.in ${CMAKE_SOURCE_DIR}/src/git_version.h @ONLY)
 
 # Set up project
@@ -105,7 +106,23 @@ file(GLOB_RECURSE unit_tests test/unit/*.cpp test/unit/*.h test/fakes/*.h)
 file(GLOB_RECURSE integration_tests test/integration/*.cpp test/integration/*.h test/fakes/*.h)
 
 # Main executable
-add_executable(Mackie_of_the_Unicorn ${sources})
+if (APPLE)
+    set(APP_ICON macos/Resources/Icon.icns)
+    set_source_files_properties(${APP_ICON} PROPERTIES MACOSX_PACKAGE_LOCATION Resources)
+    add_executable(Mackie_of_the_Unicorn MACOSX_BUNDLE ${APP_ICON} ${sources})
+    set_target_properties(Mackie_of_the_Unicorn PROPERTIES
+            MACOSX_BUNDLE_BUNDLE_NAME "Mackie of the Unicorn"
+            MACOSX_BUNDLE_BUNDLE_ICON_FILE "Icon.icns"
+            MACOSX_BUNDLE_BUNDLE_VERSION ${GIT_VERSION}
+            MACOSX_BUNDLE_BUNDLE_LONG_VERSION_STRING ${GIT_VERSION}
+            MACOSX_BUNDLE_BUNDLE_SHORT_VERSION_STRING ${GIT_VERSION}
+            MACOSX_BUNDLE_GUI_IDENTIFIER "nl.sjoerdscheffer"
+            MACOSX_BUNDLE_COPYRIGHT "Copyright © ${YEAR} Sjoerd Scheffer"
+            )
+else ()
+    add_executable(Mackie_of_the_Unicorn ${sources})
+endif ()
+
 add_dependencies(Mackie_of_the_Unicorn rtmidi ${WX_LIBRARIES} libcurl)
 target_include_directories(Mackie_of_the_Unicorn PRIVATE ext/rapidjson/include rtmidi ext/curl/include)
 target_link_libraries(Mackie_of_the_Unicorn ${RTMIDILIB} ${CURLLIB} ${WX_LIBRARIES} ${OS_FLAGS})
