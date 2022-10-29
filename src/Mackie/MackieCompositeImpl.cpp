@@ -46,6 +46,14 @@ namespace MackieOfTheUnicorn::Mackie
 		MackieListener->OnChannelSoloPressed(this, channelId, on);
 	}
 
+	void MackieCompositeImpl::SetChannelText(int channelNumber, bool onBottomRow, std::string_view text)
+	{
+		for (const auto& mackieDevice : MackieDevices)
+		{
+			mackieDevice->SetChannelText(channelNumber, onBottomRow, text);
+		}
+	}
+
 	void MackieCompositeImpl::OnBankForwardPressed()
 	{
 		MackieListener->OnBankForwardPressed();

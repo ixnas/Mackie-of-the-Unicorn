@@ -54,6 +54,10 @@ namespace MackieOfTheUnicorn::Mackie
 			SolosOn.push_back(on);
 		}
 
+		void SetChannelText(int channelNumber, bool onBottomRow, std::string_view text) override
+		{
+		}
+
 		void SetMackieListener(MackieListener<MackieComposite>& mackieListener) override
 		{
 		}

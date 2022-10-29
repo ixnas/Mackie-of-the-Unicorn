@@ -20,6 +20,7 @@ namespace MackieOfTheUnicorn::Mackie
 		void SetMackieListener(Mackie::MackieListener<MackieDevice>& mackieListener) override;
 		void SetChannelMute(int channelNumber, bool on) override;
 		void SetChannelSolo(int channelNumber, bool on) override;
+		void SetChannelText(int channelNumber, bool onBottomRow, std::string_view text) override;
 		void MIDICallback(std::vector<unsigned char>& message) override;
 	};
 }

@@ -16,8 +16,8 @@ namespace MackieOfTheUnicorn::Utilities
 
 	static constexpr std::string_view Vowels = "aeiouyAEIOUY";
 	static constexpr std::string_view Consonants = "bcdfghjklmnpqrstvwxzBCDFGHJKLMNPQRSTVWXZ";
-	static constexpr int NUMBERS_0 = 48;
-	static constexpr int NUMBERS_9 = 57;
+	static constexpr char NUMBERS_0 = 48;
+	static constexpr char NUMBERS_9 = 57;
 
 	static void CopyString(const char* input, char* output, size_t size)
 	{
@@ -64,12 +64,12 @@ namespace MackieOfTheUnicorn::Utilities
 
 	static void SkipCharacters(std::vector<CharacterType>& characterTypes, CharacterType character, int& skipped)
 	{
-		auto it = characterTypes.begin() + (characterTypes.size() / 2);
+		auto it = characterTypes.begin() + (long)(characterTypes.size() / 2);
 		for (int i = 0; i < characterTypes.size(); ++i)
 		{
 			if (characterTypes.size() - skipped <= ShortLabel::MAX_LENGTH || it == characterTypes.begin() || it == characterTypes.end() - 1)
 			{
-				break;
+				return;
 			}
 
 			if (*it == character)

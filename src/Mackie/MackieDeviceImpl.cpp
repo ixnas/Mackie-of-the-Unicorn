@@ -3,6 +3,7 @@
 //
 
 #include "MackieDeviceImpl.h"
+#include "../Utilities/ShortLabel.h"
 
 namespace MackieOfTheUnicorn::Mackie
 {
@@ -70,6 +71,32 @@ namespace MackieOfTheUnicorn::Mackie
 		unsigned char byte2 = 8 + channelNumber;
 		unsigned char byte3 = on ? 127 : 0;
 		std::vector<unsigned char> message = {byte1, byte2, byte3};
+
+		MIDIDevice->SendMessage(message);
+	}
+
+	void MackieDeviceImpl::SetChannelText(int channelNumber, bool onBottomRow, std::string_view text)
+	{
+		if (channelNumber > 7)
+		{
+			return;
+		}
+
+		std::vector<unsigned char> message;
+		message.reserve(text.size() + 8);
+
+		unsigned char offset = onBottomRow ? 0x38 : 0;
+		unsigned char start = offset + channelNumber * 7;
+		message.insert(message.end(), { 0xF0, 0x00, 0x00, 0x66, 0x14, 0x12, start });
+
+		auto shortLabel = Utilities::ShortLabel(text).Get();
+
+		for (const char& character : shortLabel)
+		{
+			message.push_back(character);
+		}
+
+		message.push_back(0xF7);
 
 		MIDIDevice->SendMessage(message);
 	}

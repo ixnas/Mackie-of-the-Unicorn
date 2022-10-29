@@ -19,6 +19,10 @@ namespace MackieOfTheUnicorn::Mackie
 		std::optional<int> SetChannelSoloChannelNumber;
 		std::optional<int> SetChannelSoloOn;
 
+		std::optional<int> SetChannelTextChannelNumber;
+		std::optional<bool> SetChannelTextOnBottomRow;
+		std::optional<std::string_view> SetChannelTextText;
+
 		void SetMackieListener(Mackie::MackieListener<MackieDevice>& mackieListener) override
 		{
 			MackieListener = &mackieListener;
@@ -28,13 +32,28 @@ namespace MackieOfTheUnicorn::Mackie
 		{
 			SetChannelMuteChannelNumber = channelNumber;
 			SetChannelMuteOn = on;
-			MackieListener->OnChannelMutePressed(this, channelNumber, on);
 		}
 
 		void SetChannelSolo(int channelNumber, bool on) override
 		{
 			SetChannelSoloChannelNumber = channelNumber;
 			SetChannelSoloOn = on;
+		}
+
+		void SetChannelText(int channelNumber, bool onBottomRow, std::string_view text) override
+		{
+			SetChannelTextChannelNumber = channelNumber;
+			SetChannelTextOnBottomRow = onBottomRow;
+			SetChannelTextText = text;
+		}
+
+		void OnChannelMutePressed(int channelNumber, bool on)
+		{
+			MackieListener->OnChannelMutePressed(this, channelNumber, on);
+		}
+
+		void OnChannelSoloPressed(int channelNumber, bool on)
+		{
 			MackieListener->OnChannelSoloPressed(this, channelNumber, on);
 		}
 

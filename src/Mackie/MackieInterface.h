@@ -18,6 +18,9 @@ namespace MackieOfTheUnicorn::Mackie
 
 		/// Solos or unsolos an input channel.
 		virtual void SetChannelSolo(int channelNumber, bool on) = 0;
+
+		/// Sets the label for an input channel.
+		virtual void SetChannelText(int channelNumber, bool onBottomRow, std::string_view text) = 0;
 	};
 }
 

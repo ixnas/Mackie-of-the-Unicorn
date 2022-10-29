@@ -175,4 +175,61 @@ namespace MackieOfTheUnicorn::Tests::Unit::Mackie
 
 		EXPECT_TRUE(setBankBackwardsOnListener);
 	}
+
+	TEST_F(MackieDeviceImplTest, SetsTextShortOnChannel0)
+	{
+		std::vector<unsigned char> expectedMidiMessage { 0xF0, 0x00, 0x00, 0x66, 0x14, 0x12, 0x00, 'a', 'a', 'a', ' ', ' ', ' ', 0xF7 };
+		instance->SetChannelText(0, false, "aaa");
+		auto actualMidiMessage = *(midiDeviceFake->SendMessageMessages.end() - 1);
+
+		EXPECT_EQ(actualMidiMessage, expectedMidiMessage);
+	}
+
+	TEST_F(MackieDeviceImplTest, SetsTextShortOnChannel0OnBottomRow)
+	{
+		std::vector<unsigned char> expectedMidiMessage { 0xF0, 0x00, 0x00, 0x66, 0x14, 0x12, 0x38, 'a', 'a', 'a', ' ', ' ', ' ', 0xF7 };
+		instance->SetChannelText(0, true, "aaa");
+		auto actualMidiMessage = *(midiDeviceFake->SendMessageMessages.end() - 1);
+
+		EXPECT_EQ(actualMidiMessage, expectedMidiMessage);
+	}
+
+	TEST_F(MackieDeviceImplTest, SetsTextShortOnChannel4)
+	{
+		unsigned char start = 7 * 4;
+		std::vector<unsigned char> expectedMidiMessage { 0xF0, 0x00, 0x00, 0x66, 0x14, 0x12, start, 'a', 'a', 'a', ' ', ' ', ' ', 0xF7 };
+		instance->SetChannelText(4, false, "aaa");
+		auto actualMidiMessage = *(midiDeviceFake->SendMessageMessages.end() - 1);
+
+		EXPECT_EQ(actualMidiMessage, expectedMidiMessage);
+	}
+
+	TEST_F(MackieDeviceImplTest, SetsTextShortOnChannel4OnBottomRow)
+	{
+		unsigned char start = 0x38 + 7 * 4;
+		std::vector<unsigned char> expectedMidiMessage { 0xF0, 0x00, 0x00, 0x66, 0x14, 0x12, start, 'a', 'a', 'a', ' ', ' ', ' ', 0xF7 };
+		instance->SetChannelText(4, true, "aaa");
+		auto actualMidiMessage = *(midiDeviceFake->SendMessageMessages.end() - 1);
+
+		EXPECT_EQ(actualMidiMessage, expectedMidiMessage);
+	}
+
+	TEST_F(MackieDeviceImplTest, SetsTextLongOnChannel0)
+	{
+		std::vector<unsigned char> expectedMidiMessage { 0xF0, 0x00, 0x00, 0x66, 0x14, 0x12, 0x00, 'a', 'a', 'a', 'a', 'a', 'a', 0xF7 };
+		instance->SetChannelText(0, false, "aaaaaaaaaaaa");
+		auto actualMidiMessage = *(midiDeviceFake->SendMessageMessages.end() - 1);
+
+		EXPECT_EQ(actualMidiMessage, expectedMidiMessage);
+	}
+
+	TEST_F(MackieDeviceImplTest, SetsTextOnInvalidChannel)
+	{
+		instance->SetChannelText(8, false, "aaa");
+
+		auto actualSize = midiDeviceFake->SendMessageMessages.size();
+		auto expectedSize = 0;
+
+		EXPECT_EQ(actualSize, expectedSize);
+	}
 } // namespace MackieOfTheUnicorn::Tests::Unit::Mackie
