@@ -6,7 +6,7 @@ pipeline {
                 bat "set MKDIR_DIR=.\build && if not exist %MKDIR_DIR% mkdir %MKDIR_DIR%"
                 dir('build') {
                     bat """
-                        cmake -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 17 2022" ..
+                        cmake -DCMAKE_BUILD_TYPE=Release -G 'Visual Studio 17 2022' ..
                         MSBuild Mackie_of_the_Unicorn.sln /property:Configuration=Release -maxcpucount
                     """
                 }
@@ -15,7 +15,7 @@ pipeline {
         stage('test') {
             steps {
                 dir('build') {
-                    bat ".\Release\Unit_Tests.exe --gtest_output=xml:.\test-report.xml"
+                    bat ".\\Release\\Unit_Tests.exe --gtest_output=xml:.\\test-report.xml"
                 }
                 junit 'build/test-report.xml'
             }
