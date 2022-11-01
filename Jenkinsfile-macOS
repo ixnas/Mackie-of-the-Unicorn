@@ -3,8 +3,21 @@ pipeline {
     stages {
         stage('build') {
             steps {
-                sh 'uname -a'
-                sh 'pwd'
+                dir('build') {
+                    sh """
+                        mkdir -p build
+                        cd build
+                        cmake -DCMAKE_BUILD_TYPE=Release ..
+                        make -j4
+                    """
+                }
+            }
+        }
+        stage('test') {
+            steps {
+                dir('build') {
+                    sh "./Unit_Tests"
+                }
             }
         }
     }
