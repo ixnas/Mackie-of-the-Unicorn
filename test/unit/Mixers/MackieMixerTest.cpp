@@ -60,8 +60,11 @@ namespace MackieOfTheUnicorn::Tests::Unit::Mixers
 			auto oldSoloChannelIndex = FindIndex(mackieCompositeFake->SoloChannels, oldSolo);
 			auto oldMuteChannelIndex = FindIndex(mackieCompositeFake->MuteChannels, oldMute);
 
-			ASSERT_FALSE(mackieCompositeFake->SolosOn[oldSoloChannelIndex]);
-			ASSERT_FALSE(mackieCompositeFake->MutesOn[oldMuteChannelIndex]);
+			if (oldSoloChannelIndex != -1)
+			{
+				ASSERT_FALSE(mackieCompositeFake->SolosOn[oldSoloChannelIndex]);
+				ASSERT_FALSE(mackieCompositeFake->MutesOn[oldMuteChannelIndex]);
+			}
 
 			auto newSoloChannelIndex = FindIndex(mackieCompositeFake->SoloChannels, newSolo);
 			auto newMuteChannelIndex = FindIndex(mackieCompositeFake->MuteChannels, newMute);

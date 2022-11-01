@@ -1,0 +1,24 @@
+pipeline {
+    agent { label 'macos' }
+    stages {
+        stage('build') {
+            steps {
+                sh "mkdir -p build"
+                dir('build') {
+                    sh """
+                        /usr/local/bin/cmake -DCMAKE_BUILD_TYPE=Release ..
+                        /usr/bin/make -j4
+                    """
+                }
+            }
+        }
+        stage('test') {
+            steps {
+                dir('build') {
+                    sh "./Unit_Tests --gtest_output=xml:./test-report.xml"
+                }
+                junit 'build/test-report.xml'
+            }
+        }
+    }
+}
