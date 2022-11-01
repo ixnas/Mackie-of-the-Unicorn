@@ -23,7 +23,7 @@ pipeline {
     post {
         always {
             xunit {
-                thresholds: [ skipped(failureThreshold: '0'), failed(failureThreshold: '0') ],
+                thresholds: [ skipped(failureThreshold: '0'), failed(failureThreshold: '0') ]
                 tools: [ GoogleTest(pattern: 'build/test-report.xml') ]
             }
         }
