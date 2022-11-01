@@ -17,12 +17,8 @@ pipeline {
                 dir('build') {
                     sh "./Unit_Tests --gtest_output=xml:./test-report.xml"
                 }
+                junit 'build/test-report.xml'
             }
-        }
-    }
-    post {
-        always {
-            junit 'build/test-report.xml'
         }
     }
 }
