@@ -3,12 +3,11 @@ pipeline {
     stages {
         stage('build') {
             steps {
+                sh "mkdir -p build"
                 dir('build') {
                     sh """
-                        mkdir -p build
-                        cd build
-                        cmake -DCMAKE_BUILD_TYPE=Release ..
-                        make -j4
+                        /usr/local/bin/cmake -DCMAKE_BUILD_TYPE=Release ..
+                        /usr/bin/make -j4
                     """
                 }
             }
