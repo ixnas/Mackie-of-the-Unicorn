@@ -15,8 +15,16 @@ pipeline {
         stage('test') {
             steps {
                 dir('build') {
-                    sh "./Unit_Tests"
+                    sh "./Unit_Tests --gtest_output=xml:./test-report.xml"
                 }
+            }
+        }
+    }
+    post {
+        always {
+            xunit {
+                thresholds: [ skipped(failureThreshold: '0'), failed(failureThreshold: '0') ],
+                tools: [ GoogleTest(pattern: 'build/test-report.xml') ]
             }
         }
     }
