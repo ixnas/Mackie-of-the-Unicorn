@@ -1,4 +1,7 @@
 # Mackie of the Unicorn
+[![Build Status](https://ci.sjoerdscheffer.nl/buildStatus/icon?job=MOTU-macOS%2Fmaster&subject=macOS%20build)](https://ci.sjoerdscheffer.nl/job/MOTU-macOS/job/master/)
+[![Build Status](https://ci.sjoerdscheffer.nl/buildStatus/icon?job=MOTU-Windows%2Fmaster&subject=Windows%20build)](https://ci.sjoerdscheffer.nl/job/MOTU-Windows/job/master/)
+
 Use control surfaces to control a MOTU AVB DSP mixer.
 
 This project is in development and not ready for production use. It doesn't have a functional CLI or GUI at this point.
