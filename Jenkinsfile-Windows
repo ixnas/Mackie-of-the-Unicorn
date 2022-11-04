@@ -3,7 +3,7 @@ pipeline {
     environment {
         GIT_VERSION = """${bat(
             returnStdout: true,
-            script: 'git describe --always'
+            script: '@git describe --always'
         ).trim()}"""
     }
     stages {
