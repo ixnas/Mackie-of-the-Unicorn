@@ -1,12 +1,6 @@
 pipeline {
     agent none
     stages {
-        stage('Checkout (macOS)') {
-            agent { label 'macos' }
-            steps {
-                checkout scm
-            }
-        }
         stage('Configure (macOS)') {
             agent { label 'macos' }
             steps {
@@ -53,12 +47,6 @@ pipeline {
                 archiveArtifacts artifacts: "build/Mackie-of-the-Unicorn-${GIT_VERSION}-docs.zip"
             }
         }
-        stage('Checkout (Windows)') {
-            agent { label 'windows' }
-            steps {
-                checkout scm
-            }
-        }
         stage('Configure (Windows)') {
             agent { label 'windows' }
             steps {
@@ -88,9 +76,9 @@ pipeline {
         stage('Package (Windows)') {
             agent { label 'windows' }
             environment {
-                GIT_VERSION = """${sh(
+                GIT_VERSION = """${bat(
                     returnStdout: true,
-                    script: 'git describe --always'
+                    script: '@git describe --always'
                 ).trim()}"""
             }
             steps {
