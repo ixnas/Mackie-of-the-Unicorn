@@ -33,6 +33,7 @@ pipeline {
         stage('Package') {
             steps {
                 dir('build') {
+                    sh "rm -rf Mackie\\ of\\ the\\ Unicorn.app"
                     sh "mv Mackie_of_the_Unicorn.app Mackie\\ of\\ the\\ Unicorn.app"
                     sh "zip -r Mackie-of-the-Unicorn-${GIT_VERSION}-macOS.zip Mackie\\ of\\ the\\ Unicorn.app"
                 }
