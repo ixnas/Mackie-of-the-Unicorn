@@ -1,23 +1,42 @@
 pipeline {
     agent { label 'macos' }
+    environment {
+        GIT_VERSION = """${sh(
+            returnStdout: true,
+            script: 'git describe --always'
+        )}"""
+    }
     stages {
-        stage('build') {
+        stage('Configure') {
             steps {
                 sh "mkdir -p build"
                 dir('build') {
-                    sh """
-                        /usr/local/bin/cmake -DCMAKE_BUILD_TYPE=Release ..
-                        /usr/bin/make -j4
-                    """
+                    sh "/usr/local/bin/cmake -DCMAKE_BUILD_TYPE=Release .."
                 }
             }
         }
-        stage('test') {
+        stage('Build') {
+            steps {
+                dir('build') {
+                    sh "/usr/bin/make -j4"
+                }
+            }
+        }
+        stage('Test') {
             steps {
                 dir('build') {
                     sh "./Unit_Tests --gtest_output=xml:./test-report.xml"
                 }
                 junit 'build/test-report.xml'
+            }
+        }
+        stage('Package') {
+            steps {
+                dir('build') {
+                    sh "mv Mackie_of_the_Unicorn.app Mackie\\ of\\ the\\ Unicorn.app"
+                    sh "zip -r Mackie-of-the-Unicorn-$GIT_VERSION-macOS.zip Mackie\\ of\\ the\\ Unicorn.app"
+                }
+                archiveArtifacts artifacts: "build/Mackie-of-the-Unicorn-${GIT_VERSION}-macOS.zip"
             }
         }
     }
