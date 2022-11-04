@@ -33,8 +33,8 @@ pipeline {
         stage('Package') {
             steps {
                 dir('build') {
-                    bat "move Release\Mackie_of_the_Unicorn.exe \"Mackie of the Unicorn.exe\""
-                    bat "tar -a -c -f Mackie-of-the-Unicorn-$GIT_VERSION-Windows.zip \"Mackie of the Unicorn.exe\""
+                    bat "move Release\\Mackie_of_the_Unicorn.exe \"Mackie of the Unicorn.exe\""
+                    bat "tar -a -c -f Mackie-of-the-Unicorn-${GIT_VERSION}-Windows.zip \"Mackie of the Unicorn.exe\""
                 }
                 archiveArtifacts artifacts: "build/Mackie-of-the-Unicorn-${GIT_VERSION}-Windows.zip"
             }

@@ -34,7 +34,7 @@ pipeline {
             steps {
                 dir('build') {
                     sh "mv Mackie_of_the_Unicorn.app Mackie\\ of\\ the\\ Unicorn.app"
-                    sh "zip -r Mackie-of-the-Unicorn-$GIT_VERSION-macOS.zip Mackie\\ of\\ the\\ Unicorn.app"
+                    sh "zip -r Mackie-of-the-Unicorn-${GIT_VERSION}-macOS.zip Mackie\\ of\\ the\\ Unicorn.app"
                 }
                 archiveArtifacts artifacts: "build/Mackie-of-the-Unicorn-${GIT_VERSION}-macOS.zip"
             }
