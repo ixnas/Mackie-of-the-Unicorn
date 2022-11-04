@@ -6,8 +6,7 @@ Use control surfaces to control a MOTU AVB DSP mixer.
 
 ⚠️ **This project is in development and is not ready for production use. It doesn't have a functional CLI or GUI at this point.**
 
-[![Build Status](https://ci.sjoerdscheffer.nl/buildStatus/icon?job=MOTU-macOS%2Fmaster&subject=macOS&style=flat-square)](https://ci.sjoerdscheffer.nl/job/MOTU-macOS/job/master/)
-[![Build Status](https://ci.sjoerdscheffer.nl/buildStatus/icon?job=MOTU-Windows%2Fmaster&subject=Windows&style=flat-square)](https://ci.sjoerdscheffer.nl/job/MOTU-Windows/job/master/)
+[![Build Status](https://ci.sjoerdscheffer.nl/buildStatus/icon?job=Mackie+of+the+Unicorn%2Fmaster&style=flat-square)](https://ci.sjoerdscheffer.nl/job/Mackie%20of%20the%20Unicorn/job/master/)
 
 ## Introduction
 This project allows control surfaces to control the mixer of a MOTU AVB interface. It uses the Mackie Control Universal protocol to communicate with the control surface and uses HTTP to communicate with the MOTU mixer.
