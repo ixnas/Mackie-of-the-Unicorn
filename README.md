@@ -2,7 +2,7 @@
 
 Use control surfaces to control a MOTU AVB DSP mixer.
 
-<img src="icon.jpg" style="max-width: 256px" alt="Logo">
+<img src="icon.jpg" width="256" alt="Logo">
 
 ⚠️ **This project is in development and is not ready for production use. It doesn't have a functional CLI or GUI at this point.**
 
