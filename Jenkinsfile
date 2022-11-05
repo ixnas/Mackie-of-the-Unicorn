@@ -12,6 +12,7 @@ pipeline {
         }
         stage('Build (macOS)') {
             agent { label 'macos' }
+            options { skipDefaultCheckout() }
             steps {
                 dir('build') {
                     sh "/usr/bin/make -j4"
@@ -20,6 +21,7 @@ pipeline {
         }
         stage('Test (macOS)') {
             agent { label 'macos' }
+            options { skipDefaultCheckout() }
             steps {
                 dir('build') {
                     sh "./Unit_Tests --gtest_output=xml:./test-report.xml"
@@ -29,6 +31,7 @@ pipeline {
         }
         stage('Package (macOS/docs)') {
             agent { label 'macos' }
+            options { skipDefaultCheckout() }
             environment {
                 GIT_VERSION = """${sh(
                     returnStdout: true,
@@ -58,6 +61,7 @@ pipeline {
         }
         stage('Build (Windows)') {
             agent { label 'windows' }
+            options { skipDefaultCheckout() }
             steps {
                 dir('build') {
                     bat "MSBuild Mackie_of_the_Unicorn.sln /property:Configuration=Release -maxcpucount"
@@ -66,6 +70,7 @@ pipeline {
         }
         stage('Test (Windows)') {
             agent { label 'windows' }
+            options { skipDefaultCheckout() }
             steps {
                 dir('build') {
                     bat ".\\Release\\Unit_Tests.exe --gtest_output=xml:.\\test-report.xml"
@@ -75,6 +80,7 @@ pipeline {
         }
         stage('Package (Windows)') {
             agent { label 'windows' }
+            options { skipDefaultCheckout() }
             environment {
                 GIT_VERSION = """${bat(
                     returnStdout: true,
