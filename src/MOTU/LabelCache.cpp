@@ -94,6 +94,12 @@ namespace MackieOfTheUnicorn::MOTU
 	{
 		for (const auto& message : CachedMessages)
 		{
+			auto obankNumber = std::stoi(message.first[2]);
+			if (obankNumber != ObankNumber.value())
+			{
+				continue;
+			}
+
 			auto channelNumber = std::stoi(message.first[4]);
 			auto name = message.second.String.value();
 

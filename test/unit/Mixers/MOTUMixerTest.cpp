@@ -360,4 +360,44 @@ namespace MackieOfTheUnicorn::Tests::Unit::Mixers
 		EXPECT_EQ(actualChannel->value(), 4);
 		EXPECT_EQ(actualLabel->value(), "In 5");
 	}
+
+	TEST_F(MOTUMixerTest, SetsCustomInputChannelLabelUnorderedDifferentBank)
+	{
+		auto otherObankIdentifierMessage = CreateMessage("ext/obank/20/name", "Aux In");
+		auto otherChannelDefaultNameMessage = CreateMessage("ext/obank/20/ch/4/defaultName", "Aux 5");
+		auto otherChannelNameMessage = CreateMessage("ext/obank/20/ch/4/name", "Some other bank name");
+
+		auto obankIdentifierMessage = CreateMessage("ext/obank/21/name", "Mix In");
+		auto channelDefaultNameMessage = CreateMessage("ext/obank/21/ch/4/defaultName", "In 5");
+		auto channelNameMessage = CreateMessage("ext/obank/21/ch/4/name", "Something");
+
+		httpDeviceFake->FakeMessage(otherChannelNameMessage);
+
+		auto* actualOrigin = &virtualMixerFake->SetInputChannelLabelOriginId;
+		auto* actualChannel = &virtualMixerFake->SetInputChannelLabelChannel;
+		auto* actualLabel = &virtualMixerFake->SetInputChannelLabelLabel;
+
+		EXPECT_FALSE(actualOrigin->has_value());
+		EXPECT_FALSE(actualChannel->has_value());
+		EXPECT_FALSE(actualLabel->has_value());
+
+		httpDeviceFake->FakeMessage(otherChannelDefaultNameMessage);
+
+		EXPECT_FALSE(actualOrigin->has_value());
+		EXPECT_FALSE(actualChannel->has_value());
+		EXPECT_FALSE(actualLabel->has_value());
+
+		httpDeviceFake->FakeMessage(otherObankIdentifierMessage);
+
+		EXPECT_FALSE(actualOrigin->has_value());
+		EXPECT_FALSE(actualChannel->has_value());
+		EXPECT_FALSE(actualLabel->has_value());
+
+		httpDeviceFake->FakeMessage(obankIdentifierMessage);
+
+		EXPECT_FALSE(actualOrigin->has_value());
+		EXPECT_FALSE(actualChannel->has_value());
+		EXPECT_FALSE(actualLabel->has_value());
+	}
+
 }
