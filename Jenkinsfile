@@ -15,7 +15,7 @@ pipeline {
             options { skipDefaultCheckout() }
             steps {
                 dir('build') {
-                    sh "/usr/bin/make -j4"
+                    sh "/usr/bin/make -j"
                 }
             }
         }
