@@ -97,4 +97,32 @@ namespace MackieOfTheUnicorn::Tests::Unit::Mixers
 			}
 		}
 	}
+
+	TEST_F(VirtualMixerImplTest, SetInputChannelLabelsOnOtherMixers)
+	{
+		auto expectedOrigin = 1;
+		auto expectedChannel = 24;
+		auto expectedLabel = "Something";
+
+		instance->SetInputChannelLabel(expectedOrigin, expectedChannel, expectedLabel);
+		for (const auto& linkedMixerFake : linkedMixerFakes)
+		{
+			auto actualOrigin = linkedMixerFake->SetInputChannelLabelOriginId;
+			auto actualChannel = linkedMixerFake->SetInputChannelLabelChannel;
+			auto actualLabel = linkedMixerFake->SetInputChannelLabelLabel;
+
+			if (expectedOrigin == linkedMixerFake->Id)
+			{
+				EXPECT_FALSE(actualOrigin.has_value());
+				EXPECT_FALSE(actualChannel.has_value());
+				EXPECT_FALSE(actualLabel.has_value());
+			}
+			else
+			{
+				EXPECT_EQ(expectedLabel, actualLabel);
+				EXPECT_EQ(expectedChannel, actualChannel);
+				EXPECT_EQ(expectedOrigin, actualOrigin);
+			}
+		}
+	}
 } // namespace MackieOfTheUnicorn::Tests::Unit::Mixers

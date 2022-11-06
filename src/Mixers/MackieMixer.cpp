@@ -56,4 +56,8 @@ namespace MackieOfTheUnicorn::Mixers
 	{
 		View->OnBankBackwardsPressed();
 	}
+
+	void MackieMixer::SetInputChannelLabel(int originId, int channel, std::string_view label)
+	{
+	}
 }

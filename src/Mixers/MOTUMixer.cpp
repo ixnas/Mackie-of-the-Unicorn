@@ -89,6 +89,10 @@ namespace MackieOfTheUnicorn::Mixers
 		HTTPDevice->SendMessage(message);
 	}
 
+	void MOTUMixer::SetInputChannelLabel(int originId, int channel, std::string_view label)
+	{
+	}
+
 	void MOTUMixer::HTTPCallback(std::pair<std::string, JSON::JSONValue>& message)
 	{
 		auto key = message.first;
@@ -110,6 +114,20 @@ namespace MackieOfTheUnicorn::Mixers
 
 			VirtualMixer->SetInputChannelSolo(Id, channelNumber, on);
 			return;
+		}
+
+		// Move this stuff to HTTP layer
+		std::pair<std::vector<std::string>, JSON::JSONValue> messageInParts = {keyParts, message.second};
+		auto labels = LabelCache.GetLabels(messageInParts);
+
+		if (labels.empty())
+		{
+			return;
+		}
+
+		for (const auto& label : labels)
+		{
+			VirtualMixer->SetInputChannelLabel(Id, label.first, label.second);
 		}
 	}
 } // namespace MackieOfTheUnicorn::Mixers

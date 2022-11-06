@@ -23,6 +23,10 @@ namespace MackieOfTheUnicorn::Mixers
 		std::optional<int> SetInputChannelSoloChannel;
 		std::optional<bool> SetInputChannelSoloOn;
 
+		std::optional<int> SetInputChannelLabelOriginId;
+		std::optional<int> SetInputChannelLabelChannel;
+		std::optional<std::string> SetInputChannelLabelLabel;
+
 		int GetId() override
 		{
 			return Id;
@@ -45,6 +49,13 @@ namespace MackieOfTheUnicorn::Mixers
 			SetInputChannelSoloOriginId = originId;
 			SetInputChannelSoloChannel = channel;
 			SetInputChannelSoloOn = on;
+		}
+
+		void SetInputChannelLabel(int originId, int channel, std::string_view label) override
+		{
+			SetInputChannelLabelOriginId = originId;
+			SetInputChannelLabelChannel = channel;
+			SetInputChannelLabelLabel = label;
 		}
 	};
 }

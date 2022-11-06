@@ -111,4 +111,8 @@ namespace MackieOfTheUnicorn::Views
 
 		Offset = nextOffset;
 	}
+
+	void ChannelView::SetInputChannelLabel(int originId, int channel, std::string_view label)
+	{
+	}
 }
