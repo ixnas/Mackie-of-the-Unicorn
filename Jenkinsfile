@@ -15,7 +15,7 @@ pipeline {
             options { skipDefaultCheckout() }
             steps {
                 dir('build') {
-                    sh "/usr/bin/make -j${Runtime.getRuntime().availableProcessors()}"
+                    sh "/usr/bin/make -j${cores()}"
                 }
             }
         }
@@ -97,3 +97,5 @@ pipeline {
         }
     }
 }
+
+def cores() { return Runtime.getRuntime().availableProcessors(); }
