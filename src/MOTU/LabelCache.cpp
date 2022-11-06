@@ -20,12 +20,7 @@ namespace MackieOfTheUnicorn::MOTU
 		auto keyParts = message.first;
 		auto value = message.second;
 
-		if (keyParts.size() < 4)
-		{
-			return LabelType::NONE;
-		}
-
-		if (keyParts[0] != "ext" || keyParts[1] != "obank")
+		if (keyParts.size() < 4 || keyParts[0] != "ext" || keyParts[1] != "obank")
 		{
 			return LabelType::NONE;
 		}
@@ -99,16 +94,10 @@ namespace MackieOfTheUnicorn::MOTU
 	{
 		for (const auto& message : CachedMessages)
 		{
-			auto labelType = GetLabelType(message);
-
-			if (labelType == LabelType::NONE || labelType == LabelType::OBANK_NAME)
-			{
-				continue;
-			}
-
 			auto channelNumber = std::stoi(message.first[4]);
 			auto name = message.second.String.value();
 
+			auto labelType = GetLabelType(message);
 			if (labelType == LabelType::DEFAULT_INPUT_NAME)
 			{
 				DefaultChannelLabels.insert({channelNumber, name});
