@@ -15,7 +15,7 @@ pipeline {
             options { skipDefaultCheckout() }
             steps {
                 dir('build') {
-                    sh "/usr/bin/make -j"
+                    sh "/usr/bin/make -j${Runtime.getRuntime().availableProcessors()}"
                 }
             }
         }
