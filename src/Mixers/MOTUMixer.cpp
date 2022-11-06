@@ -4,6 +4,7 @@
 
 #include "MOTUMixer.h"
 #include "VirtualMixer.h"
+#include "../MOTU/LabelCache.h"
 
 namespace MackieOfTheUnicorn::Mixers
 {
