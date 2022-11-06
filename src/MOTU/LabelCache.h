@@ -5,10 +5,7 @@
 #ifndef MACKIE_OF_THE_UNICORN_LABELCACHE_H
 #define MACKIE_OF_THE_UNICORN_LABELCACHE_H
 
-namespace MackieOfTheUnicorn::JSON
-{
-	class JSONValue;
-}
+#include "../JSON/JSONValue.h"
 
 namespace MackieOfTheUnicorn::MOTU
 {
