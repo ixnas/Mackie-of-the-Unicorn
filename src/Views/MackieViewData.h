@@ -27,6 +27,10 @@ namespace MackieOfTheUnicorn::Views
 
 		/// Returns whether the a channel is solo'd.
 		virtual bool GetSolo(int channelId) = 0;
+
+		virtual void SetLabel(int channelId, std::string_view label) = 0;
+
+		virtual std::string_view GetLabel(int channelId) = 0;
 	};
 }
 

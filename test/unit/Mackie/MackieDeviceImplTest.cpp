@@ -232,4 +232,25 @@ namespace MackieOfTheUnicorn::Tests::Unit::Mackie
 
 		EXPECT_EQ(actualSize, expectedSize);
 	}
+
+	TEST_F(MackieDeviceImplTest, ClearsScreenCorrectly)
+	{
+		std::vector<unsigned char> expectedMidiMessage { 0xF0, 0x00, 0x00, 0x66, 0x14, 0x12, 0x00 };
+		for (int i = 0; i < 112; i++)
+		{
+			expectedMidiMessage.push_back(' ');
+		}
+
+		expectedMidiMessage.push_back(0xF7);
+
+		instance->ClearScreen();
+
+		auto actualSize = midiDeviceFake->SendMessageMessages.size();
+
+		ASSERT_EQ(actualSize, 1);
+
+		auto actualMessage = midiDeviceFake->SendMessageMessages[0];
+
+		ASSERT_EQ(actualMessage, expectedMidiMessage);
+	}
 } // namespace MackieOfTheUnicorn::Tests::Unit::Mackie

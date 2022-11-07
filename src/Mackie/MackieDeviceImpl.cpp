@@ -101,6 +101,18 @@ namespace MackieOfTheUnicorn::Mackie
 		MIDIDevice->SendMessage(message);
 	}
 
+	void MackieDeviceImpl::ClearScreen()
+	{
+		std::vector<unsigned char> message = { 0xF0, 0x00, 0x00, 0x66, 0x14, 0x12, 0x00 };
+		for (int i = 0; i < 112; i++)
+		{
+			message.push_back(' ');
+		}
+
+		message.push_back(0xF7);
+		MIDIDevice->SendMessage(message);
+	}
+
 	void MackieDeviceImpl::MIDICallback(std::vector<unsigned char>& message)
 	{
 		if (IsChannelMuteMessage(message))

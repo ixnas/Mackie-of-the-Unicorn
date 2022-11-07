@@ -24,6 +24,12 @@ namespace MackieOfTheUnicorn::Mackie
 		std::vector<bool> MutesOn;
 		std::vector<int> MuteChannels;
 
+		std::optional<int> SetChannelTextChannel;
+		std::optional<bool> SetChannelTextOnBottomRow;
+		std::optional<std::string_view> SetChannelTextText;
+
+		bool ScreenCleared = false;
+
 		MackieCompositeFake() = default;
 
 		explicit MackieCompositeFake(std::vector<std::unique_ptr<MackieDevice>>& mackieDevices) : MackieDevices(std::move(mackieDevices))
@@ -56,6 +62,9 @@ namespace MackieOfTheUnicorn::Mackie
 
 		void SetChannelText(int channelNumber, bool onBottomRow, std::string_view text) override
 		{
+			SetChannelTextChannel = channelNumber;
+			SetChannelTextOnBottomRow = onBottomRow;
+			SetChannelTextText = text;
 		}
 
 		void SetMackieListener(MackieListener<MackieComposite>& mackieListener) override
@@ -70,6 +79,11 @@ namespace MackieOfTheUnicorn::Mackie
 		void OnBankBackwardsPressed() override
 		{
 
+		}
+
+		void ClearScreen() override
+		{
+			ScreenCleared = true;
 		}
 	};
 } // namespace MackieOfTheUnicorn::Mackie

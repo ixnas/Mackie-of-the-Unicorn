@@ -59,5 +59,7 @@ namespace MackieOfTheUnicorn::Mixers
 
 	void MackieMixer::SetInputChannelLabel(int originId, int channel, std::string_view label)
 	{
+		ViewData.SetLabel(channel, label);
+		View->SetInputChannelLabel(originId, channel, label);
 	}
 }

@@ -117,9 +117,9 @@ namespace MackieOfTheUnicorn::Utilities
 
 		int skipped = 0;
 
+		SkipCharacters(characterTypes, CharacterType::OTHER, skipped);
 		SkipCharacters(characterTypes, CharacterType::VOWEL, skipped);
 		SkipCharacters(characterTypes, CharacterType::CONSONANT, skipped);
-		SkipCharacters(characterTypes, CharacterType::OTHER, skipped);
 		SkipCharacters(characterTypes, CharacterType::NUMBER, skipped);
 
 		CopyStringFiltered(inputLabel.data(), OutputLabel, characterTypes);

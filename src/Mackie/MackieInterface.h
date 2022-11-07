@@ -21,6 +21,8 @@ namespace MackieOfTheUnicorn::Mackie
 
 		/// Sets the label for an input channel.
 		virtual void SetChannelText(int channelNumber, bool onBottomRow, std::string_view text) = 0;
+
+		virtual void ClearScreen() = 0;
 	};
 }
 
