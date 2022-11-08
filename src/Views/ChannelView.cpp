@@ -25,6 +25,14 @@ namespace MackieOfTheUnicorn::Views
 			{
 				mackieComposite.SetChannelSolo(i - previousOffset, nextSolo);
 			}
+
+			auto currentLabel = viewData.GetLabel(i);
+			auto nextLabel = viewData.GetLabel(i + nextOffset - previousOffset);
+
+			if (currentLabel != nextLabel)
+			{
+				mackieComposite.SetChannelText(i - previousOffset, false, nextLabel);
+			}
 		}
 	}
 
@@ -40,6 +48,7 @@ namespace MackieOfTheUnicorn::Views
 	void ChannelView::SetMackieComposite(Mackie::MackieComposite& mackieComposite)
 	{
 		MackieComposite = &mackieComposite;
+		MackieComposite->ClearScreen();
 	}
 
 	void ChannelView::SetInputChannelMute(int originId, int channel, bool on)
@@ -110,5 +119,10 @@ namespace MackieOfTheUnicorn::Views
 		OnChangeOffset(previousOffset, nextOffset, ViewData, *MackieComposite);
 
 		Offset = nextOffset;
+	}
+
+	void ChannelView::SetInputChannelLabel(int originId, int channel, std::string_view label)
+	{
+		MackieComposite->SetChannelText(channel - Offset, false, label);
 	}
 }

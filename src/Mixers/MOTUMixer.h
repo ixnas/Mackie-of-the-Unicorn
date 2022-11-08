@@ -8,6 +8,7 @@
 #include "LinkedMixer.h"
 #include "../HTTP/HTTPDevice.h"
 #include "../HTTP/HTTPListener.h"
+#include "../MOTU/LabelBuffer.h"
 
 namespace MackieOfTheUnicorn::HTTP::Factories
 {
@@ -20,6 +21,7 @@ namespace MackieOfTheUnicorn::Mixers
 	class MOTUMixer : public LinkedMixer, public HTTP::HTTPListener
 	{
 		std::unique_ptr<HTTP::HTTPDevice> HTTPDevice;
+		MOTU::LabelBuffer LabelCache;
 		VirtualMixer* VirtualMixer;
 		int Id;
 
@@ -29,6 +31,7 @@ namespace MackieOfTheUnicorn::Mixers
 		int GetId() override;
 		void SetInputChannelMute(int originId, int channel, bool on) override;
 		void SetInputChannelSolo(int originId, int channel, bool on) override;
+		void SetInputChannelLabel(int originId, int channel, std::string_view label) override;
 		void HTTPCallback(std::pair<std::string, JSON::JSONValue>& message) override;
 	};
 }

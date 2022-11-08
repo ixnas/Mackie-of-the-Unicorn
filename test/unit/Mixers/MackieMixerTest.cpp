@@ -258,4 +258,32 @@ namespace MackieOfTheUnicorn::Tests::Unit::Mixers
 			}
 		});
 	}
+
+	TEST_F(MackieMixerTest, SetsChannelLabelCorrectly)
+	{
+		auto expectedChannel = 4;
+		auto expectedText = "abcdef";
+		auto expectedOnBottomRow = false;
+
+		instance->SetInputChannelLabel(1, 4, "abcdef");
+
+		auto actualChannel = mackieCompositeFake->SetChannelTextChannel;
+		auto actualText = mackieCompositeFake->SetChannelTextText;
+		auto actualOnBottomRow = mackieCompositeFake->SetChannelTextOnBottomRow;
+
+		ASSERT_TRUE(actualText.has_value());
+		ASSERT_TRUE(actualChannel.has_value());
+		ASSERT_TRUE(actualOnBottomRow.has_value());
+
+		EXPECT_EQ(actualChannel, expectedChannel);
+		EXPECT_EQ(actualOnBottomRow, expectedOnBottomRow);
+		EXPECT_EQ(actualText, expectedText);
+	}
+
+	TEST_F(MackieMixerTest, ClearsScreenAfterInitializing)
+	{
+		auto actual = mackieCompositeFake->ScreenCleared;
+
+		ASSERT_TRUE(actual);
+	}
 }

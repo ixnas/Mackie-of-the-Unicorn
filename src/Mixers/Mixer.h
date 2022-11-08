@@ -18,6 +18,9 @@ namespace MackieOfTheUnicorn::Mixers
 
 		/// Solos a specified input channel.
 		virtual void SetInputChannelSolo(int originId, int channel, bool on) = 0;
+
+		/// Sets a label for a specified input channel.
+		virtual void SetInputChannelLabel(int originId, int channel, std::string_view label) = 0;
 	};
 }
 

@@ -23,6 +23,8 @@ namespace MackieOfTheUnicorn::Mackie
 		std::optional<bool> SetChannelTextOnBottomRow;
 		std::optional<std::string_view> SetChannelTextText;
 
+		bool ScreenCleared = false;
+
 		void SetMackieListener(Mackie::MackieListener<MackieDevice>& mackieListener) override
 		{
 			MackieListener = &mackieListener;
@@ -59,6 +61,11 @@ namespace MackieOfTheUnicorn::Mackie
 
 		void MIDICallback(std::vector<unsigned char>& message) override
 		{
+		}
+
+		void ClearScreen() override
+		{
+			ScreenCleared = true;
 		}
 	};
 } // namespace MackieOfTheUnicorn::Mackie

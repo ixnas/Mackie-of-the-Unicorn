@@ -17,7 +17,7 @@ namespace MackieOfTheUnicorn::Mixers
 
 	void VirtualMixerImpl::SetInputChannelMute(int originId, int channel, bool on)
 	{
-		for(const auto& linkedMixer : LinkedMixers)
+		for (const auto& linkedMixer : LinkedMixers)
 		{
 			if (linkedMixer->GetId() == originId)
 			{
@@ -30,7 +30,7 @@ namespace MackieOfTheUnicorn::Mixers
 
 	void VirtualMixerImpl::SetInputChannelSolo(int originId, int channel, bool on)
 	{
-		for(const auto& linkedMixer : LinkedMixers)
+		for (const auto& linkedMixer : LinkedMixers)
 		{
 			if (linkedMixer->GetId() == originId)
 			{
@@ -38,6 +38,19 @@ namespace MackieOfTheUnicorn::Mixers
 			}
 
 			linkedMixer->SetInputChannelSolo(originId, channel, on);
+		}
+	}
+
+	void VirtualMixerImpl::SetInputChannelLabel(int originId, int channel, std::string_view label)
+	{
+		for (const auto& linkedMixer : LinkedMixers)
+		{
+			if (linkedMixer->GetId() == originId)
+			{
+				continue;
+			}
+
+			linkedMixer->SetInputChannelLabel(originId, channel, label);
 		}
 	}
 }

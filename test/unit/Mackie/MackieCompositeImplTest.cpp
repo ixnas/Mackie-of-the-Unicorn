@@ -123,4 +123,12 @@ namespace MackieOfTheUnicorn::Tests::Unit::Mackie
 
 		EXPECT_TRUE(actual);
 	}
+
+	TEST_F(MackieCompositeImplTest, ClearsAllScreens)
+	{
+		instance->ClearScreen();
+		auto actual = mackieDeviceFake->ScreenCleared;
+
+		EXPECT_TRUE(actual);
+	}
 } // namespace MackieOfTheUnicorn::Tests::Unit::Mackie

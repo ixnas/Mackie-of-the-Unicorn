@@ -27,6 +27,33 @@ namespace MackieOfTheUnicorn::Tests::Unit::Mixers
 		std::unique_ptr<MackieOfTheUnicorn::Mixers::MOTUMixer> instance;
 	};
 
+	static std::pair<std::string, JSON::JSONValue> CreateMessage(const std::string& key, int value)
+	{
+		JSON::JSONValue jsonValue;
+		jsonValue.Integer = value;
+		std::pair<std::string, JSON::JSONValue> message = {key, jsonValue};
+
+		return message;
+	}
+
+	static std::pair<std::string, JSON::JSONValue> CreateMessage(const std::string& key, float value)
+	{
+		JSON::JSONValue jsonValue;
+		jsonValue.Float = value;
+		std::pair<std::string, JSON::JSONValue> message = {key, jsonValue};
+
+		return message;
+	}
+
+	static std::pair<std::string, JSON::JSONValue> CreateMessage(const std::string& key, std::string_view value)
+	{
+		JSON::JSONValue jsonValue;
+		jsonValue.String = value;
+		std::pair<std::string, JSON::JSONValue> message = {key, jsonValue};
+
+		return message;
+	}
+
 	TEST_F(MOTUMixerTest, SetsIdCorrectly)
 	{
 		auto expectedId = ID;
@@ -37,10 +64,10 @@ namespace MackieOfTheUnicorn::Tests::Unit::Mixers
 
 	TEST_F(MOTUMixerTest, SetsInputChannelMuteCorrectly)
 	{
-		std::string expectedKey = "mix/chan/5/matrix/mute";
-		JSON::JSONValue expectedValue;
-		expectedValue.Integer = 1;
-		std::pair<std::string, JSON::JSONValue> expectedMessage = {expectedKey, expectedValue};
+		auto expectedKey = "mix/chan/5/matrix/mute";
+		int expectedValue = 1;
+
+		auto expectedMessage = CreateMessage(expectedKey, expectedValue);
 
 		instance->SetInputChannelMute(2, 5, true);
 
@@ -49,8 +76,8 @@ namespace MackieOfTheUnicorn::Tests::Unit::Mixers
 		EXPECT_EQ(actualMessage, expectedMessage);
 
 		expectedKey = "mix/chan/7/matrix/mute";
-		expectedValue.Integer = 0;
-		expectedMessage = {expectedKey, expectedValue};
+		expectedValue = 0;
+		expectedMessage = CreateMessage(expectedKey, expectedValue);
 
 		instance->SetInputChannelMute(2, 7, false);
 
@@ -65,10 +92,9 @@ namespace MackieOfTheUnicorn::Tests::Unit::Mixers
 		auto expectedChannel = 9;
 		auto expectedOn = true;
 
-		std::string key = "mix/chan/9/matrix/mute";
-		JSON::JSONValue value;
-		value.Float = 1;
-		std::pair<std::string, JSON::JSONValue> message = {key, value};
+		auto key = "mix/chan/9/matrix/mute";
+		float value = 1;
+		auto message = CreateMessage(key, value);
 
 		httpDeviceFake->FakeMessage(message);
 
@@ -83,10 +109,9 @@ namespace MackieOfTheUnicorn::Tests::Unit::Mixers
 
 	TEST_F(MOTUMixerTest, SetsInputChannelSoloCorrectly)
 	{
-		std::string expectedKey = "mix/chan/5/matrix/solo";
-		JSON::JSONValue expectedValue;
-		expectedValue.Integer = 1;
-		std::pair<std::string, JSON::JSONValue> expectedMessage = {expectedKey, expectedValue};
+		auto expectedKey = "mix/chan/5/matrix/solo";
+		int expectedValue = 1;
+		auto expectedMessage = CreateMessage(expectedKey, expectedValue);
 
 		instance->SetInputChannelSolo(2, 5, true);
 
@@ -95,8 +120,8 @@ namespace MackieOfTheUnicorn::Tests::Unit::Mixers
 		EXPECT_EQ(actualMessage, expectedMessage);
 
 		expectedKey = "mix/chan/7/matrix/solo";
-		expectedValue.Integer = 0;
-		expectedMessage = {expectedKey, expectedValue};
+		expectedValue = 0;
+		expectedMessage = CreateMessage(expectedKey, expectedValue);
 
 		instance->SetInputChannelSolo(2, 7, false);
 
@@ -111,10 +136,9 @@ namespace MackieOfTheUnicorn::Tests::Unit::Mixers
 		auto expectedChannel = 9;
 		auto expectedOn = true;
 
-		std::string key = "mix/chan/9/matrix/solo";
-		JSON::JSONValue value;
-		value.Float = 1;
-		std::pair<std::string, JSON::JSONValue> message = {key, value};
+		auto key = "mix/chan/9/matrix/solo";
+		float value = 1;
+		auto message = CreateMessage(key, value);
 
 		httpDeviceFake->FakeMessage(message);
 
@@ -129,10 +153,9 @@ namespace MackieOfTheUnicorn::Tests::Unit::Mixers
 
 	TEST_F(MOTUMixerTest, IgnoresDifferentParameterSameLength)
 	{
-		std::string key = "mix/chan/matrix/main/0/something";
-		JSON::JSONValue value;
-		value.Float = 1;
-		std::pair<std::string, JSON::JSONValue> message = {key, value};
+		auto key = "mix/chan/matrix/main/0/something";
+		float value = 1;
+		auto message = CreateMessage(key, value);
 
 		httpDeviceFake->FakeMessage(message);
 
@@ -147,10 +170,9 @@ namespace MackieOfTheUnicorn::Tests::Unit::Mixers
 
 	TEST_F(MOTUMixerTest, IgnoresDifferentParameterDifferentLength)
 	{
-		std::string key = "mix/chan/9/matrix/something";
-		JSON::JSONValue value;
-		value.Float = 1;
-		std::pair<std::string, JSON::JSONValue> message = {key, value};
+		auto key = "mix/chan/9/matrix/something";
+		float value = 1;
+		auto message = CreateMessage(key, value);
 
 		httpDeviceFake->FakeMessage(message);
 
@@ -162,4 +184,220 @@ namespace MackieOfTheUnicorn::Tests::Unit::Mixers
 		EXPECT_FALSE(actualChannel.has_value());
 		EXPECT_FALSE(actualOn.has_value());
 	}
+
+	TEST_F(MOTUMixerTest, SetsDefaultInputChannelLabelCorrectly)
+	{
+		auto obankIdentifierMessage = CreateMessage("ext/obank/21/name", "Mix In");
+		auto channelDefaultNameMessage = CreateMessage("ext/obank/21/ch/4/defaultName", "In 5");
+		auto channelNameMessage = CreateMessage("ext/obank/21/ch/4/name", "");
+
+		httpDeviceFake->FakeMessage(obankIdentifierMessage);
+
+		auto* actualOrigin = &virtualMixerFake->SetInputChannelLabelOriginId;
+		auto* actualChannel = &virtualMixerFake->SetInputChannelLabelChannel;
+		auto* actualLabel = &virtualMixerFake->SetInputChannelLabelLabel;
+
+		EXPECT_FALSE(actualOrigin->has_value());
+		EXPECT_FALSE(actualChannel->has_value());
+		EXPECT_FALSE(actualLabel->has_value());
+
+		httpDeviceFake->FakeMessage(channelDefaultNameMessage);
+
+		EXPECT_FALSE(actualOrigin->has_value());
+		EXPECT_FALSE(actualChannel->has_value());
+		EXPECT_FALSE(actualLabel->has_value());
+
+		httpDeviceFake->FakeMessage(channelNameMessage);
+
+		EXPECT_TRUE(actualOrigin->has_value());
+		EXPECT_TRUE(actualChannel->has_value());
+		ASSERT_TRUE(actualLabel->has_value());
+
+		EXPECT_EQ(actualOrigin->value(), ID);
+		EXPECT_EQ(actualChannel->value(), 4);
+		EXPECT_EQ(actualLabel->value(), "In 5");
+	}
+
+	TEST_F(MOTUMixerTest, SetsCustomInputChannelLabelCorrectly)
+	{
+		auto obankIdentifierMessage = CreateMessage("ext/obank/21/name", "Mix In");
+		auto channelDefaultNameMessage = CreateMessage("ext/obank/21/ch/4/defaultName", "In 5");
+		auto channelNameMessage = CreateMessage("ext/obank/21/ch/4/name", "Something");
+
+		httpDeviceFake->FakeMessage(obankIdentifierMessage);
+
+		auto* actualOrigin = &virtualMixerFake->SetInputChannelLabelOriginId;
+		auto* actualChannel = &virtualMixerFake->SetInputChannelLabelChannel;
+		auto* actualLabel = &virtualMixerFake->SetInputChannelLabelLabel;
+
+		EXPECT_FALSE(actualOrigin->has_value());
+		EXPECT_FALSE(actualChannel->has_value());
+		EXPECT_FALSE(actualLabel->has_value());
+
+		httpDeviceFake->FakeMessage(channelDefaultNameMessage);
+
+		EXPECT_FALSE(actualOrigin->has_value());
+		EXPECT_FALSE(actualChannel->has_value());
+		EXPECT_FALSE(actualLabel->has_value());
+
+		httpDeviceFake->FakeMessage(channelNameMessage);
+
+		EXPECT_TRUE(actualOrigin->has_value());
+		EXPECT_TRUE(actualChannel->has_value());
+		ASSERT_TRUE(actualLabel->has_value());
+
+		EXPECT_EQ(actualOrigin->value(), ID);
+		EXPECT_EQ(actualChannel->value(), 4);
+		EXPECT_EQ(actualLabel->value(), "Something");
+	}
+
+	TEST_F(MOTUMixerTest, SetsDefaultInputChannelLabelUnordered)
+	{
+		auto obankIdentifierMessage = CreateMessage("ext/obank/21/name", "Mix In");
+		auto channelDefaultNameMessage = CreateMessage("ext/obank/21/ch/4/defaultName", "In 5");
+		auto channelNameMessage = CreateMessage("ext/obank/21/ch/4/name", "");
+
+		httpDeviceFake->FakeMessage(channelNameMessage);
+
+		auto* actualOrigin = &virtualMixerFake->SetInputChannelLabelOriginId;
+		auto* actualChannel = &virtualMixerFake->SetInputChannelLabelChannel;
+		auto* actualLabel = &virtualMixerFake->SetInputChannelLabelLabel;
+
+		EXPECT_FALSE(actualOrigin->has_value());
+		EXPECT_FALSE(actualChannel->has_value());
+		EXPECT_FALSE(actualLabel->has_value());
+
+		httpDeviceFake->FakeMessage(channelDefaultNameMessage);
+
+		EXPECT_FALSE(actualOrigin->has_value());
+		EXPECT_FALSE(actualChannel->has_value());
+		EXPECT_FALSE(actualLabel->has_value());
+
+		httpDeviceFake->FakeMessage(obankIdentifierMessage);
+
+		EXPECT_TRUE(actualOrigin->has_value());
+		EXPECT_TRUE(actualChannel->has_value());
+		ASSERT_TRUE(actualLabel->has_value());
+
+		EXPECT_EQ(actualOrigin->value(), ID);
+		EXPECT_EQ(actualChannel->value(), 4);
+		EXPECT_EQ(actualLabel->value(), "In 5");
+	}
+
+	TEST_F(MOTUMixerTest, SetsCustomInputChannelLabelUnordered)
+	{
+		auto obankIdentifierMessage = CreateMessage("ext/obank/21/name", "Mix In");
+		auto channelDefaultNameMessage = CreateMessage("ext/obank/21/ch/4/defaultName", "In 5");
+		auto channelNameMessage = CreateMessage("ext/obank/21/ch/4/name", "Something");
+
+		httpDeviceFake->FakeMessage(channelNameMessage);
+
+		auto* actualOrigin = &virtualMixerFake->SetInputChannelLabelOriginId;
+		auto* actualChannel = &virtualMixerFake->SetInputChannelLabelChannel;
+		auto* actualLabel = &virtualMixerFake->SetInputChannelLabelLabel;
+
+		EXPECT_FALSE(actualOrigin->has_value());
+		EXPECT_FALSE(actualChannel->has_value());
+		EXPECT_FALSE(actualLabel->has_value());
+
+		httpDeviceFake->FakeMessage(channelDefaultNameMessage);
+
+		EXPECT_FALSE(actualOrigin->has_value());
+		EXPECT_FALSE(actualChannel->has_value());
+		EXPECT_FALSE(actualLabel->has_value());
+
+		httpDeviceFake->FakeMessage(obankIdentifierMessage);
+
+		EXPECT_TRUE(actualOrigin->has_value());
+		EXPECT_TRUE(actualChannel->has_value());
+		ASSERT_TRUE(actualLabel->has_value());
+
+		EXPECT_EQ(actualOrigin->value(), ID);
+		EXPECT_EQ(actualChannel->value(), 4);
+		EXPECT_EQ(actualLabel->value(), "Something");
+	}
+
+	TEST_F(MOTUMixerTest, SetsCustomInputChannelLabelUnorderedAndReset)
+	{
+		auto obankIdentifierMessage = CreateMessage("ext/obank/21/name", "Mix In");
+		auto channelDefaultNameMessage = CreateMessage("ext/obank/21/ch/4/defaultName", "In 5");
+		auto channelNameMessage = CreateMessage("ext/obank/21/ch/4/name", "Something");
+		auto channelNameClearMessage = CreateMessage("ext/obank/21/ch/4/name", "");
+
+		httpDeviceFake->FakeMessage(channelNameMessage);
+
+		auto* actualOrigin = &virtualMixerFake->SetInputChannelLabelOriginId;
+		auto* actualChannel = &virtualMixerFake->SetInputChannelLabelChannel;
+		auto* actualLabel = &virtualMixerFake->SetInputChannelLabelLabel;
+
+		EXPECT_FALSE(actualOrigin->has_value());
+		EXPECT_FALSE(actualChannel->has_value());
+		EXPECT_FALSE(actualLabel->has_value());
+
+		httpDeviceFake->FakeMessage(channelDefaultNameMessage);
+
+		EXPECT_FALSE(actualOrigin->has_value());
+		EXPECT_FALSE(actualChannel->has_value());
+		EXPECT_FALSE(actualLabel->has_value());
+
+		httpDeviceFake->FakeMessage(obankIdentifierMessage);
+
+		EXPECT_TRUE(actualOrigin->has_value());
+		EXPECT_TRUE(actualChannel->has_value());
+		ASSERT_TRUE(actualLabel->has_value());
+
+		EXPECT_EQ(actualOrigin->value(), ID);
+		EXPECT_EQ(actualChannel->value(), 4);
+		EXPECT_EQ(actualLabel->value(), "Something");
+
+		httpDeviceFake->FakeMessage(channelNameClearMessage);
+
+		EXPECT_TRUE(actualOrigin->has_value());
+		EXPECT_TRUE(actualChannel->has_value());
+		ASSERT_TRUE(actualLabel->has_value());
+
+		EXPECT_EQ(actualOrigin->value(), ID);
+		EXPECT_EQ(actualChannel->value(), 4);
+		EXPECT_EQ(actualLabel->value(), "In 5");
+	}
+
+	TEST_F(MOTUMixerTest, SetsCustomInputChannelLabelUnorderedDifferentBank)
+	{
+		auto otherObankIdentifierMessage = CreateMessage("ext/obank/20/name", "Aux In");
+		auto otherChannelDefaultNameMessage = CreateMessage("ext/obank/20/ch/4/defaultName", "Aux 5");
+		auto otherChannelNameMessage = CreateMessage("ext/obank/20/ch/4/name", "Some other bank name");
+
+		auto obankIdentifierMessage = CreateMessage("ext/obank/21/name", "Mix In");
+		auto channelDefaultNameMessage = CreateMessage("ext/obank/21/ch/4/defaultName", "In 5");
+		auto channelNameMessage = CreateMessage("ext/obank/21/ch/4/name", "Something");
+
+		httpDeviceFake->FakeMessage(otherChannelNameMessage);
+
+		auto* actualOrigin = &virtualMixerFake->SetInputChannelLabelOriginId;
+		auto* actualChannel = &virtualMixerFake->SetInputChannelLabelChannel;
+		auto* actualLabel = &virtualMixerFake->SetInputChannelLabelLabel;
+
+		EXPECT_FALSE(actualOrigin->has_value());
+		EXPECT_FALSE(actualChannel->has_value());
+		EXPECT_FALSE(actualLabel->has_value());
+
+		httpDeviceFake->FakeMessage(otherChannelDefaultNameMessage);
+
+		EXPECT_FALSE(actualOrigin->has_value());
+		EXPECT_FALSE(actualChannel->has_value());
+		EXPECT_FALSE(actualLabel->has_value());
+
+		httpDeviceFake->FakeMessage(otherObankIdentifierMessage);
+
+		EXPECT_FALSE(actualOrigin->has_value());
+		EXPECT_FALSE(actualChannel->has_value());
+		EXPECT_FALSE(actualLabel->has_value());
+
+		httpDeviceFake->FakeMessage(obankIdentifierMessage);
+
+		EXPECT_FALSE(actualOrigin->has_value());
+		EXPECT_FALSE(actualChannel->has_value());
+		EXPECT_FALSE(actualLabel->has_value());
+	}
+
 }

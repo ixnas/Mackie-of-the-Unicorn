@@ -7,9 +7,9 @@
 [submodule "rtmidi"]
 	path = ext/rtmidi
 	url = https://github.com/thestk/rtmidi.git
-[submodule "wxWidgets"]
-	path = ext/wxWidgets
-	url = https://github.com/wxWidgets/wxWidgets.git
 [submodule "ext/curl"]
 	path = ext/curl
 	url = https://github.com/curl/curl
+[submodule "ext/wxWidgets"]
+	path = ext/wxWidgets
+	url = https://github.com/wxWidgets/wxWidgets.git

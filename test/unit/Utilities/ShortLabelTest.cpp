@@ -87,7 +87,7 @@ namespace MackieOfTheUnicorn::Tests::Unit::Utilities
 		std::string input = "a.,/.>,.||'gh";
 		ShortLabel shortLabel(input);
 
-		auto expected = "a.,/'h";
+		auto expected = "a.,'gh";
 		auto actual = shortLabel.Get();
 
 		EXPECT_EQ(actual, expected);

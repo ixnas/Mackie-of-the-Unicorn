@@ -54,6 +54,14 @@ namespace MackieOfTheUnicorn::Mackie
 		}
 	}
 
+	void MackieCompositeImpl::ClearScreen()
+	{
+		for (const auto& mackieDevice : MackieDevices)
+		{
+			mackieDevice->ClearScreen();
+		}
+	}
+
 	void MackieCompositeImpl::OnBankForwardPressed()
 	{
 		MackieListener->OnBankForwardPressed();

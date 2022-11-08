@@ -23,6 +23,7 @@ namespace MackieOfTheUnicorn::Mackie
 		void SetChannelText(int channelNumber, bool onBottomRow, std::string_view text) override;
 		void OnBankForwardPressed() override;
 		void OnBankBackwardsPressed() override;
+		void ClearScreen() override;
 		void SetMackieListener(Mackie::MackieListener<MackieComposite>& mackieListener) override;
 	};
 }

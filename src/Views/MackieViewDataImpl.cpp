@@ -52,4 +52,21 @@ namespace MackieOfTheUnicorn::Views
 	MackieViewDataImpl::MackieViewDataImpl(int id) : Id(id)
 	{
 	}
+
+	void MackieViewDataImpl::SetLabel(int channelId, std::string_view label)
+	{
+		auto storedLabel = std::string(label);
+		ChannelLabels.insert_or_assign(channelId, storedLabel);
+	}
+
+	std::string_view MackieViewDataImpl::GetLabel(int channelId)
+	{
+		auto exists = ChannelLabels.contains(channelId);
+		if (!exists)
+		{
+			return "";
+		}
+
+		return ChannelLabels[channelId];
+	}
 }
