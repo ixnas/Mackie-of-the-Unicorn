@@ -23,7 +23,7 @@ These are the goals for the next release (checked goals are already implemented)
 - [x] Control channel mutes
 - [x] Control channel solos
 - [ ] Control channel pan
-- [ ] Show channel names on the scribble strip
+- [x] Show channel names on the scribble strip
 - [x] macOS support
 - [x] Windows support
 - [x] Integration tests using mocked MIDI and HTTP devices
