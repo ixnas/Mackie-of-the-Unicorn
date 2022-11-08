@@ -8,7 +8,7 @@
 #include "LinkedMixer.h"
 #include "../HTTP/HTTPDevice.h"
 #include "../HTTP/HTTPListener.h"
-#include "../MOTU/LabelCache.h"
+#include "../MOTU/LabelBuffer.h"
 
 namespace MackieOfTheUnicorn::HTTP::Factories
 {
@@ -21,7 +21,7 @@ namespace MackieOfTheUnicorn::Mixers
 	class MOTUMixer : public LinkedMixer, public HTTP::HTTPListener
 	{
 		std::unique_ptr<HTTP::HTTPDevice> HTTPDevice;
-		MOTU::LabelCache LabelCache;
+		MOTU::LabelBuffer LabelCache;
 		VirtualMixer* VirtualMixer;
 		int Id;
 

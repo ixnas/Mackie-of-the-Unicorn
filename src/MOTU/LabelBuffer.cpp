@@ -2,7 +2,7 @@
 // Created by Sjoerd Scheffer on 06/11/2022.
 //
 
-#include "LabelCache.h"
+#include "LabelBuffer.h"
 
 namespace MackieOfTheUnicorn::MOTU
 {
@@ -47,7 +47,7 @@ namespace MackieOfTheUnicorn::MOTU
 		return LabelType::NONE;
 	}
 
-	std::map<int, std::string> LabelCache::GetLabels(std::pair<std::vector<std::string>, JSON::JSONValue>& message)
+	std::map<int, std::string> LabelBuffer::GetLabels(std::pair<std::vector<std::string>, JSON::JSONValue>& message)
 	{
 		auto labelType = GetLabelType(message);
 		if (labelType == LabelType::NONE)
@@ -83,13 +83,13 @@ namespace MackieOfTheUnicorn::MOTU
 		return GetUnsetLabelsFromCache();
 	}
 
-	void LabelCache::SetObankNumber(std::pair<std::vector<std::string>, JSON::JSONValue>& message)
+	void LabelBuffer::SetObankNumber(std::pair<std::vector<std::string>, JSON::JSONValue>& message)
 	{
 		auto obankNumberString = message.first[2];
 		ObankNumber = std::stoi(obankNumberString);
 	}
 
-	void LabelCache::MoveCachedKeyValuePairsToMaps()
+	void LabelBuffer::MoveCachedKeyValuePairsToMaps()
 	{
 		for (const auto& message : CachedMessages)
 		{
@@ -115,7 +115,7 @@ namespace MackieOfTheUnicorn::MOTU
 		CachedMessages = std::vector<std::pair<std::vector<std::string>, JSON::JSONValue>>();
 	}
 
-	std::map<int, std::string> LabelCache::GetUnsetLabelsFromCache()
+	std::map<int, std::string> LabelBuffer::GetUnsetLabelsFromCache()
 	{
 		std::map<int, std::string> unsetLabels;
 

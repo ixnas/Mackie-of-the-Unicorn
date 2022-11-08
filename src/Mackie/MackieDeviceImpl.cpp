@@ -103,13 +103,22 @@ namespace MackieOfTheUnicorn::Mackie
 
 	void MackieDeviceImpl::ClearScreen()
 	{
-		std::vector<unsigned char> message = { 0xF0, 0x00, 0x00, 0x66, 0x14, 0x12, 0x00 };
-		for (int i = 0; i < 112; i++)
+		static std::vector<unsigned char> message = { 0xF0, 0x00, 0x00, 0x66, 0x14, 0x12, 0x00 };
+		static bool messageFilled = false;
+
+		if (!messageFilled)
 		{
-			message.push_back(' ');
+			message.reserve(120);
+
+			for (int i = 0; i < 112; i++)
+			{
+				message.push_back(' ');
+			}
+
+			message.push_back(0xF7);
+			messageFilled = true;
 		}
 
-		message.push_back(0xF7);
 		MIDIDevice->SendMessage(message);
 	}
 
