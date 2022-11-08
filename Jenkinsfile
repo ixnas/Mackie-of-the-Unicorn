@@ -15,7 +15,7 @@ pipeline {
             options { skipDefaultCheckout() }
             steps {
                 dir('build') {
-                    sh "/usr/bin/make -j${cores()}"
+                    sh "/usr/bin/make -j4"
                 }
             }
         }
@@ -97,5 +97,3 @@ pipeline {
         }
     }
 }
-
-def cores() { return Runtime.getRuntime().availableProcessors(); }
