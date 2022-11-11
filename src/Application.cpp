@@ -31,9 +31,9 @@ namespace MackieOfTheUnicorn
 		return MackieService->GetOutputDevices();
 	}
 
-	void Application::Start(std::vector<std::pair<int, int>>& inputAndOutputIds)
+	void Application::Start(std::vector<std::pair<int, int>>& inputAndOutputIds, std::string& hostname)
 	{
-		VirtualMixer = VirtualMixerBuilder->AddMackieMixer(inputAndOutputIds)->AddMOTUMixer("127.0.0.1:1280/0001f2fffe01421e")->Build();
+		VirtualMixer = VirtualMixerBuilder->AddMackieMixer(inputAndOutputIds)->AddMOTUMixer(hostname)->Build();
 	}
 
 	Application BuildApplication()
