@@ -21,14 +21,21 @@ class MyFrame : public wxFrame
 	MyFrame();
 
   private:
+	wxButton* startButton;
+	wxTextCtrl* urlInput;
+	wxChoice* midiInInput;
+	wxChoice* midiOutInput;
 	MackieOfTheUnicorn::Application application;
 	std::string url;
 	int input, output;
+	bool started;
 	void OnExit(wxCommandEvent& event);
 	void OnAbout(wxCommandEvent& event);
 	void OnConnect(wxCommandEvent& event);
 	void OnUrlChanged(wxCommandEvent& event);
 	void OnInputChanged(wxCommandEvent& event);
+	void OnOutputChanged(wxCommandEvent& event);
+	void CheckEnabledElements();
 };
 enum
 {
@@ -48,6 +55,8 @@ MyFrame::MyFrame() : wxFrame(NULL, wxID_ANY, "Mackie of the Unicorn"), applicati
 {
 	url = "";
 	input = output = -1;
+	started = false;
+
 	this->SetSize(this->FromDIP(wxSize(380, 220)));
 	this->SetMinSize(this->FromDIP(wxSize(380, 220)));
 	this->SetMaxSize(this->FromDIP(wxSize(380, 220)));
@@ -86,10 +95,10 @@ MyFrame::MyFrame() : wxFrame(NULL, wxID_ANY, "Mackie of the Unicorn"), applicati
 	wxBoxSizer* vSizer = new wxBoxSizer(wxVERTICAL);
 	wxBoxSizer* hSizer = new wxBoxSizer(wxHORIZONTAL);
 	wxFlexGridSizer* gridSizer = new wxFlexGridSizer(2, 12, 12);
-	wxTextCtrl* urlInput = new wxTextCtrl(panel, ID_Url_Input, wxEmptyString, wxDefaultPosition, this->FromDIP(wxSize(200, -1)));
-	wxChoice* midiInInput = new wxChoice(panel, ID_Midi_Input_Input, wxDefaultPosition, this->FromDIP(wxSize(200, -1)), inputChoices);
-	wxChoice* midiOutInput = new wxChoice(panel, ID_Midi_Output_Input, wxDefaultPosition, this->FromDIP(wxSize(200, -1)), outputChoices);
-	wxButton* startButton = new wxButton(panel, ID_Connect, wxT("Connect"));
+	urlInput = new wxTextCtrl(panel, ID_Url_Input, wxEmptyString, wxDefaultPosition, this->FromDIP(wxSize(200, -1)));
+	midiInInput = new wxChoice(panel, ID_Midi_Input_Input, wxDefaultPosition, this->FromDIP(wxSize(200, -1)), inputChoices);
+	midiOutInput = new wxChoice(panel, ID_Midi_Output_Input, wxDefaultPosition, this->FromDIP(wxSize(200, -1)), outputChoices);
+	startButton = new wxButton(panel, ID_Connect, wxT("Connect"));
 	gridSizer->Add(new wxStaticText(panel, -1, wxT("URL")), 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL);
 	gridSizer->Add(urlInput, 0, wxALIGN_CENTER_VERTICAL);
 	gridSizer->Add(new wxStaticText(panel, -1, wxT("MIDI input")), 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL);
@@ -107,6 +116,7 @@ MyFrame::MyFrame() : wxFrame(NULL, wxID_ANY, "Mackie of the Unicorn"), applicati
 	Bind(wxEVT_BUTTON, &MyFrame::OnConnect, this, ID_Connect);
 	Bind(wxEVT_TEXT, &MyFrame::OnUrlChanged, this, ID_Url_Input);
 	Bind(wxEVT_CHOICE, &MyFrame::OnInputChanged, this, ID_Midi_Input_Input);
+	Bind(wxEVT_CHOICE, &MyFrame::OnOutputChanged, this, ID_Midi_Output_Input);
 
 	if (!inputChoices.empty())
 	{
@@ -119,6 +129,8 @@ MyFrame::MyFrame() : wxFrame(NULL, wxID_ANY, "Mackie of the Unicorn"), applicati
 		midiOutInput->SetSelection(0);
 		output = 0;
 	}
+
+	CheckEnabledElements();
 
 	Connect(wxID_EXIT, wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(MyFrame::OnExit));
 }
@@ -135,21 +147,63 @@ void MyFrame::OnAbout(wxCommandEvent& event)
 }
 void MyFrame::OnConnect(wxCommandEvent& event)
 {
-	if (input == -1 || output == -1)
+	if (!startButton->IsEnabled())
 	{
+		return;
+	}
+
+	if (started)
+	{
+		application = MackieOfTheUnicorn::BuildApplication();
+		started = false;
+		CheckEnabledElements();
 		return;
 	}
 
 	std::vector<std::pair<int, int>> inputsAndOutputs = {{input, output}};
 	application.Start(inputsAndOutputs, url);
+	started = true;
+	CheckEnabledElements();
 }
 
 void MyFrame::OnUrlChanged(wxCommandEvent& event)
 {
 	url = event.GetString();
+	CheckEnabledElements();
 }
 
 void MyFrame::OnInputChanged(wxCommandEvent& event)
 {
 	input = event.GetInt();
+	CheckEnabledElements();
+}
+
+void MyFrame::OnOutputChanged(wxCommandEvent& event)
+{
+	output = event.GetInt();
+	CheckEnabledElements();
+}
+
+void MyFrame::CheckEnabledElements()
+{
+	if (started) {
+		startButton->Enable(true);
+		midiInInput->Enable(false);
+		midiOutInput->Enable(false);
+		urlInput->Enable(false);
+		startButton->SetLabel(wxT("Disconnect"));
+		return;
+	}
+
+	if (input == -1 || output == -1 || url.empty())
+	{
+		startButton->Enable(false);
+		return;
+	}
+
+	startButton->Enable(true);
+	midiInInput->Enable(true);
+	midiOutInput->Enable(true);
+	urlInput->Enable(true);
+	startButton->SetLabel(wxT("Connect"));
 }
