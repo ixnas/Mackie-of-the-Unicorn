@@ -37,9 +37,9 @@ bool MyApp::OnInit()
 }
 MyFrame::MyFrame() : wxFrame(NULL, wxID_ANY, "Mackie of the Unicorn")
 {
-	this->SetSize(this->FromDIP(wxSize(380, 180)));
-	this->SetMinSize(this->FromDIP(wxSize(380, 180)));
-	this->SetMaxSize(this->FromDIP(wxSize(380, 180)));
+	this->SetSize(this->FromDIP(wxSize(380, 220)));
+	this->SetMinSize(this->FromDIP(wxSize(380, 220)));
+	this->SetMaxSize(this->FromDIP(wxSize(380, 220)));
 
 	Centre();
 
@@ -77,9 +77,9 @@ MyFrame::MyFrame() : wxFrame(NULL, wxID_ANY, "Mackie of the Unicorn")
 	wxBoxSizer* vSizer = new wxBoxSizer(wxVERTICAL);
 	wxBoxSizer* hSizer = new wxBoxSizer(wxHORIZONTAL);
 	wxFlexGridSizer* gridSizer = new wxFlexGridSizer(2, 12, 12);
-	wxTextCtrl* urlInput = new wxTextCtrl(panel, -1, wxEmptyString, wxDefaultPosition, wxSize(200, -1));
-	wxChoice* midiInInput = new wxChoice(panel, -1, wxDefaultPosition, wxSize(200, -1), inputChoices);
-	wxChoice* midiOutInput = new wxChoice(panel, -1, wxDefaultPosition, wxSize(200, -1), outputChoices);
+	wxTextCtrl* urlInput = new wxTextCtrl(panel, -1, wxEmptyString, wxDefaultPosition, this->FromDIP(wxSize(200, -1)));
+	wxChoice* midiInInput = new wxChoice(panel, -1, wxDefaultPosition, this->FromDIP(wxSize(200, -1)), inputChoices);
+	wxChoice* midiOutInput = new wxChoice(panel, -1, wxDefaultPosition, this->FromDIP(wxSize(200, -1)), outputChoices);
 	wxButton* startButton = new wxButton(panel, -1, wxT("Connect"));
 	gridSizer->Add(new wxStaticText(panel, -1, wxT("URL")), 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL);
 	gridSizer->Add(urlInput, 0, wxALIGN_CENTER_VERTICAL);
