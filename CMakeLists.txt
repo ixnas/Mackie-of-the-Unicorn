@@ -117,7 +117,7 @@ if (APPLE)
             MACOSX_BUNDLE_BUNDLE_LONG_VERSION_STRING ${GIT_VERSION}
             MACOSX_BUNDLE_BUNDLE_SHORT_VERSION_STRING ${GIT_VERSION}
             MACOSX_BUNDLE_GUI_IDENTIFIER "nl.sjoerdscheffer"
-            MACOSX_BUNDLE_COPYRIGHT "Copyright © ${YEAR} Sjoerd Scheffer"
+            MACOSX_BUNDLE_COPYRIGHT "Copyright © 2022-${YEAR} Sjoerd Scheffer"
             )
 else ()
     add_executable(Mackie_of_the_Unicorn ${sources})

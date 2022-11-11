@@ -35,6 +35,8 @@ namespace MackieOfTheUnicorn
 		/// Start the application using the specified MIDI device numbers.
 		void Start(std::vector<std::pair<int, int>>& inputAndOutputIds);
 	};
+
+	Application BuildApplication();
 } // namespace MackieOfTheUnicorn
 
 #endif // MACKIE_OF_THE_UNICORN_APPLICATION_H
