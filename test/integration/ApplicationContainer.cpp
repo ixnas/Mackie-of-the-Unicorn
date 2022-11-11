@@ -59,7 +59,8 @@ namespace MackieOfTheUnicorn::Tests::Integration
 		rtMidiOutAbstractionFake->PortName = "output1";
 
 		std::vector<std::pair<int, int>> inputAndOutputIds = {{0, 0}};
-		applicationContainer.Application->Start(inputAndOutputIds);
+		std::string hostname;
+		applicationContainer.Application->Start(inputAndOutputIds, hostname);
 
 		rtMidiInAbstractionFake = *(rtMidiAbstractionFactoryFake->ReturnedInAbstractions.end() - 1);
 		rtMidiOutAbstractionFake = *(rtMidiAbstractionFactoryFake->ReturnedOutAbstractions.end() - 1);
