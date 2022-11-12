@@ -59,6 +59,7 @@ enum
 wxIMPLEMENT_APP(MyApp);
 bool MyApp::OnInit()
 {
+	SetAppName("Mackie of the Unicorn");
 	wxInitAllImageHandlers();
 	MyFrame* frame = new MyFrame();
 	frame->Show(true);
@@ -78,7 +79,7 @@ MyFrame::MyFrame() : wxFrame(NULL, ID_Main_Window, "Mackie of the Unicorn"), app
 
 	wxMemoryInputStream inputStream(_acicon, sizeof(_acicon));
 	wxImage image(inputStream, wxBITMAP_TYPE_PNG);
-	image.Rescale(this->FromDIP(128), this->FromDIP(128), wxIMAGE_QUALITY_HIGH);
+	image.Rescale(this->FromDIP(128), this->FromDIP(128), wxIMAGE_QUALITY_BOX_AVERAGE);
 	wxBitmap bitmap(image);
 
 	auto configDir = wxStandardPaths::Get().GetUserConfigDir();
@@ -86,9 +87,8 @@ MyFrame::MyFrame() : wxFrame(NULL, ID_Main_Window, "Mackie of the Unicorn"), app
 	configPathStringBuilder << configDir << PATH_SEPARATOR << "Mackie-of-the-Unicorn.json";
 	configPath = configPathStringBuilder.str();
 
-	this->SetSize(this->FromDIP(wxSize(380, 380)));
-	this->SetMinSize(this->FromDIP(wxSize(380, 380)));
-	this->SetMaxSize(this->FromDIP(wxSize(380, 380)));
+	//this->SetMinSize(this->FromDIP(wxSize(380, 380)));
+	//this->SetMaxSize(this->FromDIP(wxSize(380, 380)));
 
 	Centre();
 
@@ -122,10 +122,11 @@ MyFrame::MyFrame() : wxFrame(NULL, ID_Main_Window, "Mackie of the Unicorn"), app
 	wxPanel* panel = new wxPanel(this);
 	wxBoxSizer* vSizer = new wxBoxSizer(wxVERTICAL);
 	wxBoxSizer* hSizer = new wxBoxSizer(wxHORIZONTAL);
-	wxFlexGridSizer* gridSizer = new wxFlexGridSizer(2, 12, 12);
-	urlInput = new wxTextCtrl(panel, ID_Url_Input, url, wxDefaultPosition, this->FromDIP(wxSize(200, -1)));
-	midiInInput = new wxChoice(panel, ID_Midi_Input_Input, wxDefaultPosition, this->FromDIP(wxSize(200, -1)), inputChoices);
-	midiOutInput = new wxChoice(panel, ID_Midi_Output_Input, wxDefaultPosition, this->FromDIP(wxSize(200, -1)), outputChoices);
+	wxStaticBoxSizer* configBox = new wxStaticBoxSizer(wxVERTICAL, panel);
+	wxFlexGridSizer* gridSizer = new wxFlexGridSizer(2, this->FromDIP(12), this->FromDIP(12));
+	urlInput = new wxTextCtrl(panel, ID_Url_Input, url, wxDefaultPosition, this->FromDIP(wxSize(240, -1)));
+	midiInInput = new wxChoice(panel, ID_Midi_Input_Input, wxDefaultPosition, this->FromDIP(wxSize(240, -1)), inputChoices);
+	midiOutInput = new wxChoice(panel, ID_Midi_Output_Input, wxDefaultPosition, this->FromDIP(wxSize(240, -1)), outputChoices);
 	startButton = new wxButton(panel, ID_Connect, wxT("Connect"));
 	gridSizer->Add(new wxStaticText(panel, -1, wxT("URL")), 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL);
 	gridSizer->Add(urlInput, 0, wxALIGN_CENTER_VERTICAL);
@@ -133,12 +134,15 @@ MyFrame::MyFrame() : wxFrame(NULL, ID_Main_Window, "Mackie of the Unicorn"), app
 	gridSizer->Add(midiInInput, 0, wxALIGN_CENTER_VERTICAL);
 	gridSizer->Add(new wxStaticText(panel, -1, wxT("MIDI output")), 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL);
 	gridSizer->Add(midiOutInput, 0, wxALIGN_CENTER_VERTICAL);
-	gridSizer->Add(new wxStaticText(panel, -1, wxT("")), 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL);
-	gridSizer->Add(startButton, 0);
+	configBox->Add(gridSizer);
 	vSizer->Add(new wxStaticBitmap(panel, -1, bitmap), 0, wxALIGN_CENTER);
-	vSizer->Add(new wxStaticText(panel, -1, wxT("")), 0, wxALIGN_CENTER);
-	vSizer->Add(gridSizer, 1, wxALIGN_CENTER_HORIZONTAL);
-	hSizer->Add(vSizer, 1, wxALIGN_CENTER_VERTICAL);
+
+	wxStaticText* versionLabel = new wxStaticText(panel, -1, MackieOfTheUnicorn::VERSION);
+	//versionLabel->Enable(false);
+	vSizer->Add(versionLabel, 0, wxALIGN_CENTER | wxDOWN, this->FromDIP(20));
+	vSizer->Add(configBox, 1, wxALIGN_CENTER_HORIZONTAL);
+	vSizer->Add(startButton, 0, wxALIGN_CENTER | wxUP, this->FromDIP(24));
+	hSizer->Add(vSizer, 1, wxALIGN_CENTER_VERTICAL | wxALL, this->FromDIP(24));
 	panel->SetSizer(hSizer);
 
 	Bind(wxEVT_MENU, &MyFrame::OnAbout, this, wxID_ABOUT);
@@ -170,6 +174,10 @@ MyFrame::MyFrame() : wxFrame(NULL, ID_Main_Window, "Mackie of the Unicorn"), app
 	CheckEnabledElements();
 
 	Connect(wxID_EXIT, wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(MyFrame::OnExit));
+	hSizer->Fit(this);
+	this->SetSizeHints(this->GetSize(), this->GetSize());
+	//this->SetMinSize(this->GetSize());
+	//this->SetMaxSize(this->GetSize());
 }
 void MyFrame::OnExit(wxCommandEvent& event)
 {
