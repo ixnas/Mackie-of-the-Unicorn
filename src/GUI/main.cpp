@@ -26,6 +26,8 @@ class MyFrame : public wxFrame
   private:
 	wxButton* startButton;
 	wxTextCtrl* urlInput;
+	wxArrayString inputChoices;
+	wxArrayString outputChoices;
 	wxChoice* midiInInput;
 	wxChoice* midiOutInput;
 	MackieOfTheUnicorn::Application application;
@@ -65,7 +67,7 @@ MyFrame::MyFrame() : wxFrame(NULL, ID_Main_Window, "Mackie of the Unicorn"), app
 	started = false;
 
 #ifdef WIN32
-#define PATH_SEPARATOR "\"
+#define PATH_SEPARATOR "\\"
 #else
 #define PATH_SEPARATOR "/"
 #endif
@@ -75,7 +77,6 @@ MyFrame::MyFrame() : wxFrame(NULL, ID_Main_Window, "Mackie of the Unicorn"), app
 	configPathStringBuilder << configDir << PATH_SEPARATOR << "Mackie-of-the-Unicorn.json";
 	configPath = configPathStringBuilder.str();
 
-	ReadConfiguration();
 	this->SetSize(this->FromDIP(wxSize(380, 220)));
 	this->SetMinSize(this->FromDIP(wxSize(380, 220)));
 	this->SetMaxSize(this->FromDIP(wxSize(380, 220)));
@@ -97,9 +98,6 @@ MyFrame::MyFrame() : wxFrame(NULL, ID_Main_Window, "Mackie of the Unicorn"), app
 	auto inputDevices = application.GetAvailableInputDevices();
 	auto outputDevices = application.GetAvailableOutputDevices();
 
-	auto inputChoices = wxArrayString();
-	auto outputChoices = wxArrayString();
-
 	for (const auto& inputDevice : inputDevices)
 	{
 		inputChoices.Add(inputDevice.second);
@@ -109,6 +107,8 @@ MyFrame::MyFrame() : wxFrame(NULL, ID_Main_Window, "Mackie of the Unicorn"), app
 	{
 		outputChoices.Add(outputDevice.second);
 	}
+
+	ReadConfiguration();
 
 	wxPanel* panel = new wxPanel(this);
 	wxBoxSizer* vSizer = new wxBoxSizer(wxVERTICAL);
@@ -140,14 +140,20 @@ MyFrame::MyFrame() : wxFrame(NULL, ID_Main_Window, "Mackie of the Unicorn"), app
 
 	if (!inputChoices.empty())
 	{
-		midiInInput->SetSelection(0);
-		input = 0;
+		if (input == -1)
+		{
+			input = 0;
+		}
+		midiInInput->SetSelection(input);
 	}
 
 	if (!outputChoices.empty())
 	{
-		midiOutInput->SetSelection(0);
-		output = 0;
+		if (output == -1)
+		{
+			output = 0;
+		}
+		midiOutInput->SetSelection(output);
 	}
 
 	CheckEnabledElements();
@@ -242,9 +248,19 @@ void MyFrame::ReadConfiguration()
 	auto jsonDocument = JSONSerializer::Parse(configString);
 	for (const auto& pair : jsonDocument)
 	{
-		if (pair.first == "url")
+		auto key = pair.first;
+		auto value = pair.second;
+		if (key == "url")
 		{
-			url = pair.second.String.value();
+			url = value.String.value();
+		}
+		if (key == "midiInputNumber" && inputChoices.size() > value.Integer.value() && value.Integer.value() != -1)
+		{
+			input = value.Integer.value();
+		}
+		if (key == "midiOutputNumber" && outputChoices.size() > value.Integer.value() && value.Integer.value() != -1)
+		{
+			output = value.Integer.value();
 		}
 	}
 }
@@ -272,6 +288,18 @@ void MyFrame::WriteConfiguration(wxCloseEvent& event)
 	urlValue.String = url;
 
 	configuration.emplace_back(urlKey, urlValue);
+
+	std::string inputKey = "midiInputNumber";
+	JSONValue inputValue;
+	inputValue.Integer = input;
+
+	configuration.emplace_back(inputKey, inputValue);
+
+	std::string outputKey = "midiOutputNumber";
+	JSONValue outputValue;
+	outputValue.Integer = output;
+
+	configuration.emplace_back(outputKey, outputValue);
 
 	auto serialized = JSONSerializer::Serialize(configuration);
 

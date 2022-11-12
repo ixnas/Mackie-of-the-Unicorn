@@ -26,7 +26,6 @@ set(CMAKE_POLICY_DEFAULT_CMP0077 NEW)
 # Options
 option(BUILD_DOC "Build documentation" ON)
 option(BUILD_TESTS "Build tests" ON)
-option(BUILD_GUI "Build graphical user interface" ON)
 
 # Setup dependencies
 if (APPLE)
@@ -67,14 +66,9 @@ add_subdirectory(${CMAKE_SOURCE_DIR}/ext/curl)
 if (BUILD_TESTS)
     add_subdirectory(${CMAKE_SOURCE_DIR}/ext/googletest)
 endif ()
-if (BUILD_GUI)
-    add_subdirectory(${CMAKE_SOURCE_DIR}/ext/wxWidgets)
-    set(WX_LIBRARIES wx::base wx::core)
-    set(MAIN_EXECUTABLE ${CMAKE_SOURCE_DIR}/src/GUI/main.cpp)
-else()
-    set(WX_LIBRARIES "")
-    set(MAIN_EXECUTABLE ${CMAKE_SOURCE_DIR}/src/Console/main.cpp)
-endif()
+
+add_subdirectory(${CMAKE_SOURCE_DIR}/ext/wxWidgets)
+set(WX_LIBRARIES wx::base wx::core)
 
 # Linking libraries
 if (MSVC)
@@ -91,8 +85,6 @@ endif()
 
 # Sources
 file(GLOB_RECURSE sources src/*.cpp src/*.h)
-list(FILTER sources EXCLUDE REGEX ".*main\\.cpp$")
-list(APPEND sources ${MAIN_EXECUTABLE})
 if (WIN32)
     list(APPEND sources windows/main.manifest)
 endif()
@@ -129,9 +121,7 @@ target_link_libraries(Mackie_of_the_Unicorn ${RTMIDILIB} ${CURLLIB} ${WX_LIBRARI
 target_precompile_headers(Mackie_of_the_Unicorn PRIVATE src/precomp.h)
 target_compile_definitions(Mackie_of_the_Unicorn PRIVATE CURL_STATICLIB=1)
 if (MSVC)
-    if (BUILD_GUI)
-        set_target_properties(Mackie_of_the_Unicorn PROPERTIES LINK_FLAGS_RELEASE "/SUBSYSTEM:WINDOWS")
-    endif()
+    set_target_properties(Mackie_of_the_Unicorn PROPERTIES LINK_FLAGS_RELEASE "/SUBSYSTEM:WINDOWS")
 endif()
 
 # Tests
