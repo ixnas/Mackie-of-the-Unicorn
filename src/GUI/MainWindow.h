@@ -5,7 +5,7 @@
 #ifndef MACKIE_OF_THE_UNICORN_MAINWINDOW_H
 #define MACKIE_OF_THE_UNICORN_MAINWINDOW_H
 
-#include "wx/wxprec.h" // This header is normally included from wx/wx.h
+#include <wx/wxprec.h> // This header is normally included from wx/wx.h
 #include "../Application.h"
 #ifndef WX_PRECOMP
 #include <wx/wx.h>
