@@ -24,7 +24,7 @@ file(READ ${CMAKE_SOURCE_DIR}/ext/googletest/LICENSE GTEST_LICENSE)
 file(READ ${CMAKE_SOURCE_DIR}/ext/rapidjson/license.txt RAPIDJSON_LICENSE)
 file(READ ${CMAKE_SOURCE_DIR}/ext/rtmidi/LICENSE RTMIDI_LICENSE)
 file(READ ${CMAKE_SOURCE_DIR}/ext/wxWidgets/docs/licence.txt WX_LICENSE)
-configure_file(${CMAKE_SOURCE_DIR}/src/git_version.h.in ${CMAKE_SOURCE_DIR}/src/git_version.h @ONLY)
+configure_file(${CMAKE_SOURCE_DIR}/src/Constants.cpp.in ${CMAKE_SOURCE_DIR}/src/Constants.cpp @ONLY)
 configure_file(${CMAKE_SOURCE_DIR}/doc/licenses.md.in ${CMAKE_SOURCE_DIR}/doc/licenses.md @ONLY)
 
 # Set up project

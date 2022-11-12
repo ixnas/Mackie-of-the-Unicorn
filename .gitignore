@@ -1,7 +1,7 @@
 .DS_Store
 /cmake-build-*
 /.idea
-/src/git_version.h
+/src/Constants.cpp
 /doc/licenses.md
 /build
 *~
