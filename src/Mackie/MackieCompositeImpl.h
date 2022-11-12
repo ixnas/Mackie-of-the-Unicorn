@@ -16,6 +16,7 @@ namespace MackieOfTheUnicorn::Mackie
 
 	  public:
 		explicit MackieCompositeImpl(std::vector<std::unique_ptr<MackieDevice>>& mackieDevices);
+		~MackieCompositeImpl() override;
 		void SetChannelMute(int channelNumber, bool on) override;
 		void OnChannelMutePressed(MackieDevice* origin, int channelId, bool on) override;
 		void SetChannelSolo(int channelNumber, bool on) override;
