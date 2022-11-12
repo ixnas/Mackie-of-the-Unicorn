@@ -8,10 +8,13 @@
 #endif
 
 #include <wx/stdpaths.h>
+#include <wx/imagpng.h>
+#include <wx/mstream.h>
 
 #include "../git_version.h"
 #include "../Application.h"
 #include "../JSON/JSONSerializer.h"
+#include "../../assets/icon.c"
 
 class MyApp : public wxApp
 {
@@ -56,6 +59,7 @@ enum
 wxIMPLEMENT_APP(MyApp);
 bool MyApp::OnInit()
 {
+	wxInitAllImageHandlers();
 	MyFrame* frame = new MyFrame();
 	frame->Show(true);
 	return true;
@@ -72,14 +76,19 @@ MyFrame::MyFrame() : wxFrame(NULL, ID_Main_Window, "Mackie of the Unicorn"), app
 #define PATH_SEPARATOR "/"
 #endif
 
+	wxMemoryInputStream inputStream(_acicon, sizeof(_acicon));
+	wxImage image(inputStream, wxBITMAP_TYPE_PNG);
+	image.Rescale(this->FromDIP(128), this->FromDIP(128), wxIMAGE_QUALITY_HIGH);
+	wxBitmap bitmap(image);
+
 	auto configDir = wxStandardPaths::Get().GetUserConfigDir();
 	auto configPathStringBuilder = std::stringstream();
 	configPathStringBuilder << configDir << PATH_SEPARATOR << "Mackie-of-the-Unicorn.json";
 	configPath = configPathStringBuilder.str();
 
-	this->SetSize(this->FromDIP(wxSize(380, 220)));
-	this->SetMinSize(this->FromDIP(wxSize(380, 220)));
-	this->SetMaxSize(this->FromDIP(wxSize(380, 220)));
+	this->SetSize(this->FromDIP(wxSize(380, 380)));
+	this->SetMinSize(this->FromDIP(wxSize(380, 380)));
+	this->SetMaxSize(this->FromDIP(wxSize(380, 380)));
 
 	Centre();
 
@@ -126,6 +135,8 @@ MyFrame::MyFrame() : wxFrame(NULL, ID_Main_Window, "Mackie of the Unicorn"), app
 	gridSizer->Add(midiOutInput, 0, wxALIGN_CENTER_VERTICAL);
 	gridSizer->Add(new wxStaticText(panel, -1, wxT("")), 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL);
 	gridSizer->Add(startButton, 0);
+	vSizer->Add(new wxStaticBitmap(panel, -1, bitmap), 0, wxALIGN_CENTER);
+	vSizer->Add(new wxStaticText(panel, -1, wxT("")), 0, wxALIGN_CENTER);
 	vSizer->Add(gridSizer, 1, wxALIGN_CENTER_HORIZONTAL);
 	hSizer->Add(vSizer, 1, wxALIGN_CENTER_VERTICAL);
 	panel->SetSizer(hSizer);

@@ -86,7 +86,7 @@ endif()
 # Sources
 file(GLOB_RECURSE sources src/*.cpp src/*.h)
 if (WIN32)
-    list(APPEND sources windows/main.manifest)
+    list(APPEND sources windows/main.manifest windows/resources.rc)
 endif()
 
 # Sources except main, for tests
