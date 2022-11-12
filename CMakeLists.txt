@@ -16,7 +16,16 @@ execute_process(
         OUTPUT_STRIP_TRAILING_WHITESPACE
 )
 string(TIMESTAMP YEAR "%Y")
-configure_file(${CMAKE_SOURCE_DIR}/src/git_version.h.in ${CMAKE_SOURCE_DIR}/src/git_version.h @ONLY)
+
+file(READ ${CMAKE_SOURCE_DIR}/LICENSE LICENSE)
+file(READ ${CMAKE_SOURCE_DIR}/ext/boost/LICENSE_1_0.txt BOOST_LICENSE)
+file(READ ${CMAKE_SOURCE_DIR}/ext/curl/COPYING CURL_LICENSE)
+file(READ ${CMAKE_SOURCE_DIR}/ext/googletest/LICENSE GTEST_LICENSE)
+file(READ ${CMAKE_SOURCE_DIR}/ext/rapidjson/license.txt RAPIDJSON_LICENSE)
+file(READ ${CMAKE_SOURCE_DIR}/ext/rtmidi/LICENSE RTMIDI_LICENSE)
+file(READ ${CMAKE_SOURCE_DIR}/ext/wxWidgets/docs/licence.txt WX_LICENSE)
+configure_file(${CMAKE_SOURCE_DIR}/src/Constants.cpp.in ${CMAKE_SOURCE_DIR}/src/Constants.cpp @ONLY)
+configure_file(${CMAKE_SOURCE_DIR}/doc/licenses.md.in ${CMAKE_SOURCE_DIR}/doc/licenses.md @ONLY)
 
 # Set up project
 project(Mackie_of_the_Unicorn)
@@ -26,7 +35,6 @@ set(CMAKE_POLICY_DEFAULT_CMP0077 NEW)
 # Options
 option(BUILD_DOC "Build documentation" ON)
 option(BUILD_TESTS "Build tests" ON)
-option(BUILD_GUI "Build graphical user interface" ON)
 
 # Setup dependencies
 if (APPLE)
@@ -67,14 +75,9 @@ add_subdirectory(${CMAKE_SOURCE_DIR}/ext/curl)
 if (BUILD_TESTS)
     add_subdirectory(${CMAKE_SOURCE_DIR}/ext/googletest)
 endif ()
-if (BUILD_GUI)
-    add_subdirectory(${CMAKE_SOURCE_DIR}/ext/wxWidgets)
-    set(WX_LIBRARIES wx::base wx::core)
-    set(MAIN_EXECUTABLE ${CMAKE_SOURCE_DIR}/src/GUI/main.cpp)
-else()
-    set(WX_LIBRARIES "")
-    set(MAIN_EXECUTABLE ${CMAKE_SOURCE_DIR}/src/Console/main.cpp)
-endif()
+
+add_subdirectory(${CMAKE_SOURCE_DIR}/ext/wxWidgets)
+set(WX_LIBRARIES wx::base wx::core)
 
 # Linking libraries
 if (MSVC)
@@ -91,15 +94,13 @@ endif()
 
 # Sources
 file(GLOB_RECURSE sources src/*.cpp src/*.h)
-list(FILTER sources EXCLUDE REGEX ".*main\\.cpp$")
-list(APPEND sources ${MAIN_EXECUTABLE})
 if (WIN32)
-    list(APPEND sources windows/rc.rc)
+    list(APPEND sources windows/main.manifest windows/resources.rc)
 endif()
 
 # Sources except main, for tests
 file(GLOB_RECURSE test_sources src/*.cpp src/*.h)
-list(FILTER test_sources EXCLUDE REGEX ".*main\\.cpp$")
+list(FILTER test_sources EXCLUDE REGEX "src\\/GUI\\/.*$")
 
 # Test sources
 file(GLOB_RECURSE unit_tests test/unit/*.cpp test/unit/*.h test/fakes/*.h)
@@ -117,21 +118,19 @@ if (APPLE)
             MACOSX_BUNDLE_BUNDLE_LONG_VERSION_STRING ${GIT_VERSION}
             MACOSX_BUNDLE_BUNDLE_SHORT_VERSION_STRING ${GIT_VERSION}
             MACOSX_BUNDLE_GUI_IDENTIFIER "nl.sjoerdscheffer"
-            MACOSX_BUNDLE_COPYRIGHT "Copyright © ${YEAR} Sjoerd Scheffer"
+            MACOSX_BUNDLE_COPYRIGHT "Copyright © 2022-${YEAR} Sjoerd Scheffer"
             )
 else ()
     add_executable(Mackie_of_the_Unicorn ${sources})
 endif ()
 
 add_dependencies(Mackie_of_the_Unicorn rtmidi ${WX_LIBRARIES} libcurl)
-target_include_directories(Mackie_of_the_Unicorn PRIVATE ext/rapidjson/include rtmidi ext/curl/include)
+target_include_directories(Mackie_of_the_Unicorn PRIVATE ext/rapidjson/include rtmidi ext/curl/include ext/wxWidgets/include)
 target_link_libraries(Mackie_of_the_Unicorn ${RTMIDILIB} ${CURLLIB} ${WX_LIBRARIES} ${OS_FLAGS})
 target_precompile_headers(Mackie_of_the_Unicorn PRIVATE src/precomp.h)
 target_compile_definitions(Mackie_of_the_Unicorn PRIVATE CURL_STATICLIB=1)
 if (MSVC)
-    if (BUILD_GUI)
-        set_target_properties(Mackie_of_the_Unicorn PROPERTIES LINK_FLAGS_RELEASE "/SUBSYSTEM:WINDOWS")
-    endif()
+    set_target_properties(Mackie_of_the_Unicorn PROPERTIES LINK_FLAGS_RELEASE "/SUBSYSTEM:WINDOWS")
 endif()
 
 # Tests
@@ -140,19 +139,11 @@ if (BUILD_TESTS)
 
     # Unit tests
     add_executable(Unit_Tests ${test_sources} ${unit_tests})
-    add_dependencies(Unit_Tests rtmidi)
+    add_dependencies(Unit_Tests rtmidi libcurl)
     target_include_directories(Unit_Tests PRIVATE ext/rapidjson/include rtmidi ${CURL_INCLUDE_DIR})
     target_link_libraries(Unit_Tests gtest_main gmock ${RTMIDILIB} ${CURLLIB} ${OS_FLAGS})
     target_precompile_headers(Unit_Tests PRIVATE src/precomp.h)
     target_compile_definitions(Unit_Tests PRIVATE TESTING=1 CURL_STATICLIB=1)
-
-    # Integration tests
-    add_executable(Integration_Tests ${test_sources} ${integration_tests})
-    add_dependencies(Integration_Tests rtmidi)
-    target_include_directories(Integration_Tests PRIVATE ext/rapidjson/include rtmidi ${CURL_INCLUDE_DIR})
-    target_link_libraries(Integration_Tests gtest_main gmock ${RTMIDILIB} ${CURLLIB} ${OS_FLAGS})
-    target_precompile_headers(Integration_Tests PRIVATE src/precomp.h)
-    target_compile_definitions(Integration_Tests PRIVATE TESTING=1 CURL_STATICLIB=1)
 endif ()
 
 # Documentation

@@ -31,8 +31,5 @@ namespace MackieOfTheUnicorn::MIDI
 	void MIDIDeviceImpl::SendMessage(std::vector<unsigned char>& message)
 	{
 		RtMidiOut->SendMessage(&message);
-#if !TESTING
-		std::this_thread::sleep_for(std::chrono::milliseconds(1));
-#endif
 	}
 }

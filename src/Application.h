@@ -33,8 +33,10 @@ namespace MackieOfTheUnicorn
 		[[nodiscard]] std::map<int, std::string> GetAvailableOutputDevices() const;
 
 		/// Start the application using the specified MIDI device numbers.
-		void Start(std::vector<std::pair<int, int>>& inputAndOutputIds);
+		void Start(std::vector<std::pair<int, int>>& inputAndOutputIds, std::string& hostname);
 	};
+
+	Application BuildApplication();
 } // namespace MackieOfTheUnicorn
 
 #endif // MACKIE_OF_THE_UNICORN_APPLICATION_H

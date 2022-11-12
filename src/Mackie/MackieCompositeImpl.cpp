@@ -15,6 +15,20 @@ namespace MackieOfTheUnicorn::Mackie
 		}
 	}
 
+	MackieCompositeImpl::~MackieCompositeImpl()
+	{
+		for (const auto& mackieDevice : MackieDevices)
+		{
+			mackieDevice->ClearScreen();
+
+			for (auto i = 0; i < 8; i++)
+			{
+				mackieDevice->SetChannelSolo(i, false);
+				mackieDevice->SetChannelMute(i, false);
+			}
+		}
+	}
+
 	void MackieCompositeImpl::SetChannelMute(int channelNumber, bool on)
 	{
 		for (const auto& mackieDevice : MackieDevices)

@@ -47,7 +47,7 @@ namespace MackieOfTheUnicorn::Mixers
 	VirtualMixerBuilder* VirtualMixerBuilder::AddMOTUMixer(std::string hostname)
 	{
 		std::ostringstream stringStream;
-		stringStream << "http://" << hostname << "/datastore";
+		stringStream << hostname << "/datastore";
 		auto url = stringStream.str();
 		auto httpDevice = HTTPDeviceFactory->Create(url);
 		MOTUMixer = std::make_unique<Mixers::MOTUMixer>(std::move(httpDevice), CurrentMixerId++);

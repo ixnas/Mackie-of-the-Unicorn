@@ -1,0 +1,66 @@
+//
+// Created by Sjoerd Scheffer on 09/02/2022.
+//
+
+#ifndef MACKIE_OF_THE_UNICORN_GIT_VERSION_H
+#define MACKIE_OF_THE_UNICORN_GIT_VERSION_H
+
+#include "Constants.h"
+
+namespace MackieOfTheUnicorn
+{
+    static const std::string VERSION = "@GIT_VERSION@";
+    static const std::string YEAR = "@YEAR@";
+    static const std::string LICENSES = R"(      ------ Mackie of the Unicorn ------
+
+@LICENSE@
+
+
+      ------ Boost ------
+
+@BOOST_LICENSE@
+
+
+      ------ cURL ------
+
+@CURL_LICENSE@
+
+
+      ------ GoogleTest ------
+
+@GTEST_LICENSE@
+
+
+      ------ RapidJSON ------
+
+@RAPIDJSON_LICENSE@
+
+
+      ------ RtMidi ------
+
+@RTMIDI_LICENSE@
+
+
+      ------ wxWidgets ------
+
+@WX_LICENSE@
+    )";
+
+    std::string_view Constants::GetLicenses()
+    {
+        return LICENSES;
+    }
+
+    std::string_view Constants::GetVersion()
+    {
+        return VERSION;
+    }
+
+    std::string_view Constants::GetYear()
+    {
+        return YEAR;
+    }
+}
+
+
+#endif // MACKIE_OF_THE_UNICORN_GIT_VERSION_H
