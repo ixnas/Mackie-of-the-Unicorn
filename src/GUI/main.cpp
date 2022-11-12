@@ -21,6 +21,11 @@ class MyApp : public wxApp
   public:
 	bool OnInit() override;
 };
+class LicenseFrame : public wxFrame
+{
+  public:
+	LicenseFrame();
+};
 class MyFrame : public wxFrame
 {
   public:
@@ -47,7 +52,9 @@ class MyFrame : public wxFrame
 	void CheckEnabledElements();
 	void ReadConfiguration();
 	void WriteConfiguration(wxCloseEvent& event);
+	void OnLicensesClicked(wxCommandEvent& event);
 };
+
 enum
 {
 	ID_Connect = 1,
@@ -55,6 +62,8 @@ enum
 	ID_Midi_Input_Input = 3,
 	ID_Midi_Output_Input = 4,
 	ID_Main_Window = 5,
+	ID_License_Window = 6,
+	ID_Licenses_Menu_Item = 7
 };
 wxIMPLEMENT_APP(MyApp);
 bool MyApp::OnInit()
@@ -87,9 +96,6 @@ MyFrame::MyFrame() : wxFrame(NULL, ID_Main_Window, "Mackie of the Unicorn"), app
 	configPathStringBuilder << configDir << PATH_SEPARATOR << "Mackie-of-the-Unicorn.json";
 	configPath = configPathStringBuilder.str();
 
-	//this->SetMinSize(this->FromDIP(wxSize(380, 380)));
-	//this->SetMaxSize(this->FromDIP(wxSize(380, 380)));
-
 	Centre();
 
 	wxMenu* menuFile = new wxMenu;
@@ -97,6 +103,7 @@ MyFrame::MyFrame() : wxFrame(NULL, ID_Main_Window, "Mackie of the Unicorn"), app
 
 	wxMenu* menuHelp = new wxMenu;
 	menuHelp->Append(wxID_ABOUT);
+	menuHelp->Append(ID_Licenses_Menu_Item, "Licenses");
 
 	wxMenuBar* menuBar = new wxMenuBar;
 	menuBar->Append(menuFile, "&File");
@@ -138,7 +145,6 @@ MyFrame::MyFrame() : wxFrame(NULL, ID_Main_Window, "Mackie of the Unicorn"), app
 	vSizer->Add(new wxStaticBitmap(panel, -1, bitmap), 0, wxALIGN_CENTER);
 
 	wxStaticText* versionLabel = new wxStaticText(panel, -1, MackieOfTheUnicorn::VERSION);
-	//versionLabel->Enable(false);
 	vSizer->Add(versionLabel, 0, wxALIGN_CENTER | wxDOWN, this->FromDIP(20));
 	vSizer->Add(configBox, 1, wxALIGN_CENTER_HORIZONTAL);
 	vSizer->Add(startButton, 0, wxALIGN_CENTER | wxUP, this->FromDIP(24));
@@ -147,6 +153,7 @@ MyFrame::MyFrame() : wxFrame(NULL, ID_Main_Window, "Mackie of the Unicorn"), app
 
 	Bind(wxEVT_MENU, &MyFrame::OnAbout, this, wxID_ABOUT);
 	Bind(wxEVT_MENU, &MyFrame::OnExit, this, wxID_EXIT);
+	Bind(wxEVT_MENU, &MyFrame::OnLicensesClicked, this, ID_Licenses_Menu_Item);
 	Bind(wxEVT_BUTTON, &MyFrame::OnConnect, this, ID_Connect);
 	Bind(wxEVT_TEXT, &MyFrame::OnUrlChanged, this, ID_Url_Input);
 	Bind(wxEVT_CHOICE, &MyFrame::OnInputChanged, this, ID_Midi_Input_Input);
@@ -176,8 +183,7 @@ MyFrame::MyFrame() : wxFrame(NULL, ID_Main_Window, "Mackie of the Unicorn"), app
 	Connect(wxID_EXIT, wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(MyFrame::OnExit));
 	hSizer->Fit(this);
 	this->SetSizeHints(this->GetSize(), this->GetSize());
-	//this->SetMinSize(this->GetSize());
-	//this->SetMaxSize(this->GetSize());
+
 }
 void MyFrame::OnExit(wxCommandEvent& event)
 {
@@ -326,4 +332,22 @@ void MyFrame::WriteConfiguration(wxCloseEvent& event)
 
 	stream.close();
 	event.Skip();
+}
+
+void MyFrame::OnLicensesClicked(wxCommandEvent& event)
+{
+	LicenseFrame* licenseFrame = new LicenseFrame();
+	licenseFrame->Show(true);
+}
+
+LicenseFrame::LicenseFrame() : wxFrame(NULL, ID_License_Window, "Licenses")
+{
+	auto size = wxSize(FromDIP(500), FromDIP(500));
+	this->SetSize(size);
+	this->SetSizeHints(size);
+	wxPanel* panel = new wxPanel(this);
+	wxBoxSizer* sizer = new wxBoxSizer(wxVERTICAL);
+	wxTextCtrl* textCtrl = new wxTextCtrl(panel, -1, MackieOfTheUnicorn::LICENSES, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE | wxTE_READONLY);
+	sizer->Add(textCtrl, 1, wxEXPAND | wxALL);
+	panel->SetSizer(sizer);
 }

@@ -1,0 +1,44 @@
+# Licenses
+This page contains the licenses for all the software that's included in Mackie of the Unicorn.
+
+## Mackie of the Unicorn
+
+```
+@LICENSE@
+```
+
+## Boost
+
+```
+@BOOST_LICENSE@
+```
+
+## cURL
+
+```
+@CURL_LICENSE@
+```
+
+## GoogleTest
+
+```
+@GTEST_LICENSE@
+```
+
+## RapidJSON
+
+```
+@RAPIDJSON_LICENSE@
+```
+
+## RtMidi
+
+```
+@RTMIDI_LICENSE@
+```
+
+## wxWidgets
+
+```
+@WX_LICENSE@
+```

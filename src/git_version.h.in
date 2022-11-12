@@ -9,6 +9,40 @@ namespace MackieOfTheUnicorn
 {
     const char *VERSION = "@GIT_VERSION@";
     const char *YEAR = "@YEAR@";
+    const std::string LICENSES = R"(      ------ Mackie of the Unicorn ------
+
+@LICENSE@
+
+
+      ------ Boost ------
+
+@BOOST_LICENSE@
+
+
+      ------ cURL ------
+
+@CURL_LICENSE@
+
+
+      ------ GoogleTest ------
+
+@GTEST_LICENSE@
+
+
+      ------ RapidJSON ------
+
+@RAPIDJSON_LICENSE@
+
+
+      ------ RtMidi ------
+
+@RTMIDI_LICENSE@
+
+
+      ------ wxWidgets ------
+
+@WX_LICENSE@
+    )";
 }
 
 #endif // MACKIE_OF_THE_UNICORN_GIT_VERSION_H

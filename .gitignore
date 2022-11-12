@@ -2,5 +2,6 @@
 /cmake-build-*
 /.idea
 /src/git_version.h
+/doc/licenses.md
 /build
 *~
