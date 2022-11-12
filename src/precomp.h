@@ -18,5 +18,6 @@
 #include <map>
 #include <mutex>
 #include <functional>
+#include <fstream>
 
 #endif // MACKIE_OF_THE_UNICORN_PRECOMP_H

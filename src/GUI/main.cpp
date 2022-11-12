@@ -7,8 +7,11 @@
 #include <wx/wx.h>
 #endif
 
+#include <wx/stdpaths.h>
+
 #include "../git_version.h"
 #include "../Application.h"
+#include "../JSON/JSONSerializer.h"
 
 class MyApp : public wxApp
 {
@@ -27,6 +30,7 @@ class MyFrame : public wxFrame
 	wxChoice* midiOutInput;
 	MackieOfTheUnicorn::Application application;
 	std::string url;
+	std::string configPath;
 	int input, output;
 	bool started;
 	void OnExit(wxCommandEvent& event);
@@ -36,6 +40,8 @@ class MyFrame : public wxFrame
 	void OnInputChanged(wxCommandEvent& event);
 	void OnOutputChanged(wxCommandEvent& event);
 	void CheckEnabledElements();
+	void ReadConfiguration();
+	void WriteConfiguration(wxCloseEvent& event);
 };
 enum
 {
@@ -43,6 +49,7 @@ enum
 	ID_Url_Input = 2,
 	ID_Midi_Input_Input = 3,
 	ID_Midi_Output_Input = 4,
+	ID_Main_Window = 5,
 };
 wxIMPLEMENT_APP(MyApp);
 bool MyApp::OnInit()
@@ -51,12 +58,24 @@ bool MyApp::OnInit()
 	frame->Show(true);
 	return true;
 }
-MyFrame::MyFrame() : wxFrame(NULL, wxID_ANY, "Mackie of the Unicorn"), application(MackieOfTheUnicorn::BuildApplication())
+MyFrame::MyFrame() : wxFrame(NULL, ID_Main_Window, "Mackie of the Unicorn"), application(MackieOfTheUnicorn::BuildApplication())
 {
 	url = "";
 	input = output = -1;
 	started = false;
 
+#ifdef WIN32
+#define PATH_SEPARATOR "\"
+#else
+#define PATH_SEPARATOR "/"
+#endif
+
+	auto configDir = wxStandardPaths::Get().GetUserConfigDir();
+	auto configPathStringBuilder = std::stringstream();
+	configPathStringBuilder << configDir << PATH_SEPARATOR << "Mackie-of-the-Unicorn.json";
+	configPath = configPathStringBuilder.str();
+
+	ReadConfiguration();
 	this->SetSize(this->FromDIP(wxSize(380, 220)));
 	this->SetMinSize(this->FromDIP(wxSize(380, 220)));
 	this->SetMaxSize(this->FromDIP(wxSize(380, 220)));
@@ -95,7 +114,7 @@ MyFrame::MyFrame() : wxFrame(NULL, wxID_ANY, "Mackie of the Unicorn"), applicati
 	wxBoxSizer* vSizer = new wxBoxSizer(wxVERTICAL);
 	wxBoxSizer* hSizer = new wxBoxSizer(wxHORIZONTAL);
 	wxFlexGridSizer* gridSizer = new wxFlexGridSizer(2, 12, 12);
-	urlInput = new wxTextCtrl(panel, ID_Url_Input, wxEmptyString, wxDefaultPosition, this->FromDIP(wxSize(200, -1)));
+	urlInput = new wxTextCtrl(panel, ID_Url_Input, url, wxDefaultPosition, this->FromDIP(wxSize(200, -1)));
 	midiInInput = new wxChoice(panel, ID_Midi_Input_Input, wxDefaultPosition, this->FromDIP(wxSize(200, -1)), inputChoices);
 	midiOutInput = new wxChoice(panel, ID_Midi_Output_Input, wxDefaultPosition, this->FromDIP(wxSize(200, -1)), outputChoices);
 	startButton = new wxButton(panel, ID_Connect, wxT("Connect"));
@@ -117,6 +136,7 @@ MyFrame::MyFrame() : wxFrame(NULL, wxID_ANY, "Mackie of the Unicorn"), applicati
 	Bind(wxEVT_TEXT, &MyFrame::OnUrlChanged, this, ID_Url_Input);
 	Bind(wxEVT_CHOICE, &MyFrame::OnInputChanged, this, ID_Midi_Input_Input);
 	Bind(wxEVT_CHOICE, &MyFrame::OnOutputChanged, this, ID_Midi_Output_Input);
+	Bind(wxEVT_CLOSE_WINDOW, &MyFrame::WriteConfiguration, this, ID_Main_Window);
 
 	if (!inputChoices.empty())
 	{
@@ -206,4 +226,57 @@ void MyFrame::CheckEnabledElements()
 	midiOutInput->Enable(true);
 	urlInput->Enable(true);
 	startButton->SetLabel(wxT("Connect"));
+}
+
+void MyFrame::ReadConfiguration()
+{
+	std::ifstream stream(configPath);
+
+	if (!stream.good())
+	{
+		return;
+	}
+
+	std::string configString((std::istreambuf_iterator<char>(stream)), std::istreambuf_iterator<char>());
+	using namespace MackieOfTheUnicorn::JSON;
+	auto jsonDocument = JSONSerializer::Parse(configString);
+	for (const auto& pair : jsonDocument)
+	{
+		if (pair.first == "url")
+		{
+			url = pair.second.String.value();
+		}
+	}
+}
+
+void MyFrame::WriteConfiguration(wxCloseEvent& event)
+{
+	std::ofstream stream(configPath, std::ios::trunc);
+
+	if (!stream.good())
+	{
+		return;
+	}
+
+	using namespace MackieOfTheUnicorn::JSON;
+	std::vector<std::pair<std::string, JSONValue>> configuration;
+
+	std::string versionKey = "configVersion";
+	JSONValue versionValue;
+	versionValue.Integer = 1;
+
+	configuration.emplace_back(versionKey, versionValue);
+
+	std::string urlKey = "url";
+	JSONValue urlValue;
+	urlValue.String = url;
+
+	configuration.emplace_back(urlKey, urlValue);
+
+	auto serialized = JSONSerializer::Serialize(configuration);
+
+	stream << serialized;
+
+	stream.close();
+	event.Skip();
 }
