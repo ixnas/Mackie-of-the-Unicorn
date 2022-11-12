@@ -2,6 +2,7 @@
 /cmake-build-*
 /.idea
 /src/Constants.cpp
+/windows/resources.aps
 /doc/licenses.md
 /build
 *~
