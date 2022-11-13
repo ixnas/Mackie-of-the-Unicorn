@@ -12,6 +12,7 @@
 
 namespace MackieOfTheUnicorn::GUI
 {
+	/// A window with a read-only text control showing the project's associated licenses.
 	class LicensesWindow : public wxFrame
 	{
 	  public:

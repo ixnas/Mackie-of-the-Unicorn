@@ -13,6 +13,7 @@
 
 namespace MackieOfTheUnicorn::GUI
 {
+	/// A window that allows the user to enter application settings and start the application.
 	class MainWindow : public wxFrame
 	{
 	  public:

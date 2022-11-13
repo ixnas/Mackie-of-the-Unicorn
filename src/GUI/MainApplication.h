@@ -12,6 +12,7 @@
 
 namespace MackieOfTheUnicorn::GUI
 {
+	/// Main GUI application class.
 	class MainApplication : public wxApp
 	{
 	  public:
