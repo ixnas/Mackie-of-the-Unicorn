@@ -35,8 +35,6 @@ namespace MackieOfTheUnicorn::GUI
 		configPathStringBuilder << configDir << PATH_SEPARATOR << "Mackie-of-the-Unicorn.json";
 		configPath = configPathStringBuilder.str();
 
-		Centre();
-
 		auto* menuFile = new wxMenu;
 		menuFile->Append(wxID_EXIT);
 
@@ -124,6 +122,7 @@ namespace MackieOfTheUnicorn::GUI
 		hSizer->Fit(this);
 		SetSizeHints(GetSize(), GetSize());
 
+		Centre();
 	}
 	void MainWindow::OnExit(wxCommandEvent& event)
 	{
