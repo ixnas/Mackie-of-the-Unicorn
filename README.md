@@ -2,9 +2,9 @@
 
 Use control surfaces to control a MOTU AVB DSP mixer.
 
-<img src="icon.jpg" width="256" alt="Logo">
+<img src="doc/images/icon.jpg" width="256" alt="Logo">
 
-⚠️ **This project is in development and is not yet ready for production use.**
+⚠️ **This project is in development and is not yet ready for production use. [Click here](https://ci.sjoerdscheffer.nl/job/Mackie%20of%20the%20Unicorn/job/master/) to get the latest development build and documentation.**
 
 [![Build Status](https://ci.sjoerdscheffer.nl/buildStatus/icon?job=Mackie+of+the+Unicorn%2Fmaster&style=flat-square)](https://ci.sjoerdscheffer.nl/job/Mackie%20of%20the%20Unicorn/job/master/)
 
@@ -29,4 +29,4 @@ These are the goals for the next release (checked goals are already implemented)
 - [x] Graphical user interface
 - [ ] Control stereo channels using a single channel strip
 - [x] Bank between 8 channels
-- [ ] Documentation
+- [x] Documentation
