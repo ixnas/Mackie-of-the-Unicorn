@@ -19,11 +19,23 @@ namespace MackieOfTheUnicorn::Utilities
 	static constexpr char NUMBERS_0 = 48;
 	static constexpr char NUMBERS_9 = 57;
 
-	static void CopyString(const char* input, char* output, size_t size)
+	static void BlankString(char* output)
 	{
+		for (int i = 0; i < ShortLabel::MAX_LENGTH; i++)
+		{
+			*(output++) = ' ';
+		}
+		*output = '\0';
+	}
+
+	static void CopyString(std::string_view input, char* output)
+	{
+		auto inputPtr = input.begin();
+		auto size = input.size();
+
 		for (int i = 0; i < size; ++i)
 		{
-			*(output++) = *(input++);
+			*(output++) = *(inputPtr++);
 		}
 	}
 
@@ -105,11 +117,13 @@ namespace MackieOfTheUnicorn::Utilities
 		}
 	}
 
-	ShortLabel::ShortLabel(std::string_view inputLabel) : OutputLabel("      ")
+	ShortLabel::ShortLabel(std::string_view inputLabel) : OutputLabel("")
 	{
+		BlankString(OutputLabel);
+
 		if (inputLabel.length() <= MAX_LENGTH)
 		{
-			CopyString(inputLabel.data(), OutputLabel, inputLabel.length());
+			CopyString(inputLabel, OutputLabel);
 			return;
 		}
 
