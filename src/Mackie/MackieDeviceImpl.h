@@ -22,6 +22,7 @@ namespace MackieOfTheUnicorn::Mackie
 		void SetChannelSolo(int channelNumber, bool on) override;
 		void SetChannelText(int channelNumber, bool onBottomRow, std::string_view text) override;
 		void ClearScreen() override;
+		void SetChannelFader(int channelNumber, double value) override;
 		void MIDICallback(std::vector<unsigned char>& message) override;
 	};
 }

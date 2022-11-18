@@ -24,6 +24,10 @@ namespace MackieOfTheUnicorn::Mackie
 		bool OnBankForwardPressedCalled = false;
 		bool OnBankBackwardsPressedCalled = false;
 
+		T* OnFaderMovedOrigin = nullptr;
+		std::optional<int> OnFaderMovedChannelId;
+		std::optional<double> OnFaderMovedValue;
+
 		void OnChannelMutePressed(T* origin, int channelId, bool on) override
 		{
 			OnChannelMutePressedOrigin = origin;
@@ -46,6 +50,13 @@ namespace MackieOfTheUnicorn::Mackie
 		void OnBankBackwardsPressed() override
 		{
 			OnBankBackwardsPressedCalled = true;
+		}
+
+		void OnChannelFaderMoved(T* origin, int channelId, double value) override
+		{
+			OnFaderMovedOrigin = origin;
+			OnFaderMovedChannelId = channelId;
+			OnFaderMovedValue = value;
 		}
 	};
 }

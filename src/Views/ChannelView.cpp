@@ -125,4 +125,8 @@ namespace MackieOfTheUnicorn::Views
 	{
 		MackieComposite->SetChannelText(channel - Offset, false, label);
 	}
+
+	void ChannelView::OnChannelFaderMoved(Mackie::MackieComposite* origin, int channelId, double value)
+	{
+	}
 }

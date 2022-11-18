@@ -131,4 +131,35 @@ namespace MackieOfTheUnicorn::Tests::Unit::Mackie
 
 		EXPECT_TRUE(actual);
 	}
+
+	TEST_F(MackieCompositeImplTest, SetsChannelFaderOnListener)
+	{
+		auto expectedOrigin = instance.get();
+		auto expectedChannelNumber = 2;
+		auto expectedValue = 0.5;
+
+		mackieDeviceFake->OnChannelFaderMoved(expectedChannelNumber, expectedValue);
+
+		auto actualOrigin = mackieListenerFake->OnFaderMovedOrigin;
+		auto actualChannelNumber = mackieListenerFake->OnFaderMovedChannelId;
+		auto actualValue = mackieListenerFake->OnFaderMovedValue;
+
+		EXPECT_EQ(actualOrigin, expectedOrigin);
+		EXPECT_EQ(actualChannelNumber, expectedChannelNumber);
+		EXPECT_EQ(actualValue, expectedValue);
+	}
+
+	TEST_F(MackieCompositeImplTest, SetsChannelFader)
+	{
+		auto expectedChannel = 2;
+		auto expectedValue = 0.5;
+
+		instance->SetChannelFader(expectedChannel, expectedValue);
+
+		auto actualChannel = mackieDeviceFake->OnChannelFaderMovedChannelId;
+		auto actualValue = mackieDeviceFake->OnChannelFaderMovedValue;
+
+		EXPECT_EQ(actualChannel, expectedChannel);
+		EXPECT_EQ(actualValue, expectedValue);
+	}
 } // namespace MackieOfTheUnicorn::Tests::Unit::Mackie

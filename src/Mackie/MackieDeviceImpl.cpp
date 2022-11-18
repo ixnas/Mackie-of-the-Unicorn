@@ -150,4 +150,8 @@ namespace MackieOfTheUnicorn::Mackie
 			MackieListener->OnBankBackwardsPressed();
 		}
 	}
+
+	void MackieDeviceImpl::SetChannelFader(int channelNumber, double value)
+	{
+	}
 }

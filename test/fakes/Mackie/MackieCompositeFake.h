@@ -73,12 +73,18 @@ namespace MackieOfTheUnicorn::Mackie
 
 		void OnBankForwardPressed() override
 		{
-
 		}
 
 		void OnBankBackwardsPressed() override
 		{
+		}
 
+		void OnChannelFaderMoved(MackieDevice* origin, int channelId, double value) override
+		{
+		}
+
+		void SetChannelFader(int channelNumber, double value) override
+		{
 		}
 
 		void ClearScreen() override

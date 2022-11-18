@@ -62,4 +62,8 @@ namespace MackieOfTheUnicorn::Mixers
 		ViewData.SetLabel(channel, label);
 		View->SetInputChannelLabel(originId, channel, label);
 	}
+
+	void MackieMixer::OnChannelFaderMoved(Mackie::MackieComposite* origin, int channelId, double value)
+	{
+	}
 }
