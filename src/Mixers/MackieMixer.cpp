@@ -66,4 +66,8 @@ namespace MackieOfTheUnicorn::Mixers
 	void MackieMixer::OnChannelFaderMoved(Mackie::MackieComposite* origin, int channelId, double value)
 	{
 	}
+
+	void MackieMixer::SetInputChannelFader(int originId, int channel, double value)
+	{
+	}
 }

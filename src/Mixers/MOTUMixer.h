@@ -32,6 +32,7 @@ namespace MackieOfTheUnicorn::Mixers
 		void SetInputChannelMute(int originId, int channel, bool on) override;
 		void SetInputChannelSolo(int originId, int channel, bool on) override;
 		void SetInputChannelLabel(int originId, int channel, std::string_view label) override;
+		void SetInputChannelFader(int originId, int channel, double value) override;
 		void HTTPCallback(std::pair<std::string, JSON::JSONValue>& message) override;
 	};
 }

@@ -130,4 +130,8 @@ namespace MackieOfTheUnicorn::Mixers
 			VirtualMixer->SetInputChannelLabel(Id, label.first, label.second);
 		}
 	}
+
+	void MOTUMixer::SetInputChannelFader(int originId, int channel, double value)
+	{
+	}
 } // namespace MackieOfTheUnicorn::Mixers

@@ -53,4 +53,17 @@ namespace MackieOfTheUnicorn::Mixers
 			linkedMixer->SetInputChannelLabel(originId, channel, label);
 		}
 	}
+
+	void VirtualMixerImpl::SetInputChannelFader(int originId, int channel, double value)
+	{
+		for (const auto& linkedMixer : LinkedMixers)
+		{
+			if (linkedMixer->GetId() == originId)
+			{
+				continue;
+			}
+
+			linkedMixer->SetInputChannelFader(originId, channel, value);
+		}
+	}
 }
