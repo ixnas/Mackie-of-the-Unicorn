@@ -16,6 +16,10 @@ namespace MackieOfTheUnicorn::Utilities
 
 		/// Converts a non-linear MOTU value to a linear value.
 		static double ToLinear(double motuValue);
+
+		static int To10bitInteger(double linearValue);
+
+		static std::array<unsigned char, 2> ToSplit10BitInteger(int integer10bit);
 	};
 }
 
