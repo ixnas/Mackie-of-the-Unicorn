@@ -28,6 +28,9 @@ namespace MackieOfTheUnicorn::Mackie
 		std::optional<bool> SetChannelTextOnBottomRow;
 		std::optional<std::string_view> SetChannelTextText;
 
+		std::optional<int> SetChannelFaderChannel;
+		std::optional<double> SetChannelFaderValue;
+
 		bool ScreenCleared = false;
 
 		MackieCompositeFake() = default;
@@ -85,6 +88,8 @@ namespace MackieOfTheUnicorn::Mackie
 
 		void SetChannelFader(int channelNumber, double value) override
 		{
+			SetChannelFaderChannel = channelNumber;
+			SetChannelFaderValue = value;
 		}
 
 		void ClearScreen() override

@@ -128,9 +128,14 @@ namespace MackieOfTheUnicorn::Views
 
 	void ChannelView::OnChannelFaderMoved(Mackie::MackieComposite* origin, int channelId, double value)
 	{
+		channelId = channelId + Offset;
+
+		ViewData.SetFader(channelId, value);
+		VirtualMixer->SetInputChannelFader(ViewData.GetId(), channelId, value);
 	}
 
 	void ChannelView::SetInputChannelFader(int originId, int channel, double value)
 	{
+		MackieComposite->SetChannelFader(channel, value);
 	}
 }

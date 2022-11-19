@@ -33,6 +33,12 @@ namespace MackieOfTheUnicorn::Views
 
 		/// Returns the currently set label for a channel.
 		virtual std::string_view GetLabel(int channelId) = 0;
+
+		/// Sets the fader level for a channel.
+		virtual void SetFader(int channelId, double value) = 0;
+
+		/// Returns the currently set fader level for a channel.
+		virtual double GetFader(int channelId) = 0;
 	};
 }
 

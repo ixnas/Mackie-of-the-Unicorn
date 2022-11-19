@@ -15,6 +15,7 @@ namespace MackieOfTheUnicorn::Views
 		std::vector<int> MutedChannels;
 		std::vector<int> SolodChannels;
 		std::map<int, std::string> ChannelLabels;
+		std::map<int, double> ChannelFaders;
 
 	  public:
 		explicit MackieViewDataImpl(int id);
@@ -25,6 +26,8 @@ namespace MackieOfTheUnicorn::Views
 		bool GetSolo(int channelId) override;
 		void SetLabel(int channelId, std::string_view label) override;
 		std::string_view GetLabel(int channelId) override;
+		void SetFader(int channelId, double value) override;
+		double GetFader(int channelId) override;
 	};
 }
 
