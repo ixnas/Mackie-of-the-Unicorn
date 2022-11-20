@@ -166,7 +166,7 @@ namespace MackieOfTheUnicorn::Mixers
 		stringStream << "mix/chan/" << channel << "/matrix/fader";
 		auto key = stringStream.str();
 		JSON::JSONValue motuValue;
-		motuValue.Integer = FaderValueConverter::LinearToMotu(value);
+		motuValue.Float = FaderValueConverter::LinearToMotu(value);
 		std::pair<std::string, JSON::JSONValue> message = {key, motuValue};
 		HTTPDevice->SendMessage(message);
 	}
