@@ -54,6 +54,15 @@ namespace MackieOfTheUnicorn::Tests::Unit::Mixers
 		return message;
 	}
 
+	static std::pair<std::string, JSON::JSONValue> CreateMessage(const std::string& key, double value)
+	{
+		JSON::JSONValue jsonValue;
+		jsonValue.Float = value;
+		std::pair<std::string, JSON::JSONValue> message = {key, jsonValue};
+
+		return message;
+	}
+
 	TEST_F(MOTUMixerTest, SetsIdCorrectly)
 	{
 		auto expectedId = ID;
@@ -175,7 +184,7 @@ namespace MackieOfTheUnicorn::Tests::Unit::Mixers
 	TEST_F(MOTUMixerTest, SetsInputChannelFaderCorrectly)
 	{
 		auto expectedKey = "mix/chan/5/matrix/fader";
-		int expectedValue = 4;
+		double expectedValue = 4;
 		auto expectedMessage = CreateMessage(expectedKey, expectedValue);
 
 		instance->SetInputChannelFader(2, 5, 1);
