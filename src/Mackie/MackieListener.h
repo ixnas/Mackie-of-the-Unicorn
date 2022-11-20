@@ -26,6 +26,9 @@ namespace MackieOfTheUnicorn::Mackie
 
 		/// Handles an event where a MackieDevice banks to the previous 8 channels.
 		virtual void OnBankBackwardsPressed() = 0;
+
+		/// Handles an event where a MackieDevice adjusts a fader.
+		virtual void OnChannelFaderMoved(OriginType* origin, int channelId, double value) = 0;
 	};
 }
 

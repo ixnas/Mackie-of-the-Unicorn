@@ -33,6 +33,14 @@ namespace MackieOfTheUnicorn::Views
 			{
 				mackieComposite.SetChannelText(i - previousOffset, false, nextLabel);
 			}
+
+			auto currentFaderValue = viewData.GetFader(i);
+			auto nextFaderValue = viewData.GetFader(i + nextOffset - previousOffset);
+
+			if (currentFaderValue != nextFaderValue)
+			{
+				mackieComposite.SetChannelFader(i - previousOffset, nextFaderValue);
+			}
 		}
 	}
 
@@ -124,5 +132,18 @@ namespace MackieOfTheUnicorn::Views
 	void ChannelView::SetInputChannelLabel(int originId, int channel, std::string_view label)
 	{
 		MackieComposite->SetChannelText(channel - Offset, false, label);
+	}
+
+	void ChannelView::OnChannelFaderMoved(Mackie::MackieComposite* origin, int channelId, double value)
+	{
+		channelId = channelId + Offset;
+
+		ViewData.SetFader(channelId, value);
+		VirtualMixer->SetInputChannelFader(ViewData.GetId(), channelId, value);
+	}
+
+	void ChannelView::SetInputChannelFader(int originId, int channel, double value)
+	{
+		MackieComposite->SetChannelFader(channel - Offset, value);
 	}
 }

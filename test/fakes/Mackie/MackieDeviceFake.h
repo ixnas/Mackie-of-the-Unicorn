@@ -25,6 +25,9 @@ namespace MackieOfTheUnicorn::Mackie
 
 		bool ScreenCleared = false;
 
+		std::optional<int> OnChannelFaderMovedChannelId;
+		std::optional<double> OnChannelFaderMovedValue;
+
 		void SetMackieListener(Mackie::MackieListener<MackieDevice>& mackieListener) override
 		{
 			MackieListener = &mackieListener;
@@ -57,6 +60,17 @@ namespace MackieOfTheUnicorn::Mackie
 		void OnChannelSoloPressed(int channelNumber, bool on)
 		{
 			MackieListener->OnChannelSoloPressed(this, channelNumber, on);
+		}
+
+		void SetChannelFader(int channelNumber, double value) override
+		{
+			OnChannelFaderMovedChannelId = channelNumber;
+			OnChannelFaderMovedValue = value;
+		}
+
+		void OnChannelFaderMoved(int channelNumber, double value)
+		{
+			MackieListener->OnChannelFaderMoved(this, channelNumber, value);
 		}
 
 		void MIDICallback(std::vector<unsigned char>& message) override

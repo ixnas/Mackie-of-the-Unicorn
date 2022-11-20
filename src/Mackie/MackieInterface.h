@@ -24,6 +24,9 @@ namespace MackieOfTheUnicorn::Mackie
 
 		/// Clears the entire screen.
 		virtual void ClearScreen() = 0;
+
+		/// Sets the channel fader for an input channel.
+		virtual void SetChannelFader(int channelNumber, double value) = 0;
 	};
 }
 

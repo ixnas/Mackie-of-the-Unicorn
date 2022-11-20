@@ -27,6 +27,8 @@ namespace MackieOfTheUnicorn::Views
 		void OnChannelMutePressed(Mackie::MackieComposite* origin, int channelId, bool on) override;
 		void SetInputChannelLabel(int originId, int channel, std::string_view label) override;
 		void OnChannelSoloPressed(Mackie::MackieComposite* origin, int channelId, bool on) override;
+		void OnChannelFaderMoved(Mackie::MackieComposite* origin, int channelId, double value) override;
+		void SetInputChannelFader(int originId, int channel, double value) override;
 		void OnBankForwardPressed() override;
 		void OnBankBackwardsPressed() override;
 	};

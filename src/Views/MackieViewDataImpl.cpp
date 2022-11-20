@@ -69,4 +69,20 @@ namespace MackieOfTheUnicorn::Views
 
 		return ChannelLabels[channelId];
 	}
+
+	void MackieViewDataImpl::SetFader(int channelId, double value)
+	{
+		ChannelFaders.insert_or_assign(channelId, value);
+	}
+
+	double MackieViewDataImpl::GetFader(int channelId)
+	{
+		auto exists = ChannelFaders.contains(channelId);
+		if (!exists)
+		{
+			return 0;
+		}
+
+		return ChannelFaders[channelId];
+	}
 }

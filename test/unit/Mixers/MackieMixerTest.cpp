@@ -167,7 +167,7 @@ namespace MackieOfTheUnicorn::Tests::Unit::Mixers
 
 		instance->OnChannelSoloPressed(mackieCompositeFake, expectedChannel, expectedOn);
 
-		auto actualOriginId = virtualMixerFake->SetInputChannelSoloOriginId = expectedOriginId;
+		auto actualOriginId = virtualMixerFake->SetInputChannelSoloOriginId;
 		auto actualChannel = virtualMixerFake->SetInputChannelSoloChannel;
 		auto actualOn = virtualMixerFake->SetInputChannelSoloOn;
 
@@ -285,5 +285,39 @@ namespace MackieOfTheUnicorn::Tests::Unit::Mixers
 		auto actual = mackieCompositeFake->ScreenCleared;
 
 		ASSERT_TRUE(actual);
+	}
+
+	TEST_F(MackieMixerTest, SetsChannelFaderCorrectly)
+	{
+		auto expectedChannel = 4;
+		auto expectedValue = 0.5;
+
+		instance->SetInputChannelFader(1, expectedChannel, expectedValue);
+
+		auto actualChannel = mackieCompositeFake->SetChannelFaderChannel;
+		auto actualValue = mackieCompositeFake->SetChannelFaderValue;
+
+		ASSERT_TRUE(actualValue.has_value());
+		ASSERT_TRUE(actualChannel.has_value());
+
+		EXPECT_EQ(actualValue, expectedValue);
+		EXPECT_EQ(actualChannel, expectedChannel);
+	}
+
+	TEST_F(MackieMixerTest, SetsChannelFaderOnVirtualMixer)
+	{
+		auto expectedOriginId = ID;
+		auto expectedChannel = 8;
+		auto expectedValue = 0.5;
+
+		instance->OnChannelFaderMoved(mackieCompositeFake, expectedChannel, expectedValue);
+
+		auto actualOriginId = virtualMixerFake->SetInputChannelFaderOriginId;
+		auto actualChannel = virtualMixerFake->SetInputChannelFaderChannel;
+		auto actualValue = virtualMixerFake->SetInputChannelFaderValue;
+
+		EXPECT_EQ(actualOriginId, expectedOriginId);
+		EXPECT_EQ(actualChannel, expectedChannel);
+		EXPECT_EQ(actualValue, expectedValue);
 	}
 }

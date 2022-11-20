@@ -105,6 +105,7 @@ namespace MackieOfTheUnicorn::Tests::Unit::Mixers
 		auto expectedLabel = "Something";
 
 		instance->SetInputChannelLabel(expectedOrigin, expectedChannel, expectedLabel);
+
 		for (const auto& linkedMixerFake : linkedMixerFakes)
 		{
 			auto actualOrigin = linkedMixerFake->SetInputChannelLabelOriginId;
@@ -122,6 +123,35 @@ namespace MackieOfTheUnicorn::Tests::Unit::Mixers
 				EXPECT_EQ(expectedLabel, actualLabel);
 				EXPECT_EQ(expectedChannel, actualChannel);
 				EXPECT_EQ(expectedOrigin, actualOrigin);
+			}
+		}
+	}
+
+	TEST_F(VirtualMixerImplTest, SetsInputChannelFadersOnOtherMixers)
+	{
+		auto expectedOrigin = 1;
+		auto expectedChannel = 5;
+		auto expectedValue = 0.5;
+
+		instance->SetInputChannelFader(expectedOrigin, expectedChannel, expectedValue);
+
+		for (const auto& linkedMixerFake : linkedMixerFakes)
+		{
+			auto actualOrigin = linkedMixerFake->SetInputChannelFaderOriginId;
+			auto actualChannel = linkedMixerFake->SetInputChannelFaderChannel;
+			auto actualValue = linkedMixerFake->SetInputChannelFaderValue;
+
+			if (expectedOrigin == linkedMixerFake->Id)
+			{
+				EXPECT_FALSE(actualOrigin.has_value());
+				EXPECT_FALSE(actualChannel.has_value());
+				EXPECT_FALSE(actualValue.has_value());
+			}
+			else
+			{
+				EXPECT_EQ(expectedOrigin, actualOrigin);
+				EXPECT_EQ(expectedChannel, actualChannel);
+				EXPECT_EQ(expectedValue, actualValue);
 			}
 		}
 	}

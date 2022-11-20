@@ -85,4 +85,17 @@ namespace MackieOfTheUnicorn::Mackie
 	{
 		MackieListener->OnBankBackwardsPressed();
 	}
+
+	void MackieCompositeImpl::OnChannelFaderMoved(MackieDevice* origin, int channelId, double value)
+	{
+		MackieListener->OnChannelFaderMoved(this, channelId, value);
+	}
+
+	void MackieCompositeImpl::SetChannelFader(int channelNumber, double value)
+	{
+		for (const auto& mackieDevice : MackieDevices)
+		{
+			mackieDevice->SetChannelFader(channelNumber, value);
+		}
+	}
 }

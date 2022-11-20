@@ -27,6 +27,10 @@ namespace MackieOfTheUnicorn::Mixers
 		std::optional<int> SetInputChannelLabelChannel;
 		std::optional<std::string> SetInputChannelLabelLabel;
 
+		std::optional<int> SetInputChannelFaderOriginId;
+		std::optional<int> SetInputChannelFaderChannel;
+		std::optional<double> SetInputChannelFaderValue;
+
 		int GetId() override
 		{
 			return Id;
@@ -56,6 +60,13 @@ namespace MackieOfTheUnicorn::Mixers
 			SetInputChannelLabelOriginId = originId;
 			SetInputChannelLabelChannel = channel;
 			SetInputChannelLabelLabel = label;
+		}
+
+		void SetInputChannelFader(int originId, int channel, double value) override
+		{
+			SetInputChannelFaderOriginId = originId;
+			SetInputChannelFaderChannel = channel;
+			SetInputChannelFaderValue = value;
 		}
 	};
 }

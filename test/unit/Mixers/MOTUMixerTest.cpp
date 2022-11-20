@@ -151,6 +151,44 @@ namespace MackieOfTheUnicorn::Tests::Unit::Mixers
 		EXPECT_EQ(actualOn, expectedOn);
 	}
 
+	TEST_F(MOTUMixerTest, SetsInputChannelFaderCorrectlyOnVirtualMixer)
+	{
+		auto expectedOrigin = ID;
+		auto expectedChannel = 9;
+		auto expectedValue = 1;
+
+		auto key = "mix/chan/9/matrix/fader";
+		float value = 4;
+		auto message = CreateMessage(key, value);
+
+		httpDeviceFake->FakeMessage(message);
+
+		auto actualOrigin = virtualMixerFake->SetInputChannelFaderOriginId;
+		auto actualChannel = virtualMixerFake->SetInputChannelFaderChannel;
+		auto actualValue = virtualMixerFake->SetInputChannelFaderValue;
+
+		EXPECT_EQ(actualOrigin, expectedOrigin);
+		EXPECT_EQ(actualChannel, expectedChannel);
+		EXPECT_EQ(actualValue, expectedValue);
+	}
+
+	TEST_F(MOTUMixerTest, SetsInputChannelFaderCorrectly)
+	{
+		auto expectedKey = "mix/chan/5/matrix/fader";
+		float expectedValue = 4;
+		auto expectedMessage = CreateMessage(expectedKey, expectedValue);
+
+		instance->SetInputChannelFader(2, 5, 1);
+
+		auto sendMessageSize = httpDeviceFake->SendMessageMessages.size();
+
+		ASSERT_GT(sendMessageSize, 0);
+
+		auto actualMessage = *(httpDeviceFake->SendMessageMessages.end() - 1);
+
+		EXPECT_EQ(actualMessage, expectedMessage);
+	}
+
 	TEST_F(MOTUMixerTest, IgnoresDifferentParameterSameLength)
 	{
 		auto key = "mix/chan/matrix/main/0/something";
