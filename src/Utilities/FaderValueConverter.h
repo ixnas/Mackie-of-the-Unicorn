@@ -12,14 +12,18 @@ namespace MackieOfTheUnicorn::Utilities
 	{
 	  public:
 		/// Converts a linear value to a non-linear MOTU value.
-		static double ToMotu(double linearValue);
+		static double LinearToMotu(double linearValue);
 
 		/// Converts a non-linear MOTU value to a linear value.
-		static double ToLinear(double motuValue);
+		static double MotuToLinear(double motuValue);
 
-		static int To10bitInteger(double linearValue);
+		static int LinearToInteger10bit(double linearValue);
 
-		static std::array<unsigned char, 2> ToSplit10BitInteger(int integer10bit);
+		static double Integer10bitToLinear(int integer10bit);
+
+		static std::array<unsigned char, 2> Integer10bitToMackie(int integer10bit);
+
+		static int MackieToInteger10bit(std::array<unsigned char, 2> mackie);
 	};
 }
 

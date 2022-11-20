@@ -6,23 +6,33 @@
 
 namespace MackieOfTheUnicorn::Utilities
 {
-	double FaderValueConverter::ToMotu(double linearValue)
+	double FaderValueConverter::LinearToMotu(double linearValue)
 	{
 		return 4 * pow(linearValue, 4);
 	}
 
-	double FaderValueConverter::ToLinear(double motuValue)
+	double FaderValueConverter::MotuToLinear(double motuValue)
 	{
 		return pow((motuValue / 4.0), 1.0 / 4.0);
 	}
 
-	int FaderValueConverter::To10bitInteger(double linearValue)
+	int FaderValueConverter::LinearToInteger10bit(double linearValue)
 	{
-		return (int)(linearValue * (double)1024);
+		return (int)(linearValue * (double)1023);
 	}
 
-	std::array<unsigned char, 2> FaderValueConverter::ToSplit10BitInteger(int integer10bit)
+	double FaderValueConverter::Integer10bitToLinear(int integer10bit)
+	{
+		return (double)1.0 / 0x3FF * integer10bit;
+	}
+
+	std::array<unsigned char, 2> FaderValueConverter::Integer10bitToMackie(int integer10bit)
 	{
 		return {(unsigned char)(integer10bit & 0x7F), (unsigned char)(integer10bit >> 3)};
+	}
+
+	int FaderValueConverter::MackieToInteger10bit(std::array<unsigned char, 2> mackie)
+	{
+		return ((mackie[1] << 3 & 0x3F0) | mackie[0]);
 	}
 }
