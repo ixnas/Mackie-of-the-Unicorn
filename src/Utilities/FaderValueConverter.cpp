@@ -18,7 +18,7 @@ namespace MackieOfTheUnicorn::Utilities
 
 	int FaderValueConverter::LinearToInteger10bit(double linearValue)
 	{
-		return (int)(linearValue * (double)1023);
+		return (int)(linearValue * (double)0x3FF);
 	}
 
 	double FaderValueConverter::Integer10bitToLinear(int integer10bit)
@@ -33,6 +33,6 @@ namespace MackieOfTheUnicorn::Utilities
 
 	int FaderValueConverter::MackieToInteger10bit(std::array<unsigned char, 2> mackie)
 	{
-		return ((mackie[1] << 3 & 0x3F0) | mackie[0]);
+		return (mackie[1] << 3 & 0x3F0) | mackie[0];
 	}
 }

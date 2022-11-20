@@ -58,6 +58,16 @@ namespace MackieOfTheUnicorn::Tests::Unit::Utilities
 		EXPECT_EQ(actual, expected);
 	}
 
+	TEST(FaderValueConverterTest, LinearToInteger10bitConvertsMid)
+	{
+		int expected = 511;
+		double input = 0.5;
+
+		auto actual = FaderValueConverter::LinearToInteger10bit(input);
+
+		EXPECT_EQ(actual, expected);
+	}
+
 	TEST(FaderValueConverterTest, LinearToInteger10bitConvertsMax)
 	{
 		int expected = 1023;
@@ -110,8 +120,8 @@ namespace MackieOfTheUnicorn::Tests::Unit::Utilities
 
 	TEST(FaderValueConverterTest, Integer10bitToMackieConvertsMidLow)
 	{
-		std::array<unsigned char, 2> expected = {0x40, 0x18};
-		int input = 192;
+		std::array<unsigned char, 2> expected = {0x3F, 0x17};
+		int input = 191;
 
 		auto actual = FaderValueConverter::Integer10bitToMackie(input);
 
@@ -120,8 +130,8 @@ namespace MackieOfTheUnicorn::Tests::Unit::Utilities
 
 	TEST(FaderValueConverterTest, Integer10bitToMackieConvertsMid)
 	{
-		std::array<unsigned char, 2> expected = {0x00, 0x40};
-		int input = 512;
+		std::array<unsigned char, 2> expected = {0x7F, 0x3F};
+		int input = 511;
 
 		auto actual = FaderValueConverter::Integer10bitToMackie(input);
 
@@ -130,8 +140,8 @@ namespace MackieOfTheUnicorn::Tests::Unit::Utilities
 
 	TEST(FaderValueConverterTest, Integer10bitToMackieConvertsMidHigh)
 	{
-		std::array<unsigned char, 2> expected = {0x40, 0x68};
-		int input = 832;
+		std::array<unsigned char, 2> expected = {0x3F, 0x67};
+		int input = 831;
 
 		auto actual = FaderValueConverter::Integer10bitToMackie(input);
 
@@ -150,8 +160,8 @@ namespace MackieOfTheUnicorn::Tests::Unit::Utilities
 
 	TEST(FaderValueConverterTest, MackieToInteger10bitConvertsMidLow)
 	{
-		int expected = 192;
-		std::array<unsigned char, 2> input = {0x40, 0x18};
+		int expected = 191;
+		std::array<unsigned char, 2> input = {0x3F, 0x17};
 
 		auto actual = FaderValueConverter::MackieToInteger10bit(input);
 
@@ -160,8 +170,8 @@ namespace MackieOfTheUnicorn::Tests::Unit::Utilities
 
 	TEST(FaderValueConverterTest, MackieToInteger10bitConvertsMid)
 	{
-		int expected = 512;
-		std::array<unsigned char, 2> input = {0x00, 0x40};
+		int expected = 511;
+		std::array<unsigned char, 2> input = {0x7F, 0x3F};
 
 		auto actual = FaderValueConverter::MackieToInteger10bit(input);
 
@@ -170,8 +180,8 @@ namespace MackieOfTheUnicorn::Tests::Unit::Utilities
 
 	TEST(FaderValueConverterTest, MackieToInteger10bitConvertsMidHigh)
 	{
-		int expected = 832;
-		std::array<unsigned char, 2> input = {0x40, 0x68};
+		int expected = 831;
+		std::array<unsigned char, 2> input = {0x3F, 0x67};
 
 		auto actual = FaderValueConverter::MackieToInteger10bit(input);
 

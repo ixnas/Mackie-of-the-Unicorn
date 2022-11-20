@@ -106,6 +106,28 @@ namespace MackieOfTheUnicorn::Tests::Unit::Mackie
 				EXPECT_EQ(actualOn, expectedOn);
 			}
 		}
+
+		void SetsChannelFaders(double inputValue, std::array<char, 2> outputValue)
+		{
+			for (auto i = 0; i < 8; i++)
+			{
+				unsigned char byte1 = 0xE0 + i;
+				unsigned char byte2 = outputValue[0];
+				unsigned char byte3 = outputValue[1];
+				std::vector<unsigned char> expectedMidiMessage = {byte1, byte2, byte3};
+
+				instance->SetChannelFader(i, inputValue);
+
+				auto sendMessagesSize = midiDeviceFake->SendMessageMessages.size();
+
+				ASSERT_GT(sendMessagesSize, 0);
+
+				auto actualMidiMessage = *(midiDeviceFake->SendMessageMessages.end() - 1);
+
+				EXPECT_EQ(actualMidiMessage, expectedMidiMessage);
+			}
+		}
+
 	};
 
 	TEST_F(MackieDeviceImplTest, SetsChannelMutesOn)
@@ -275,4 +297,33 @@ namespace MackieOfTheUnicorn::Tests::Unit::Mackie
 			midiDeviceFake->SendMessageMessages.clear();
 		}
 	}
+
+	TEST_F(MackieDeviceImplTest, SetsChannelFadersToEighth)
+	{
+		SetsChannelFaders((double)1 / 8, {0x7F, 0x0F});
+	}
+
+	TEST_F(MackieDeviceImplTest, SetsChannelFadersToSevenEighth)
+	{
+		SetsChannelFaders((double)1 / 8 * 7, {0x7F, 0x6F});
+	}
+
+	TEST_F(MackieDeviceImplTest, SetsFaderOnListener)
+	{
+		auto expectedOrigin = instance.get();
+		auto expectedChannelId = 4;
+		double expectedValue = 0;
+
+		std::vector<unsigned char> midiMessage = { 0xE4, 0x00, 0x00 };
+		midiDeviceFake->FakeMessage(midiMessage);
+
+		auto actualOrigin = mackieListenerFake->OnFaderMovedOrigin;
+		auto actualChannelId = mackieListenerFake->OnFaderMovedChannelId;
+		auto actualValue = mackieListenerFake->OnFaderMovedValue;
+
+		EXPECT_EQ(actualOrigin, expectedOrigin);
+		EXPECT_EQ(actualChannelId, expectedChannelId);
+		EXPECT_EQ(actualValue, expectedValue);
+	}
+
 } // namespace MackieOfTheUnicorn::Tests::Unit::Mackie

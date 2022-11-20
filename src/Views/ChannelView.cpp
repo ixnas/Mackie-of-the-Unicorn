@@ -33,6 +33,14 @@ namespace MackieOfTheUnicorn::Views
 			{
 				mackieComposite.SetChannelText(i - previousOffset, false, nextLabel);
 			}
+
+			auto currentFaderValue = viewData.GetFader(i);
+			auto nextFaderValue = viewData.GetFader(i + nextOffset - previousOffset);
+
+			if (currentFaderValue != nextFaderValue)
+			{
+				mackieComposite.SetChannelFader(i - previousOffset, nextFaderValue);
+			}
 		}
 	}
 

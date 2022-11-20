@@ -4,6 +4,7 @@
 
 #include "MackieDeviceImpl.h"
 #include "../Utilities/ShortLabel.h"
+#include "../Utilities/FaderValueConverter.h"
 
 namespace MackieOfTheUnicorn::Mackie
 {
@@ -33,6 +34,12 @@ namespace MackieOfTheUnicorn::Mackie
 		return message[0] == 144 &&
 			   message[1] == 46 &&
 			   message[2] == 127;
+	}
+
+	static bool IsFaderMessage(std::vector<unsigned char>& message)
+	{
+		return message[0] >= 0xE0 &&
+		       message[0] <= 0xE7;
 	}
 
 	MackieDeviceImpl::MackieDeviceImpl(std::unique_ptr<MIDI::MIDIDevice>& midiDevice) : MIDIDevice(std::move(midiDevice))
@@ -149,9 +156,32 @@ namespace MackieOfTheUnicorn::Mackie
 		{
 			MackieListener->OnBankBackwardsPressed();
 		}
+
+		if (IsFaderMessage(message))
+		{
+			using namespace Utilities;
+
+			auto channelId = message[0] - 0xE0;
+			auto value10bit = FaderValueConverter::MackieToInteger10bit({message[1], message[2]});
+			auto valueLinear = FaderValueConverter::Integer10bitToLinear(value10bit);
+
+			MackieListener->OnChannelFaderMoved(this, channelId, valueLinear);
+		}
 	}
 
 	void MackieDeviceImpl::SetChannelFader(int channelNumber, double value)
 	{
+		if (channelNumber > 7)
+		{
+			return;
+		}
+
+		using namespace Utilities;
+		auto integer10bitValue = FaderValueConverter::LinearToInteger10bit(value);
+		auto mackieValue = FaderValueConverter::Integer10bitToMackie(integer10bitValue);
+
+		std::vector<unsigned char> message = {(unsigned char)(0xE0 + channelNumber), mackieValue[0], mackieValue[1]};
+
+		MIDIDevice->SendMessage(message);
 	}
 }
