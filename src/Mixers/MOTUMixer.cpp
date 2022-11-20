@@ -4,6 +4,7 @@
 
 #include "MOTUMixer.h"
 #include "VirtualMixer.h"
+#include "../Utilities/FaderValueConverter.h"
 
 namespace MackieOfTheUnicorn::Mixers
 {
@@ -43,6 +44,21 @@ namespace MackieOfTheUnicorn::Mixers
 		}
 
 		if (keyParts[0] != "mix" || keyParts[1] != "chan" || keyParts[3] != "matrix" || keyParts[4] != "solo")
+		{
+			return false;
+		}
+
+		return true;
+	}
+
+	static bool IsFaderMessage(std::vector<std::string>& keyParts)
+	{
+		if (keyParts.size() != 5)
+		{
+			return false;
+		}
+
+		if (keyParts[0] != "mix" || keyParts[1] != "chan" || keyParts[3] != "matrix" || keyParts[4] != "fader")
 		{
 			return false;
 		}
@@ -116,6 +132,17 @@ namespace MackieOfTheUnicorn::Mixers
 			return;
 		}
 
+		if (IsFaderMessage(keyParts))
+		{
+			using namespace Utilities;
+
+			auto channelNumber = std::stoi(keyParts[2]);
+			auto value = message.second.Float.value();
+			auto valueLinear = FaderValueConverter::MotuToLinear(value);
+
+			VirtualMixer->SetInputChannelFader(Id, channelNumber, valueLinear);
+		}
+
 		// Move this stuff to HTTP layer
 		std::pair<std::vector<std::string>, JSON::JSONValue> messageInParts = {keyParts, message.second};
 		auto labels = LabelCache.GetLabels(messageInParts);
@@ -133,5 +160,14 @@ namespace MackieOfTheUnicorn::Mixers
 
 	void MOTUMixer::SetInputChannelFader(int originId, int channel, double value)
 	{
+		using namespace Utilities;
+
+		std::ostringstream stringStream;
+		stringStream << "mix/chan/" << channel << "/matrix/fader";
+		auto key = stringStream.str();
+		JSON::JSONValue motuValue;
+		motuValue.Integer = FaderValueConverter::LinearToMotu(value);
+		std::pair<std::string, JSON::JSONValue> message = {key, motuValue};
+		HTTPDevice->SendMessage(message);
 	}
 } // namespace MackieOfTheUnicorn::Mixers

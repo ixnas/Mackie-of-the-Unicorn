@@ -144,6 +144,6 @@ namespace MackieOfTheUnicorn::Views
 
 	void ChannelView::SetInputChannelFader(int originId, int channel, double value)
 	{
-		MackieComposite->SetChannelFader(channel, value);
+		MackieComposite->SetChannelFader(channel - Offset, value);
 	}
 }
