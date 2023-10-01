@@ -3,6 +3,12 @@ pipeline {
     stages {
         stage('Configure (macOS)') {
             agent { label 'macos' }
+            environment {
+                GIT_VERSION = """${sh(
+                    returnStdout: true,
+                    script: 'git describe --always'
+                ).trim()}"""
+            }
             steps {
                 sh "mkdir -p build"
                 dir('build') {
