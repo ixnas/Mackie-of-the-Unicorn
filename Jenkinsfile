@@ -6,6 +6,7 @@ pipeline {
             steps {
                 sh "mkdir -p build"
                 dir('build') {
+                    sh "rm -rf Mackie\\ of\\ the\\ Unicorn.app Mackie_of_the_Unicorn.app Mackie-of-the-Unicorn-${GIT_VERSION}-*"
                     sh "/usr/local/bin/cmake -DCMAKE_BUILD_TYPE=Release .."
                 }
             }
